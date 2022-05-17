@@ -10,7 +10,7 @@ Project workspace for [Reetesh Sudhakar](mailto::rsudhakar9@gatech.edu), [Sebast
 1. Use Case Diagram
 2. Domain Model
 3. This GitHub Enterprise Repository 
-4. 
+
 ## Phase II
 
 ## Phase III
