@@ -50,12 +50,12 @@ System (manages) → Delivery Services (contains) → Drones (delivers to) ←�
 
 ### Important Objects
 
-- Delivery Service — location, name, unique ID, manager, associated drones, employees, space limit for drones, money
-- Restaurant — location, space limit for drones, rating, money
-- Employee — first name, last name, address, and birthdate, unique username, SSN, hiring date, experience (in months), salary
-  - Manager — unique employer
-  - Pilot — license, numSuccessfulTrips, unique employer, drones they’re controlling
-  - Warehouse Worker — employer(s)
-- Drone — ID, unique delivery service company, associated pilot (other drone or pilot), fuel supply, coordinates [x, y], package capacity, payload
-- Package
-- Ingredient — barcode (universally identified), name, weight
+- **Delivery Service** — location, name, unique ID, manager, associated drones, employees, space limit for drones, money
+- **Restaurant** — location, space limit for drones, rating, money
+- **Employee** — first name, last name, address, and birthdate, unique username, SSN, hiring date, experience (in months), salary
+  - **Manager** — unique employer
+  - **Pilot** — license, numSuccessfulTrips, unique employer, drones they’re controlling
+  - **Warehouse Worker** — employer(s)
+- **Drone** — ID, unique delivery service company, associated pilot (other drone or pilot), fuel supply, coordinates [x, y], package capacity, payload
+- **Package**
+- **Ingredient** — barcode (universally identified), name, weight
