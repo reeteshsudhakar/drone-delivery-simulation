@@ -57,5 +57,5 @@ System (manages) → Delivery Services (contains) → Drones (delivers to) ←�
   - **Pilot** — license, numSuccessfulTrips, unique employer, drones they’re controlling
   - **Warehouse Worker** — employer(s)
 - **Drone** — ID, unique delivery service company, associated pilot (other drone or pilot), fuel supply, coordinates [x, y], package capacity, payload
-- **Package**
+- **Package** - weight
 - **Ingredient** — barcode (universally identified), name, weight, price
