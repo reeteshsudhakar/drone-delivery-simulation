@@ -58,4 +58,4 @@ System (manages) → Delivery Services (contains) → Drones (delivers to) ←�
   - **Warehouse Worker** — employer(s)
 - **Drone** — ID, unique delivery service company, associated pilot (other drone or pilot), fuel supply, coordinates [x, y], package capacity, payload
 - **Package**
-- **Ingredient** — barcode (universally identified), name, weight
+- **Ingredient** — barcode (universally identified), name, weight, price
