@@ -113,14 +113,29 @@ public class InterfaceLoop {
         }
     }
 
+    /*
+    first check if the drone exists under that service, then if destination exists.
+    If both are true, then check if the drone has enough fuel to make it to the destination AND back to home base.
+    If it does, then check if the destination has enough space to hold the drone.
+    If it does, then fly the drone to the location and update the fuel and location of the drone.
+     */
     void flyDrone(String service_name, Integer drone_tag, String destination_name) {
 
     }
 
+    /*
+    First check if the drone exists under that service, then if the ingredient exists.
+    If both are true, then check if the drone has enough space to hold the ingredient.
+    If it does, then add the ingredient to the drone's payload and update the space left.
+     */
     void loadIngredient(String service_name, Integer drone_tag, String barcode, Integer quantity, Integer unit_price) {
 
     }
 
+    /*
+    First check if the drone exists under that service, then if the drone is at the home base.
+    If the drone is at the home base, then update the fuel of the drone.
+     */
     void loadFuel(String service_name, Integer drone_tag, Integer petrol) {
 
     }
