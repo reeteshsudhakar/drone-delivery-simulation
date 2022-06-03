@@ -13,6 +13,11 @@ public class Location {
         this.spaces_left = init_space_limit;
     }
 
+    Integer calculateDistance(Location destination) {
+        return 1 + (int) Math.floor(Math.sqrt(Math.pow(getInit_x() - destination.getInit_x(), 2)
+                + Math.pow(getInit_y() - destination.getInit_y(), 2)));
+    }
+
     public String getInit_name() {
         return init_name;
     }

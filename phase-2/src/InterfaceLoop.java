@@ -36,7 +36,33 @@ public class InterfaceLoop {
         }
     }
 
-    void checkDistance(String departure_point, String arrival_point) { }
+    void checkDistance(String departure_point, String arrival_point) {
+        boolean departureFound = false;
+        boolean arrivalFound = false;
+        Location departureLocation = null;
+        Location arrivalLocation = null;
+        for (Location location : locations) {
+            if (location.getInit_name().equals(departure_point)) {
+                departureFound = true;
+                departureLocation = location;
+            }
+            if (location.getInit_name().equals(arrival_point)) {
+                arrivalFound = true;
+                arrivalLocation = location;
+            }
+        }
+
+        if (!departureFound) {
+            System.out.println("ERROR: Invalid departure location specified.");
+        }
+        if (!arrivalFound) {
+            System.out.println("ERROR: Invalid destination location specified.");
+        }
+
+        int distance = departureLocation.calculateDistance(arrivalLocation);
+        System.out.printf("Distance: %d%n", distance);
+
+    }
 
     void makeDeliveryService(String init_name, Integer init_revenue, String located_at) {
         boolean found = false;
@@ -120,6 +146,31 @@ public class InterfaceLoop {
     If it does, then fly the drone to the location and update the fuel and location of the drone.
      */
     void flyDrone(String service_name, Integer drone_tag, String destination_name) {
+        boolean droneFound = false;
+        boolean destinationFound = false;
+        for (Drone drone : drones) {
+            if (drone.getInit_tag().equals(drone_tag) && drone.getService_name().equals(service_name)) {
+                droneFound = true;
+                break;
+            }
+        }
+
+        if (!droneFound) {
+            System.out.println("ERROR: Drone with specified information not found.");
+        } else {
+            for (Location location : locations) {
+                if (location.getInit_name().equals(destination_name)) {
+                    destinationFound = true;
+                    break;
+                }
+            }
+        }
+
+        if (!destinationFound) {
+            System.out.println("ERROR: Destination not found.");
+        } else {
+            // check if the the drone has fuel to make it to destination and back, and so on
+        }
 
     }
 
