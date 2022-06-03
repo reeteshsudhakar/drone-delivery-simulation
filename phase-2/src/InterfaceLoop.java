@@ -108,6 +108,7 @@ public class InterfaceLoop {
         }
     }
 
+    // add Location to the Drone (initialized to the service location)
     void makeDrone(String service_name, Integer init_tag, Integer init_capacity, Integer init_fuel) {
         boolean found = false;
         for (DeliveryService service : services) {
