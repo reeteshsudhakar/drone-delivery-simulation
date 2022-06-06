@@ -1,23 +1,23 @@
 public class Ingredient {
-    private String init_barcode;
-    private String init_name;
-    private Integer init_weight;
+    private String barcode;
+    private String name;
+    private Integer weight;
 
-    public Ingredient(String init_barcode, String init_name, Integer init_weight) {
-        this.init_barcode = init_barcode;
-        this.init_name = init_name;
-        this.init_weight = init_weight;
+    public Ingredient(String barcode, String name, Integer weight) {
+        this.barcode = barcode;
+        this.name = name;
+        this.weight = weight;
     }
 
-    public String getInit_barcode() {
-        return init_barcode;
+    public String getBarcode() {
+        return barcode;
     }
 
-    public Integer getInit_weight() {
-        return init_weight;
+    public Integer getWeight() {
+        return weight;
     }
 
-    public String getInit_name() {
-        return init_name;
+    public String getName() {
+        return name;
     }
 }

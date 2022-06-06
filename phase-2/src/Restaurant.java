@@ -1,24 +1,24 @@
 public class Restaurant {
-    private final String init_name;
-    private final String located_at;
-    private Integer init_spending;
+    private final String name;
+    private final String locatedAt;
+    private Integer spending;
 
     public Restaurant(String init_name, String located_at) {
-        this.init_name = init_name;
-        this.located_at = located_at;
-        this.init_spending = 0;
+        this.name = init_name;
+        this.locatedAt = located_at;
+        this.spending = 0;
     }
 
-    public String getInit_name() {
-        return init_name;
+    public String getName() {
+        return name;
     }
 
-    public String getLocated_at() {
-        return located_at;
+    public String getLocatedAt() {
+        return locatedAt;
     }
 
-    public Integer getInit_spending() {
-        return init_spending;
+    public Integer getSpending() {
+        return spending;
     }
 
 }
