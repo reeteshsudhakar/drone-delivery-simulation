@@ -11,9 +11,10 @@ public class InterfaceLoop {
 
     InterfaceLoop() { }
 
-    void makeIngredient(String init_barcode, String init_name, Integer init_weight) {
-        Ingredient ingredient = new Ingredient(init_barcode, init_name, init_weight);
-        ingredients.add(ingredient);
+    void makeIngredient(String barcode, String name, Integer weight) {
+        Ingredient ingredient = new Ingredient(barcode, name, weight);
+        addIngredient(ingredient);
+        displayMessage("OK","change_completed");
     }
 
     void displayIngredients() {
@@ -21,32 +22,35 @@ public class InterfaceLoop {
             System.out.printf("Barcode: %s, Name: %s, Weight: %d%n",ingredient.getInit_barcode(),
                     ingredient.getInit_name(), ingredient.getInit_weight());
         }
+        displayMessage("OK","display_completed");
     }
 
-    void makeLocation(String init_name, Integer init_x_coord, Integer init_y_coord, Integer init_space_limit) {
-        Location location = new Location(init_name, init_x_coord, init_y_coord, init_space_limit);
+    void makeLocation(String name, Integer x_coord, Integer y_coord, Integer spaceLimit) {
+        Location location = new Location(name, x_coord, y_coord, spaceLimit);
         locations.add(location);
+        displayMessage("OK","change_completed");
     }
 
     void displayLocations() {
         for (Location location : locations) {
-            System.out.printf("Name: %s, Coordinates: (%d, %d), Capacity: %d, Spaces Remaining: [%d / %d]%n",
+            System.out.printf("Name: %s, (x,y): (%d, %d), Space: [%d / %d] remaining%n",
                     location.getInit_name(), location.getInit_x(), location.getInit_y(),
-                    location.getInit_space_limit(), location.getSpaces_left(), location.getInit_space_limit());
+                    location.getSpaces_left(), location.getInit_space_limit());
         }
+        displayMessage("OK","display_completed");
     }
 
-    void checkDistance(String departure_point, String arrival_point) {
+    void checkDistance(String departurePoint, String arrivalPoint) {
         boolean departureFound = false;
         boolean arrivalFound = false;
         Location departureLocation = null;
         Location arrivalLocation = null;
         for (Location location : locations) {
-            if (location.getInit_name().equals(departure_point)) {
+            if (location.getInit_name().equals(departurePoint)) {
                 departureFound = true;
                 departureLocation = location;
             }
-            if (location.getInit_name().equals(arrival_point)) {
+            if (location.getInit_name().equals(arrivalPoint)) {
                 arrivalFound = true;
                 arrivalLocation = location;
             }
@@ -60,38 +64,43 @@ public class InterfaceLoop {
         }
 
         int distance = departureLocation.calculateDistance(arrivalLocation);
-        System.out.printf("Distance: %d%n", distance);
+
+        displayMessage("OK", String.format("distance = %d", distance));
 
     }
 
-    void makeDeliveryService(String init_name, Integer init_revenue, String located_at) {
+    void makeDeliveryService(String name, Integer revenue, String locatedAt) {
         boolean found = false;
         for (Location location : locations) {
-            if (location.getInit_name().equals(located_at)) {
+            if (location.getInit_name().equals(locatedAt)) {
                 found = true;
-                DeliveryService service = new DeliveryService(init_name, init_revenue, located_at);
-                services.add(service);
+                DeliveryService newService = new DeliveryService(name, revenue, locatedAt);
+                addDeliveryService(newService);
             }
         }
 
         if (!found) {
             System.out.println("ERROR: Location not found.");
         }
+
+        displayMessage("OK","service_created");
     }
 
     void displayServices() {
         for (DeliveryService deliveryService : services) {
-            System.out.printf("Name: %s, Revenue: $%d, Location: %s%n", deliveryService.getInit_name(),
-                    deliveryService.getInit_revenue(), deliveryService.getLocated_at());
+            System.out.printf("Name: %s, Revenue: $%d, Location: %s%n", deliveryService.getName(),
+                    deliveryService.getRevenue(), deliveryService.getLocatedAt());
         }
+
+        displayMessage("OK","display_completed");
     }
 
-    void makeRestaurant(String init_name, String located_at) {
+    void makeRestaurant(String name, String locatedAt) {
         boolean found = false;
         for (Location location : locations) {
-            if (location.getInit_name().equals(located_at)) {
+            if (location.getInit_name().equals(locatedAt)) {
                 found = true;
-                Restaurant restaurant = new Restaurant(init_name, located_at);
+                Restaurant restaurant = new Restaurant(name, locatedAt);
                 restaurants.add(restaurant);
             }
         }
@@ -99,6 +108,8 @@ public class InterfaceLoop {
         if (!found) {
             System.out.println("ERROR: Location not found.");
         }
+
+        displayMessage("OK","change_completed");
     }
 
     void displayRestaurants() {
@@ -106,15 +117,17 @@ public class InterfaceLoop {
             System.out.printf("Name: %s, Location: %s%n, Total Spent: $%d", restaurant.getInit_name(),
                     restaurant.getLocated_at(), restaurant.getInit_spending());
         }
+
+        displayMessage("OK","display_completed");
     }
 
     // add Location to the Drone (initialized to the service location)
-    void makeDrone(String service_name, Integer init_tag, Integer init_capacity, Integer init_fuel) {
+    void makeDrone(String serviceName, Integer tag, Integer capacity, Integer fuel) {
         boolean found = false;
         for (DeliveryService service : services) {
-            if (service.getInit_name().equals(service_name)) {
+            if (service.getName().equals(serviceName)) {
                 found = true;
-                Drone drone = new Drone(service_name, init_tag, init_capacity, init_fuel);
+                Drone drone = new Drone(serviceName, tag, capacity, fuel);
                 drones.add(drone);
             }
         }
@@ -122,22 +135,28 @@ public class InterfaceLoop {
         if (!found) {
             System.out.println("ERROR: Service not found.");
         }
+
+        displayMessage("OK","change_completed");
     }
 
-    void displayDrones(String service_name) {
+    void displayDrones(String serviceName) {
         for (Drone drone : drones) {
-            if (drone.getService_name().equals(service_name)) {
-                System.out.printf("Tag: %d, Capacity: %d, Fuel: %d%n", drone.getInit_tag(),
-                        drone.getInit_capacity(), drone.getInit_fuel());
+            if (drone.getServiceName().equals(serviceName)) {
+                System.out.printf("Tag: %d, Capacity: %d, Fuel: %d%n", drone.getTag(),
+                        drone.getCapacity(), drone.getFuel());
             }
         }
+
+        displayMessage("OK","display_completed");
     }
 
     void displayAllDrones() {
         for (Drone drone : drones) {
-            System.out.printf("Tag: %d, Capacity: %d, Fuel: %d%n", drone.getInit_tag(),
-                    drone.getInit_capacity(), drone.getInit_fuel());
+            System.out.printf("Tag: %d, Capacity: %d, Fuel: %d%n", drone.getTag(),
+                    drone.getCapacity(), drone.getFuel());
         }
+
+        displayMessage("OK","display_completed");
     }
 
     /*
@@ -146,11 +165,11 @@ public class InterfaceLoop {
     If it does, then check if the destination has enough space to hold the drone.
     If it does, then fly the drone to the location and update the fuel and location of the drone.
      */
-    void flyDrone(String service_name, Integer drone_tag, String destination_name) {
+    void flyDrone(String serviceName, Integer tag, String destination) {
         boolean droneFound = false;
         boolean destinationFound = false;
         for (Drone drone : drones) {
-            if (drone.getInit_tag().equals(drone_tag) && drone.getService_name().equals(service_name)) {
+            if (drone.getTag().equals(tag) && drone.getServiceName().equals(serviceName)) {
                 droneFound = true;
                 break;
             }
@@ -160,7 +179,7 @@ public class InterfaceLoop {
             System.out.println("ERROR: Drone with specified information not found.");
         } else {
             for (Location location : locations) {
-                if (location.getInit_name().equals(destination_name)) {
+                if (location.getInit_name().equals(destination)) {
                     destinationFound = true;
                     break;
                 }
@@ -180,7 +199,7 @@ public class InterfaceLoop {
     If both are true, then check if the drone has enough space to hold the ingredient.
     If it does, then add the ingredient to the drone's payload and update the space left.
      */
-    void loadIngredient(String service_name, Integer drone_tag, String barcode, Integer quantity, Integer unit_price) {
+    void loadIngredient(String serviceName, Integer tag, String barcode, Integer quantity, Integer unitPrice) {
 
     }
 
@@ -188,11 +207,11 @@ public class InterfaceLoop {
     First check if the drone exists under that service, then if the drone is at the home base.
     If the drone is at the home base, then update the fuel of the drone.
      */
-    void loadFuel(String service_name, Integer drone_tag, Integer petrol) {
+    void loadFuel(String serviceName, Integer tag, Integer petrol) {
 
     }
 
-    void purchaseIngredient(String restaurant_name, String service_name, Integer drone_tag,
+    void purchaseIngredient(String restaurantName, String serviceName, Integer tag,
                             String barcode, Integer quantity) {
 
     }
@@ -284,4 +303,43 @@ public class InterfaceLoop {
     void displayMessage(String status, String text_output) {
         System.out.println(status.toUpperCase() + ":" + text_output.toLowerCase());
     }
+
+    void addIngredient(Ingredient newIngredient) {
+        if (ingredients.size() == 0) {
+            ingredients.add(newIngredient);
+        } else {
+            boolean added = false;
+            for (int i = 0; i < ingredients.size(); i++) {
+                if (newIngredient.getInit_name().compareTo(ingredients.get(i).getInit_name()) < 0) {
+                    ingredients.add(i, newIngredient);
+                    added = true;
+                    break;
+                }
+            }
+
+            if (!added) {
+                ingredients.add(newIngredient);
+            }
+        }
+    }
+
+    void addDeliveryService(DeliveryService newService) {
+        if (services.size() == 0) {
+            services.add(newService);
+        } else {
+            boolean added = false;
+            for (int i = 0; i < services.size(); i++) {
+                if (newService.getName().compareTo(services.get(i).getName()) < 0) {
+                    services.add(i, newService);
+                    added = true;
+                    break;
+                }
+            }
+
+            if (!added) {
+                services.add(newService);
+            }
+        }
+    }
+
 }

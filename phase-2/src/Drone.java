@@ -1,29 +1,33 @@
 public class Drone {
-    private final String service_name;
-    private final Integer init_tag;
-    private final Integer init_capacity;
-    private Integer init_fuel;
+    private final String serviceName;
+    private final Integer tag;
+    private Integer capacity;
+    private Integer fuel;
 
     public Drone(String service_name, Integer init_tag, Integer init_capacity, Integer init_fuel) {
-        this.service_name = service_name;
-        this.init_tag = init_tag;
-        this.init_capacity = init_capacity;
-        this.init_fuel = init_fuel;
+        this.serviceName = service_name;
+        this.tag = init_tag;
+        this.capacity = init_capacity;
+        this.fuel = init_fuel;
     }
 
-    public String getService_name() {
-        return service_name;
+    public String getServiceName() {
+        return serviceName;
     }
 
-    public Integer getInit_tag() {
-        return init_tag;
+    public Integer getTag() {
+        return tag;
     }
 
-    public Integer getInit_capacity() {
-        return init_capacity;
+    public Integer getCapacity() {
+        return capacity;
     }
 
-    public Integer getInit_fuel() {
-        return init_fuel;
+    public Integer getFuel() {
+        return fuel;
+    }
+
+    public void addFuel(Integer petrol) {
+        this.fuel += petrol;
     }
 }
