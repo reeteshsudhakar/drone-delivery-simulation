@@ -3,12 +3,16 @@ public class Drone {
     private final Integer tag;
     private Integer capacity;
     private Integer fuel;
+    private Location homeBase;
+    private Location location;
 
-    public Drone(String service_name, Integer init_tag, Integer init_capacity, Integer init_fuel) {
+    public Drone(String service_name, Integer init_tag, Integer init_capacity, Integer init_fuel, Location homeBase) {
         this.serviceName = service_name;
         this.tag = init_tag;
         this.capacity = init_capacity;
         this.fuel = init_fuel;
+        this.location = homeBase;
+        this.homeBase = homeBase;
     }
 
     public String getServiceName() {

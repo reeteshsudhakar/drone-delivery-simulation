@@ -97,7 +97,7 @@ public class InterfaceLoop {
         for (Location location : locations) {
             if (location.getName().equals(locatedAt)) {
                 found = true;
-                DeliveryService newService = new DeliveryService(name, revenue, locatedAt);
+                DeliveryService newService = new DeliveryService(name, revenue, location);
                 addDeliveryService(newService);
             }
         }
@@ -112,7 +112,7 @@ public class InterfaceLoop {
     void displayServices() {
         for (DeliveryService deliveryService : services) {
             System.out.printf("Name: %s, Revenue: $%d, Location: %s%n", deliveryService.getName(),
-                    deliveryService.getRevenue(), deliveryService.getLocatedAt());
+                    deliveryService.getRevenue(), deliveryService.getLocation().getName());
         }
 
         displayMessage("OK","display_completed");
@@ -151,12 +151,14 @@ public class InterfaceLoop {
         displayMessage("OK","display_completed");
     }
 
-    // add Location to the Drone (initialized to the service location)
+    // add Location to the Drone (initialized to the service location and check for space)
     void makeDrone(String serviceName, Integer tag, Integer capacity, Integer fuel) {
+        Location serviceLocation = null;
         boolean found = false;
         for (DeliveryService service : services) {
             if (service.getName().equals(serviceName)) {
                 found = true;
+                serviceLocation = service.getLocation();
                 break;
             }
         }
@@ -167,17 +169,20 @@ public class InterfaceLoop {
         }
 
         for (Drone drone : drones) {
-            // test if this is the right way to check or if we can just use ==
             if (drone.getTag().equals(tag) && drone.getServiceName().equals(serviceName)) {
                 displayMessage("ERROR","drone_already_exists");
                 return;
             }
         }
 
-        Drone newDrone = new Drone(serviceName, tag, capacity, fuel);
-        addDrone(newDrone);
-
-        displayMessage("OK","change_completed");
+        if (serviceLocation.getSpaces_left() == 0) {
+            displayMessage("ERROR","no_space_left");
+            return;
+        } else {
+            Drone newDrone = new Drone(serviceName, tag, capacity, fuel, serviceLocation);
+            addDrone(newDrone);
+            displayMessage("OK","change_completed");
+        }
     }
 
     // need to fix this

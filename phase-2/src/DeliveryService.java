@@ -1,14 +1,12 @@
-import java.util.ArrayList;
-
 public class DeliveryService {
     private final String name;
     private Integer revenue;
-    private final String locatedAt;
+    private final Location location;
 
-    public DeliveryService(String init_name, Integer init_revenue, String located_at) {
+    public DeliveryService(String init_name, Integer init_revenue, Location location) {
         this.name = init_name;
         this.revenue = init_revenue;
-        this.locatedAt = located_at;
+        this.location = location;
     }
 
     public String getName() {
@@ -19,8 +17,8 @@ public class DeliveryService {
         return revenue;
     }
 
-    public String getLocatedAt() {
-        return locatedAt;
+    public Location getLocation() {
+        return location;
     }
 
 }
