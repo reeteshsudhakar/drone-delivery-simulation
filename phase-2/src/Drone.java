@@ -3,7 +3,7 @@ public class Drone {
     private final Integer tag;
     private Integer capacity;
     private Integer fuel;
-    private Location homeBase;
+    private final Location homeBase;
     private Location location;
 
     public Drone(String service_name, Integer init_tag, Integer init_capacity, Integer init_fuel, Location homeBase) {
@@ -29,6 +29,14 @@ public class Drone {
 
     public Integer getFuel() {
         return fuel;
+    }
+
+    public Location getHomeBase() {
+        return homeBase;
+    }
+
+    public Location getLocation() {
+        return location;
     }
 
     public void addFuel(Integer petrol) {

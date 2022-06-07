@@ -130,7 +130,7 @@ public class InterfaceLoop {
         for (Location location : locations) {
             if (location.getName().equals(locatedAt)) {
                 found = true;
-                Restaurant restaurant = new Restaurant(name, locatedAt);
+                Restaurant restaurant = new Restaurant(name, location);
                 restaurants.add(restaurant);
             }
         }
@@ -145,7 +145,7 @@ public class InterfaceLoop {
     void displayRestaurants() {
         for (Restaurant restaurant : restaurants) {
             System.out.printf("Name: %s, Location: %s%n, Total Spent: $%d", restaurant.getName(),
-                    restaurant.getLocatedAt(), restaurant.getSpending());
+                    restaurant.getLocation().getName(), restaurant.getSpending());
         }
 
         displayMessage("OK","display_completed");

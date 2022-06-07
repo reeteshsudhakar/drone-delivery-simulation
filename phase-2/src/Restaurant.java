@@ -1,11 +1,11 @@
 public class Restaurant {
     private final String name;
-    private final String locatedAt;
+    private final Location location;
     private Integer spending;
 
-    public Restaurant(String init_name, String located_at) {
+    public Restaurant(String init_name, Location location) {
         this.name = init_name;
-        this.locatedAt = located_at;
+        this.location = location;
         this.spending = 0;
     }
 
@@ -13,8 +13,8 @@ public class Restaurant {
         return name;
     }
 
-    public String getLocatedAt() {
-        return locatedAt;
+    public Location getLocation() {
+        return location;
     }
 
     public Integer getSpending() {
