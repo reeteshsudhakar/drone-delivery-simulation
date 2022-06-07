@@ -26,7 +26,7 @@ public class InterfaceLoop {
 
     void displayIngredients() {
         for (Ingredient ingredient : ingredients) {
-            System.out.printf("Barcode: %s, Name: %s, Weight: %d%n",ingredient.getBarcode(),
+            System.out.printf("Barcode: %s, Name: %s, Unit Weight: %d%n",ingredient.getBarcode(),
                     ingredient.getName(), ingredient.getWeight());
         }
         displayMessage("OK","display_completed");
@@ -144,8 +144,8 @@ public class InterfaceLoop {
 
     void displayRestaurants() {
         for (Restaurant restaurant : restaurants) {
-            System.out.printf("Name: %s, Location: %s%n, Total Spent: $%d", restaurant.getName(),
-                    restaurant.getLocation().getName(), restaurant.getSpending());
+            System.out.printf("Name: %s, Total Spent: $%d, Location: %s%n", restaurant.getName(),
+                    restaurant.getSpending(), restaurant.getLocation().getName());
         }
 
         displayMessage("OK","display_completed");
@@ -153,11 +153,13 @@ public class InterfaceLoop {
 
     // add Location to the Drone (initialized to the service location and check for space)
     void makeDrone(String serviceName, Integer tag, Integer capacity, Integer fuel) {
+        DeliveryService newService = null;
         Location serviceLocation = null;
         boolean found = false;
         for (DeliveryService service : services) {
             if (service.getName().equals(serviceName)) {
                 found = true;
+                newService = service;
                 serviceLocation = service.getLocation();
                 break;
             }
@@ -169,7 +171,7 @@ public class InterfaceLoop {
         }
 
         for (Drone drone : drones) {
-            if (drone.getTag().equals(tag) && drone.getServiceName().equals(serviceName)) {
+            if (drone.getTag().equals(tag) && drone.getService().getName().equals(serviceName)) {
                 displayMessage("ERROR","drone_already_exists");
                 return;
             }
@@ -177,10 +179,10 @@ public class InterfaceLoop {
 
         if (serviceLocation.getSpaces_left() == 0) {
             displayMessage("ERROR","no_space_left");
-            return;
         } else {
-            Drone newDrone = new Drone(serviceName, tag, capacity, fuel, serviceLocation);
+            Drone newDrone = new Drone(newService, tag, capacity, fuel, serviceLocation);
             addDrone(newDrone);
+            serviceLocation.decrementSpaces_left();
             displayMessage("OK","change_completed");
         }
     }
@@ -188,20 +190,29 @@ public class InterfaceLoop {
     // need to fix this
     void displayDrones(String serviceName) {
         for (Drone drone : drones) {
-            if (drone.getServiceName().equals(serviceName)) {
-                System.out.printf("Tag: %d, Capacity: %d, Fuel: %d%n", drone.getTag(),
-                        drone.getCapacity(), drone.getFuel());
+            if (drone.getService().getName().equals(serviceName)) {
+                System.out.printf("Tag: %d, Capacity: %d, Remaining Capacity: %d, Fuel: %d, Sales: $%d, Location: %s%n",
+                        drone.getTag(), drone.getCapacity(), drone.getRemainingCapacity(), drone.getFuel(),
+                        drone.getSales(), drone.getLocation().getName());
+                for (Package item : drone.getPayload()) {
+                    System.out.printf("&> Barcode: %s, Item Name: %s, Total Quantity: %d, Unit Cost: %d,"
+                            + " Total Weight: %d%n", item.getIngredient().getBarcode(), item.getIngredient().getName(),
+                            item.getQuantity(), item.getPrice(), item.getIngredient().getWeight() * item.getQuantity());
+                }
             }
         }
 
         displayMessage("OK","display_completed");
     }
 
-    // need to fix this
     void displayAllDrones() {
-        for (Drone drone : drones) {
-            System.out.printf("Tag: %d, Capacity: %d, Fuel: %d%n", drone.getTag(),
-                    drone.getCapacity(), drone.getFuel());
+        for (DeliveryService service : services) {
+            System.out.printf("Service [%s] drones:", service.getName());
+            for (Drone drone : drones) {
+                if (drone.getService().getName().equals(service.getName())) {
+                    displayDrones(service.getName());
+                }
+            }
         }
 
         displayMessage("OK","display_completed");
@@ -217,7 +228,7 @@ public class InterfaceLoop {
         boolean droneFound = false;
         boolean destinationFound = false;
         for (Drone drone : drones) {
-            if (drone.getTag().equals(tag) && drone.getServiceName().equals(serviceName)) {
+            if (drone.getTag().equals(tag) && drone.getService().getName().equals(serviceName)) {
                 droneFound = true;
                 break;
             }
@@ -250,10 +261,52 @@ public class InterfaceLoop {
     If it does, then add the ingredient to the drone's payload and update the space left.
      */
     void loadIngredient(String serviceName, Integer tag, String barcode, Integer quantity, Integer unitPrice) {
+        boolean droneFound = false;
+        boolean ingredientFound = false;
+        Drone loadDrone = null;
+        Ingredient loadIngredient = null;
+        for (Drone drone : drones) {
+            if (drone.getTag().equals(tag) && drone.getService().getName().equals(serviceName)) {
+                droneFound = true;
+                loadDrone = drone;
+                break;
+            }
+        }
 
+        if (!droneFound) {
+            displayMessage("ERROR", "drone_not_found");
+        } else {
+            for (Ingredient ingredient : ingredients) {
+                if (ingredient.getBarcode().equals(barcode)) {
+                    ingredientFound = true;
+                    loadIngredient = ingredient;
+                    break;
+                }
+            }
+        }
+
+        if (!ingredientFound) {
+            displayMessage("ERROR","ingredient_not_found");
+        } else {
+            if (loadDrone.getCapacity() == 0) {
+                displayMessage("ERROR","no_space_left");
+            } else if (loadDrone.getCapacity() < quantity) {
+                displayMessage("ERROR","not_enough_space");
+            } else {
+                Package newPackage = createPackage(loadIngredient, unitPrice, quantity);
+                loadDrone.getPayload().add(newPackage);
+
+                loadDrone.decrementCapacity(quantity);
+                displayMessage("OK","change_completed");
+            }
+        }
     }
 
-    /*
+    Package createPackage(Ingredient ingredient, Integer unitPrice, Integer quantity) {
+        return new Package(ingredient, unitPrice, quantity);
+    }
+
+    /*1
     First check if the drone exists under that service, then if the drone is at the home base.
     If the drone is at the home base, then update the fuel of the drone.
      */
@@ -410,6 +463,4 @@ public class InterfaceLoop {
             }
         }
     }
-
-
 }
