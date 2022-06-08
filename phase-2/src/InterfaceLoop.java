@@ -151,7 +151,6 @@ public class InterfaceLoop {
         displayMessage("OK","display_completed");
     }
 
-    // add Location to the Drone (initialized to the service location and check for space)
     void makeDrone(String serviceName, Integer tag, Integer capacity, Integer fuel) {
         DeliveryService newService = null;
         Location serviceLocation = null;
@@ -217,12 +216,6 @@ public class InterfaceLoop {
         displayMessage("OK","display_completed");
     }
 
-    /*
-    first check if the drone exists under that service, then if destination exists.
-    If both are true, then check if the drone has enough fuel to make it to the destination AND back to home base.
-    If it does, then check if the destination has enough space to hold the drone.
-    If it does, then fly the drone to the location and update the fuel and location of the drone.
-     */
     void flyDrone(String serviceName, Integer tag, String destination) {
         boolean droneFound = false;
         boolean destinationFound = false;
@@ -275,14 +268,9 @@ public class InterfaceLoop {
 
 
         displayMessage("OK","change_completed");
-
     }
 
-    /*
-    First check if the drone exists under that service, then if the ingredient exists.
-    If both are true, then check if the drone has enough space to hold the ingredient.
-    If it does, then add the ingredient to the drone's payload and update the space left.
-     */
+
     void loadIngredient(String serviceName, Integer tag, String barcode, Integer quantity, Integer unitPrice) {
         boolean droneFound = false;
         boolean ingredientFound = false;
@@ -329,17 +317,90 @@ public class InterfaceLoop {
         return new Package(ingredient, unitPrice, quantity);
     }
 
-    /*
-    First check if the drone exists under that service, then if the drone is at the home base.
-    If the drone is at the home base, then update the fuel of the drone.
-     */
     void loadFuel(String serviceName, Integer tag, Integer petrol) {
+        boolean droneFound = false;
+        Drone loadFuelDrone = null;
+        for (Drone drone : drones) {
+            if (drone.getTag().equals(tag) && drone.getService().getName().equals(serviceName)) {
+                droneFound = true;
+                loadFuelDrone = drone;
+                break;
+            }
+        }
 
+        if (!droneFound) {
+            displayMessage("ERROR", "drone_not_found");
+        } else if (!loadFuelDrone.getLocation().equals(loadFuelDrone.getHomeBase())) {
+            displayMessage("ERROR", "drone_not_at_base");
+        } else {
+            loadFuelDrone.setFuel(loadFuelDrone.getFuel() + petrol);
+            displayMessage("OK", "change_completed");
+        }
     }
 
+    /*
+    if the restaurant doesn't exist, throw an error message (restaurant not found)
+    if the drone can't be found, throw an error message (drone doesn't exist)
+    if the drone is not at the restaurant, throw an error message (drone not at restaurant)
+    check for the requested ingredient in the drone's payload
+    - if the ingredient is not in the drone's payload, throw an error message (ingredient not found)
+    - come up with some way to check if the drone has enough of the ingredient to fulfill the order
+    - if not, then throw an error message (not enough ingredient)
+    - if the drone has enough, remove the ingredient from the payload and complete the transaction (change completed)
+     */
     void purchaseIngredient(String restaurantName, String serviceName, Integer tag,
                             String barcode, Integer quantity) {
+        boolean restaurantFound = false;
+        boolean droneFound = false;
+        Restaurant buyerRestaurant = null;
+        Drone buyerDrone = null;
+        for (Restaurant restaurant : restaurants) {
+            if (restaurant.getName().equals(restaurantName)) {
+                restaurantFound = true;
+                buyerRestaurant = restaurant;
+                break;
+            }
+        }
 
+        if (!restaurantFound) {
+            displayMessage("ERROR", "restaurant_not_found");
+            return;
+        }
+
+        for (Drone drone : drones) {
+            if (drone.getTag().equals(tag) && drone.getService().getName().equals(serviceName)) {
+                droneFound = true;
+                buyerDrone = drone;
+                break;
+            }
+        }
+
+        if (!droneFound) {
+            displayMessage("ERROR","drone_not_found");
+            return;
+        }
+
+        if (!buyerDrone.getLocation().equals(buyerRestaurant.getLocation())) {
+            displayMessage("ERROR","drone_not_at_restaurant");
+            return;
+        }
+
+        boolean ingredientFound = false;
+        Ingredient buyerIngredient = null;
+        for (Package item : buyerDrone.getPayload()) {
+            if (item.getIngredient().getBarcode().equals(barcode)) {
+                ingredientFound = true;
+                buyerIngredient = item.getIngredient();
+                break;
+            }
+        }
+
+        if (!ingredientFound) {
+            displayMessage("ERROR","ingredient_not_found");
+            return;
+        } else {
+            displayMessage("TEST","need_to_test_if_drone_has_enough_ingredient");
+        }
     }
 
     public void commandLoop() {

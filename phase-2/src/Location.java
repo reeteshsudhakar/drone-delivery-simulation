@@ -14,7 +14,7 @@ public class Location {
     }
 
     Integer calculateDistance(Location destination) {
-        return 1 + (int) Math.floor(Math.sqrt(Math.pow(getX_coordinate() - destination.getY_coordinate(), 2)
+        return 1 + (int) Math.floor(Math.sqrt(Math.pow(getX_coordinate() - destination.getX_coordinate(), 2)
                 + Math.pow(getY_coordinate() - destination.getY_coordinate(), 2)));
     }
 
