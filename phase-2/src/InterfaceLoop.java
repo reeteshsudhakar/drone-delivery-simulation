@@ -99,14 +99,15 @@ public class InterfaceLoop {
                 found = true;
                 DeliveryService newService = new DeliveryService(name, revenue, location);
                 addDeliveryService(newService);
+                break;
             }
         }
 
         if (!found) {
-            System.out.println("ERROR: Location not found.");
+            displayMessage("ERROR", "location_not_found");
+        } else {
+            displayMessage("OK","service_created");
         }
-
-        displayMessage("OK","service_created");
     }
 
     void displayServices() {
@@ -136,10 +137,10 @@ public class InterfaceLoop {
         }
 
         if (!found) {
-            System.out.println("ERROR: Location not found.");
+            displayMessage("ERROR", "location_not_found");
+        } else {
+            displayMessage("OK","change_completed");
         }
-
-        displayMessage("OK","change_completed");
     }
 
     void displayRestaurants() {
@@ -189,14 +190,7 @@ public class InterfaceLoop {
     void displayDrones(String serviceName) {
         for (Drone drone : drones) {
             if (drone.getService().getName().equals(serviceName)) {
-                System.out.printf("Tag: %d, Capacity: %d, Remaining Capacity: %d, Fuel: %d, Sales: $%d, Location: %s%n",
-                        drone.getTag(), drone.getCapacity(), drone.getRemainingCapacity(), drone.getFuel(),
-                        drone.getSales(), drone.getLocation().getName());
-                for (Package item : drone.getPayload()) {
-                    System.out.printf("&> Barcode: %s, Item Name: %s, Total Quantity: %d, Unit Cost: %d,"
-                            + " Total Weight: %d%n", item.getIngredient().getBarcode(), item.getIngredient().getName(),
-                            item.getQuantity(), item.getPrice(), item.getIngredient().getWeight() * item.getQuantity());
-                }
+                displayDroneInfo(drone);
             }
         }
 
@@ -205,10 +199,10 @@ public class InterfaceLoop {
 
     void displayAllDrones() {
         for (DeliveryService service : services) {
-            System.out.printf("Service [%s] drones:", service.getName());
+            System.out.printf("Service [%s] drones:%n", service.getName());
             for (Drone drone : drones) {
                 if (drone.getService().getName().equals(service.getName())) {
-                    displayDrones(service.getName());
+                    displayDroneInfo(drone);
                 }
             }
         }
@@ -253,10 +247,10 @@ public class InterfaceLoop {
             displayMessage("ERROR","not_enough_fuel_to_reach_destination");
             return;
         } else if (distance + returnDistance > movedDrone.getFuel()) {
-            displayMessage("ERROR","not_enough_fuel_to_return_to_base_from_destination");
+            displayMessage("ERROR","not_enough_fuel_to_return_to_home_base_from_destination");
             return;
         } else if (destinationLocation.getSpaces_left() == 0) {
-            displayMessage("ERROR","no_space_left");
+            displayMessage("ERROR","not_enough_space_to_create_drone");
             return;
         }
 
@@ -286,6 +280,7 @@ public class InterfaceLoop {
 
         if (!droneFound) {
             displayMessage("ERROR", "drone_not_found");
+            return;
         } else {
             for (Ingredient ingredient : ingredients) {
                 if (ingredient.getBarcode().equals(barcode)) {
@@ -298,18 +293,24 @@ public class InterfaceLoop {
 
         if (!ingredientFound) {
             displayMessage("ERROR","ingredient_not_found");
-        } else {
-            if (loadDrone.getCapacity() == 0) {
-                displayMessage("ERROR","no_space_left");
-            } else if (loadDrone.getCapacity() < quantity) {
-                displayMessage("ERROR","not_enough_space");
-            } else {
-                Package newPackage = createPackage(loadIngredient, unitPrice, quantity);
-                loadDrone.getPayload().add(newPackage);
+            return;
+        }
 
-                loadDrone.decrementCapacity(quantity);
-                displayMessage("OK","change_completed");
-            }
+        if (!loadDrone.getLocation().equals(loadDrone.getHomeBase())) {
+            displayMessage("ERROR","drone_not_at_home_base");
+            return;
+        }
+
+        if (loadDrone.getRemainingCapacity() == 0) {
+            displayMessage("ERROR","no_space_left");
+        } else if (loadDrone.getRemainingCapacity() < quantity) {
+            displayMessage("ERROR","not_enough_space_for_requested_ingredients");
+        } else {
+            Package newPackage = createPackage(loadIngredient, unitPrice, quantity);
+            loadDrone.getPayload().add(newPackage);
+
+            loadDrone.decrementCapacity(quantity);
+            displayMessage("OK","change_completed");
         }
     }
 
@@ -487,10 +488,6 @@ public class InterfaceLoop {
         commandLineInput.close();
     }
 
-    void displayMessage(String status, String text_output) {
-        System.out.println(status.toUpperCase() + ":" + text_output.toLowerCase());
-    }
-
     void addIngredient(Ingredient newIngredient) {
         if (ingredients.size() == 0) {
             ingredients.add(newIngredient);
@@ -545,6 +542,23 @@ public class InterfaceLoop {
             if (!added) {
                 drones.add(newDrone);
             }
+        }
+    }
+
+    void displayMessage(String status, String text_output) {
+        System.out.println(status.toUpperCase() + ":" + text_output.toLowerCase());
+    }
+
+    void displayDroneInfo(Drone drone) {
+        System.out.printf("Tag: %d, Capacity: %d, Remaining Capacity: %d, Fuel: %d, Sales: $%d, " +
+                        "Location: %s%n",
+                drone.getTag(), drone.getCapacity(), drone.getRemainingCapacity(), drone.getFuel(),
+                drone.getSales(), drone.getLocation().getName());
+        for (Package item : drone.getPayload()) {
+            System.out.printf("&> Barcode: %s, Item Name: %s, Total Quantity: %d, Unit Cost: %d,"
+                            + " Total Weight: %d%n", item.getIngredient().getBarcode(),
+                    item.getIngredient().getName(), item.getQuantity(), item.getPrice(),
+                    item.getIngredient().getWeight() * item.getQuantity());
         }
     }
 }
