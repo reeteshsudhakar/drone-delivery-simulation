@@ -32,7 +32,7 @@ public class InterfaceLoop {
         displayMessage("OK","display_completed");
     }
 
-    void makeLocation(String name, Integer x_coord, Integer y_coord, Integer spaceLimit) {
+    void makeLocation(String name, Integer x_coordinate, Integer y_coordinate, Integer spaceLimit) {
         for (Location location : locations) {
             if (location.getName().equals(name)) {
                 displayMessage("ERROR", "location_already_exists");
@@ -40,7 +40,7 @@ public class InterfaceLoop {
             }
         }
 
-        Location location = new Location(name, x_coord, y_coord, spaceLimit);
+        Location location = new Location(name, x_coordinate, y_coordinate, spaceLimit);
         locations.add(location);
         displayMessage("OK","change_completed");
     }
@@ -48,7 +48,7 @@ public class InterfaceLoop {
     void displayLocations() {
         for (Location location : locations) {
             System.out.printf("Name: %s, (x,y): (%d, %d), Space: [%d / %d] remaining%n",
-                    location.getName(), location.getInit_x(), location.getInit_y(),
+                    location.getName(), location.getX_coordinate(), location.getY_coordinate(),
                     location.getSpaces_left(), location.getInit_space_limit());
         }
         displayMessage("OK","display_completed");
@@ -187,7 +187,6 @@ public class InterfaceLoop {
         }
     }
 
-    // need to fix this
     void displayDrones(String serviceName) {
         for (Drone drone : drones) {
             if (drone.getService().getName().equals(serviceName)) {
@@ -227,9 +226,12 @@ public class InterfaceLoop {
     void flyDrone(String serviceName, Integer tag, String destination) {
         boolean droneFound = false;
         boolean destinationFound = false;
+        Drone movedDrone = null;
+        Location destinationLocation = null;
         for (Drone drone : drones) {
             if (drone.getTag().equals(tag) && drone.getService().getName().equals(serviceName)) {
                 droneFound = true;
+                movedDrone = drone;
                 break;
             }
         }
@@ -241,6 +243,7 @@ public class InterfaceLoop {
             for (Location location : locations) {
                 if (location.getName().equals(destination)) {
                     destinationFound = true;
+                    destinationLocation = location;
                     break;
                 }
             }
@@ -249,9 +252,29 @@ public class InterfaceLoop {
         if (!destinationFound) {
             displayMessage("ERROR","destination_not_found");
             return;
-        } else {
-            // check if the the drone has fuel to make it to destination and back, and so on
         }
+
+        int distance = movedDrone.getLocation().calculateDistance(destinationLocation);
+        int returnDistance = destinationLocation.calculateDistance(movedDrone.getHomeBase());
+        if (distance > movedDrone.getFuel()) {
+            displayMessage("ERROR","not_enough_fuel_to_reach_destination");
+            return;
+        } else if (distance + returnDistance > movedDrone.getFuel()) {
+            displayMessage("ERROR","not_enough_fuel_to_return_to_base_from_destination");
+            return;
+        } else if (destinationLocation.getSpaces_left() == 0) {
+            displayMessage("ERROR","no_space_left");
+            return;
+        }
+
+        movedDrone.getLocation().incrementSpaces_left();
+        destinationLocation.decrementSpaces_left();
+
+        movedDrone.setLocation(destinationLocation);
+        movedDrone.setFuel(movedDrone.getFuel() - distance);
+
+
+        displayMessage("OK","change_completed");
 
     }
 
@@ -306,7 +329,7 @@ public class InterfaceLoop {
         return new Package(ingredient, unitPrice, quantity);
     }
 
-    /*1
+    /*
     First check if the drone exists under that service, then if the drone is at the home base.
     If the drone is at the home base, then update the fuel of the drone.
      */

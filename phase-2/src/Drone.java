@@ -68,6 +68,14 @@ public class Drone {
         this.remainingCapacity += quantity;
     }
 
+    public void setLocation(Location location) {
+        this.location = location;
+    }
+
+    public void setFuel(Integer fuel) {
+        this.fuel = fuel;
+    }
+
     public void setSales(Integer sales) {
         this.sales = sales;
     }
