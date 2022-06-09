@@ -11,6 +11,7 @@ public class InterfaceLoop {
 
     InterfaceLoop() { }
 
+    // TODO: 6/9/22 add constraint weight > 0
     void makeIngredient(String barcode, String name, Integer weight) {
         for (Ingredient ingredient : ingredients) {
             if (ingredient.getBarcode().equals(barcode)) {
@@ -32,6 +33,7 @@ public class InterfaceLoop {
         displayMessage("OK","display_completed");
     }
 
+    // TODO: 6/9/22 add constraint spaceLimit > 0
     void makeLocation(String name, Integer x_coordinate, Integer y_coordinate, Integer spaceLimit) {
         for (Location location : locations) {
             if (location.getName().equals(name)) {
@@ -85,6 +87,7 @@ public class InterfaceLoop {
 
     }
 
+    // TODO: 6/9/22 Revenue > 0, locatedAt must not be empty
     void makeDeliveryService(String name, Integer revenue, String locatedAt) {
         for (DeliveryService service : services) {
             if (service.getName().equals(name)) {
@@ -152,6 +155,7 @@ public class InterfaceLoop {
         displayMessage("OK","display_completed");
     }
 
+    // TODO: 6/9/22 add constraints capacity > 0, fuel > 0
     void makeDrone(String serviceName, Integer tag, Integer capacity, Integer fuel) {
         DeliveryService newService = null;
         Location serviceLocation = null;
@@ -264,7 +268,7 @@ public class InterfaceLoop {
         displayMessage("OK","change_completed");
     }
 
-
+    // TODO: 6/9/22 add constraints quantity > 0, unitPrice > 0
     void loadIngredient(String serviceName, Integer tag, String barcode, Integer quantity, Integer unitPrice) {
         boolean droneFound = false;
         boolean ingredientFound = false;
@@ -318,6 +322,7 @@ public class InterfaceLoop {
         return new Package(ingredient, unitPrice, quantity);
     }
 
+    // TODO: 6/9/22 add constraint petrol > 0
     void loadFuel(String serviceName, Integer tag, Integer petrol) {
         boolean droneFound = false;
         Drone loadFuelDrone = null;
