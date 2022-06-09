@@ -1,4 +1,4 @@
-import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Drone {
     private final DeliveryService service;
@@ -9,7 +9,7 @@ public class Drone {
     private final Location homeBase;
     private Location location;
     private Integer sales;
-    private ArrayList<Package> payload;
+    private HashMap<Ingredient, Package> payload;
 
     public Drone(DeliveryService service, Integer init_tag, Integer init_capacity,
                  Integer init_fuel, Location homeBase) {
@@ -21,7 +21,7 @@ public class Drone {
         this.location = homeBase;
         this.homeBase = homeBase;
         this.sales = 0;
-        this.payload = new ArrayList<>();
+        this.payload = new HashMap<>();
     }
 
     public DeliveryService getService() {
@@ -56,7 +56,7 @@ public class Drone {
         return sales;
     }
 
-    public ArrayList<Package> getPayload() {
+    public HashMap<Ingredient, Package> getPayload() {
         return payload;
     }
 

@@ -45,4 +45,14 @@ public class Location {
     public void incrementSpaces_left() {
         this.spacesLeft += 1;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof Location)) {
+            return false;
+        } else {
+            Location l = (Location) obj;
+            return this.getName().equals(l.getName());
+        }
+    }
 }

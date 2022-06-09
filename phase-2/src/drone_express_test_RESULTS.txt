@@ -172,7 +172,6 @@ ERROR:not_enough_fuel_to_reach_home_base_from_the_destination
 > // ...refueling operations much be conducted at the service's home base...
 > load_fuel,swift_spices,9,20
 ERROR:drone_not_located_at_home_base
-OK:change_completed
 > load_fuel,swift_spices,4,20
 OK:change_completed
 > load_ingredient,swift_spices,4,truf_fgs,2,19

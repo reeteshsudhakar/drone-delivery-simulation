@@ -1,6 +1,13 @@
 import java.util.ArrayList;
 import java.util.Scanner;
 
+/*
+TODO: test loadIngredient
+TODO: test displayDroneInfo
+TODO: fix/implement the purchase_ingredient method so that there isn't just a test message displayed
+TODO: test the interface thoroughly
+TODO: comment out code, clean up (see where methods can be moved to other classes)
+ */
 public class InterfaceLoop {
 
     ArrayList<Ingredient> ingredients = new ArrayList<>();
@@ -254,7 +261,7 @@ public class InterfaceLoop {
             displayMessage("ERROR","not_enough_fuel_to_return_to_home_base_from_destination");
             return;
         } else if (destinationLocation.getSpaces_left() == 0) {
-            displayMessage("ERROR","not_enough_space_to_create_drone");
+            displayMessage("ERROR","not_enough_space_for_drone_at_destination");
             return;
         }
 
@@ -310,8 +317,8 @@ public class InterfaceLoop {
         } else if (loadDrone.getRemainingCapacity() < quantity) {
             displayMessage("ERROR","not_enough_space_for_requested_ingredients");
         } else {
-            Package newPackage = createPackage(loadIngredient, unitPrice, quantity);
-            loadDrone.getPayload().add(newPackage);
+            Package newPackage = createPackage(quantity, unitPrice);
+            loadDrone.getPayload().put(loadIngredient, newPackage);
 
             loadDrone.decrementCapacity(quantity);
             displayMessage("OK","change_completed");
@@ -393,10 +400,10 @@ public class InterfaceLoop {
 
         boolean ingredientFound = false;
         Ingredient buyerIngredient = null;
-        for (Package item : buyerDrone.getPayload()) {
-            if (item.getIngredient().getBarcode().equals(barcode)) {
+        for (Ingredient ingredient : buyerDrone.getPayload().keySet()) {
+            if (ingredient.getBarcode().equals(barcode)) {
                 ingredientFound = true;
-                buyerIngredient = item.getIngredient();
+                buyerIngredient = ingredient;
                 break;
             }
         }
@@ -550,6 +557,10 @@ public class InterfaceLoop {
         }
     }
 
+    Package createPackage(Integer quantity, Integer unitPrice) {
+        return new Package(quantity, unitPrice);
+    }
+
     void displayMessage(String status, String text_output) {
         System.out.println(status.toUpperCase() + ":" + text_output.toLowerCase());
     }
@@ -559,11 +570,10 @@ public class InterfaceLoop {
                         "Location: %s%n",
                 drone.getTag(), drone.getCapacity(), drone.getRemainingCapacity(), drone.getFuel(),
                 drone.getSales(), drone.getLocation().getName());
-        for (Package item : drone.getPayload()) {
-            System.out.printf("&> Barcode: %s, Item Name: %s, Total Quantity: %d, Unit Cost: %d,"
-                            + " Total Weight: %d%n", item.getIngredient().getBarcode(),
-                    item.getIngredient().getName(), item.getQuantity(), item.getPrice(),
-                    item.getIngredient().getWeight() * item.getQuantity());
-        }
+
+        drone.getPayload().forEach((key,value) ->
+                System.out.printf("Barcode: %s, Item Name: %s, Quantity: %d, Unit Cost: %d, Total Weight: %d%n",
+                key.getBarcode(), key.getName(), value.getQuantity(), value.getUnitPrice(),
+                key.getWeight() * value.getQuantity()));
     }
 }
