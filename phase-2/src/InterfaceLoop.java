@@ -391,13 +391,13 @@ public class InterfaceLoop {
 
         boolean ingredientFound = false;
         Ingredient buyerIngredient = null;
-//        for (Package item : buyerDrone.getPayload()) {
-//            if (item.getIngredient().getBarcode().equals(barcode)) {
-//                ingredientFound = true;
-//                buyerIngredient = item.getIngredient();
-//                break;
-//            }
-//        }
+        for (Ingredient ingredient : buyerDrone.getPayload().keySet()) {
+            if (ingredient.getBarcode().equals(barcode)) {
+                ingredientFound = true;
+                buyerIngredient = ingredient;
+                break;
+            }
+        }
 
         if (!ingredientFound) {
             displayMessage("ERROR","ingredient_not_found");
