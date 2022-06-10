@@ -43,7 +43,7 @@ public class InterfaceLoop {
         if (weight <= 0) {
             displayMessage("ERROR", "ingredient_weight_must_be_greater_than_zero");
             return;
-        } else if (barcode.equals("") || name.equals("")) {
+        } else if (barcode == null || name == null || barcode.equals("") || name.equals("")) {
             displayMessage("ERROR", "ingredient_barcode_and_name_must_not_be_empty");
             return;
         }
@@ -86,7 +86,7 @@ public class InterfaceLoop {
         if (spaceLimit <= 0) {
             displayMessage("ERROR", "location_space_limit_must_be_greater_than_zero");
             return;
-        } else if (name.equals("")) {
+        } else if (name == null || name.equals("")) {
             displayMessage("ERROR", "location_name_must_not_be_empty");
             return;
         }
@@ -168,10 +168,10 @@ public class InterfaceLoop {
         if (revenue < 0) {
             displayMessage("ERROR", "service_revenue_must_be_greater_than_or_equal_to_zero");
             return;
-        } else if (name.equals("")) {
+        } else if (name == null || name.equals("")) {
             displayMessage("ERROR", "service_name_must_not_be_empty");
             return;
-        } else if (locatedAt.equals("")) {
+        } else if (locatedAt == null || locatedAt.equals("")) {
             displayMessage("ERROR", "service_located_at_must_not_be_empty");
             return;
         }
@@ -289,10 +289,10 @@ public class InterfaceLoop {
         }
 
         // checking if the capacity is valid (positive) and whether the fuel is valid (non-negative)
-        if (capacity <= 0) {
+        if (capacity == null || capacity <= 0) {
             displayMessage("ERROR","drone_capacity_must_be_greater_than_zero");
             return;
-        } else if (fuel < 0) {
+        } else if (fuel == null || fuel < 0) {
             displayMessage("ERROR","drone_fuel_must_be_greater_than_or_equal_to_zero");
             return;
         }
@@ -329,7 +329,7 @@ public class InterfaceLoop {
     void displayAllDrones() {
         // displaying all the drones in the system by iterating through the collection
         for (DeliveryService service : services) {
-            System.out.printf("Service [%s] drones:%n", service.getName());
+            System.out.printf("Service name [%s] drones:%n", service.getName());
             for (Drone drone : drones) {
                 if (drone.getService().getName().equals(service.getName())) {
                     displayDroneInfo(drone);
@@ -502,7 +502,7 @@ public class InterfaceLoop {
         }
 
         // if the petrol is not valid, display an error message
-        if (petrol < 0) {
+        if (petrol == null || petrol < 0) {
             displayMessage("ERROR","petrol_must_be_greater_than_zero");
             return;
         }
@@ -601,10 +601,10 @@ public class InterfaceLoop {
         }
 
         // completing the purchase if the drone has enough of the ingredient requested for purchase
-        if (buyerDrone.getPayload().get(buyerIngredient).getQuantity() < quantity) {
+        if (buyerDrone.getPayload().get(buyerIngredient).getQuantity().compareTo(quantity) < 0) {
             displayMessage("ERROR","drone_does_not_have_enough_of_ingredient_requested");
             return;
-        } else if (buyerDrone.getPayload().get(buyerIngredient).getQuantity() == quantity) {
+        } else if (buyerDrone.getPayload().get(buyerIngredient).getQuantity().equals(quantity)) {
             buyerRestaurant.addSpending(buyerDrone.getPayload().get(buyerIngredient).getUnitPrice() * quantity);
             buyerDrone.addSales(buyerDrone.getPayload().get(buyerIngredient).getUnitPrice() * quantity);
             buyerDrone.getPayload().remove(buyerIngredient);
@@ -635,6 +635,7 @@ public class InterfaceLoop {
                 tokens = wholeInputLine.split(DELIMITER);
                 System.out.println("> " + wholeInputLine);
 
+                //noinspection StatementWithEmptyBody
                 if (tokens[0].indexOf("//") == 0) {
                     // deliberate empty body to recognize and skip over comments
 
