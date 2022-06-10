@@ -53,4 +53,9 @@ public class Restaurant {
         this.spending += amount;
     }
 
+    @Override
+    public String toString() {
+        return String.format("Name: %s, Total Spent: $%d, Location: %s", name, spending, location.getName());
+    }
+
 }

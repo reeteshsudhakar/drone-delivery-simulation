@@ -45,4 +45,9 @@ public class Ingredient {
     public String getName() {
         return name;
     }
+
+    @Override
+    public String toString() {
+        return "Barcode: " + barcode + ", Name: " + name + ", Unit Weight: " + weight;
+    }
 }

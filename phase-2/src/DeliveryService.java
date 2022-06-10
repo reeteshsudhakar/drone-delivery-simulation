@@ -45,4 +45,9 @@ public class DeliveryService {
     public Location getLocation() {
         return location;
     }
+
+    @Override
+    public String toString() {
+        return String.format("Name: %s, Revenue: $%d, Location: %s", name, revenue, location.getName());
+    }
 }

@@ -43,7 +43,7 @@ public class InterfaceLoop {
         if (weight <= 0) {
             displayMessage("ERROR", "ingredient_weight_must_be_greater_than_zero");
             return;
-        } else if (barcode.equals("") || name.equals("")) {
+        } else if (barcode == null || name == null || barcode.equals("") || name.equals("")) {
             displayMessage("ERROR", "ingredient_barcode_and_name_must_not_be_empty");
             return;
         }
@@ -60,8 +60,7 @@ public class InterfaceLoop {
     void displayIngredients() {
         // displaying all the ingredients in the system by iterating through the collection
         for (Ingredient ingredient : ingredients) {
-            System.out.printf("Barcode: %s, Name: %s, Unit Weight: %d%n",ingredient.getBarcode(),
-                    ingredient.getName(), ingredient.getWeight());
+            System.out.println(ingredient.toString());
         }
         displayMessage("OK","display_completed");
     }
@@ -86,7 +85,7 @@ public class InterfaceLoop {
         if (spaceLimit <= 0) {
             displayMessage("ERROR", "location_space_limit_must_be_greater_than_zero");
             return;
-        } else if (name.equals("")) {
+        } else if (name == null || name.equals("")) {
             displayMessage("ERROR", "location_name_must_not_be_empty");
             return;
         }
@@ -103,9 +102,7 @@ public class InterfaceLoop {
     void displayLocations() {
         // displaying all the locations in the system by iterating through the collection
         for (Location location : locations) {
-            System.out.printf("Name: %s, (x,y): (%d, %d), Space: [%d / %d] remaining%n",
-                    location.getName(), location.getX_coordinate(), location.getY_coordinate(),
-                    location.getSpaces_left(), location.getInit_space_limit());
+            System.out.println(location.toString());
         }
         displayMessage("OK","display_completed");
     }
@@ -168,10 +165,10 @@ public class InterfaceLoop {
         if (revenue < 0) {
             displayMessage("ERROR", "service_revenue_must_be_greater_than_or_equal_to_zero");
             return;
-        } else if (name.equals("")) {
+        } else if (name == null || name.equals("")) {
             displayMessage("ERROR", "service_name_must_not_be_empty");
             return;
-        } else if (locatedAt.equals("")) {
+        } else if (locatedAt == null || locatedAt.equals("")) {
             displayMessage("ERROR", "service_located_at_must_not_be_empty");
             return;
         }
@@ -201,8 +198,7 @@ public class InterfaceLoop {
     void displayServices() {
         // displaying all the delivery services in the system by iterating through the collection
         for (DeliveryService deliveryService : services) {
-            System.out.printf("Name: %s, Revenue: $%d, Location: %s%n", deliveryService.getName(),
-                    deliveryService.getRevenue(), deliveryService.getLocation().getName());
+            System.out.println(deliveryService.toString());
         }
 
         displayMessage("OK","display_completed");
@@ -234,7 +230,7 @@ public class InterfaceLoop {
 
         // if the location does not exist in the system, display an error message
         if (!found) {
-            displayMessage("ERROR", "location_not_found");
+            displayMessage("ERROR", "location_not_found_in_system");
         } else {
             displayMessage("OK","change_completed");
         }
@@ -246,8 +242,7 @@ public class InterfaceLoop {
     void displayRestaurants() {
         // displaying all the restaurants in the system by iterating through the collection
         for (Restaurant restaurant : restaurants) {
-            System.out.printf("Name: %s, Total Spent: $%d, Location: %s%n", restaurant.getName(),
-                    restaurant.getSpending(), restaurant.getLocation().getName());
+            System.out.println(restaurant.toString());
         }
 
         displayMessage("OK","display_completed");
@@ -289,10 +284,10 @@ public class InterfaceLoop {
         }
 
         // checking if the capacity is valid (positive) and whether the fuel is valid (non-negative)
-        if (capacity <= 0) {
+        if (capacity == null || capacity <= 0) {
             displayMessage("ERROR","drone_capacity_must_be_greater_than_zero");
             return;
-        } else if (fuel < 0) {
+        } else if (fuel == null || fuel < 0) {
             displayMessage("ERROR","drone_fuel_must_be_greater_than_or_equal_to_zero");
             return;
         }
@@ -329,7 +324,7 @@ public class InterfaceLoop {
     void displayAllDrones() {
         // displaying all the drones in the system by iterating through the collection
         for (DeliveryService service : services) {
-            System.out.printf("Service [%s] drones:%n", service.getName());
+            System.out.printf("Service name [%s] drones:%n", service.getName());
             for (Drone drone : drones) {
                 if (drone.getService().getName().equals(service.getName())) {
                     displayDroneInfo(drone);
@@ -502,7 +497,7 @@ public class InterfaceLoop {
         }
 
         // if the petrol is not valid, display an error message
-        if (petrol < 0) {
+        if (petrol == null || petrol < 0) {
             displayMessage("ERROR","petrol_must_be_greater_than_zero");
             return;
         }
@@ -601,10 +596,10 @@ public class InterfaceLoop {
         }
 
         // completing the purchase if the drone has enough of the ingredient requested for purchase
-        if (buyerDrone.getPayload().get(buyerIngredient).getQuantity() < quantity) {
+        if (buyerDrone.getPayload().get(buyerIngredient).getQuantity().compareTo(quantity) < 0) {
             displayMessage("ERROR","drone_does_not_have_enough_of_ingredient_requested");
             return;
-        } else if (buyerDrone.getPayload().get(buyerIngredient).getQuantity() == quantity) {
+        } else if (buyerDrone.getPayload().get(buyerIngredient).getQuantity().equals(quantity)) {
             buyerRestaurant.addSpending(buyerDrone.getPayload().get(buyerIngredient).getUnitPrice() * quantity);
             buyerDrone.addSales(buyerDrone.getPayload().get(buyerIngredient).getUnitPrice() * quantity);
             buyerDrone.getPayload().remove(buyerIngredient);
@@ -635,6 +630,7 @@ public class InterfaceLoop {
                 tokens = wholeInputLine.split(DELIMITER);
                 System.out.println("> " + wholeInputLine);
 
+                //noinspection StatementWithEmptyBody
                 if (tokens[0].indexOf("//") == 0) {
                     // deliberate empty body to recognize and skip over comments
 
