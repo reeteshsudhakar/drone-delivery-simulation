@@ -60,8 +60,7 @@ public class InterfaceLoop {
     void displayIngredients() {
         // displaying all the ingredients in the system by iterating through the collection
         for (Ingredient ingredient : ingredients) {
-            System.out.printf("Barcode: %s, Name: %s, Unit Weight: %d%n",ingredient.getBarcode(),
-                    ingredient.getName(), ingredient.getWeight());
+            System.out.println(ingredient.toString());
         }
         displayMessage("OK","display_completed");
     }
@@ -103,9 +102,7 @@ public class InterfaceLoop {
     void displayLocations() {
         // displaying all the locations in the system by iterating through the collection
         for (Location location : locations) {
-            System.out.printf("Name: %s, (x,y): (%d, %d), Space: [%d / %d] remaining%n",
-                    location.getName(), location.getX_coordinate(), location.getY_coordinate(),
-                    location.getSpaces_left(), location.getInit_space_limit());
+            System.out.println(location.toString());
         }
         displayMessage("OK","display_completed");
     }
@@ -201,8 +198,7 @@ public class InterfaceLoop {
     void displayServices() {
         // displaying all the delivery services in the system by iterating through the collection
         for (DeliveryService deliveryService : services) {
-            System.out.printf("Name: %s, Revenue: $%d, Location: %s%n", deliveryService.getName(),
-                    deliveryService.getRevenue(), deliveryService.getLocation().getName());
+            System.out.println(deliveryService.toString());
         }
 
         displayMessage("OK","display_completed");
@@ -234,7 +230,7 @@ public class InterfaceLoop {
 
         // if the location does not exist in the system, display an error message
         if (!found) {
-            displayMessage("ERROR", "location_not_found");
+            displayMessage("ERROR", "location_not_found_in_system");
         } else {
             displayMessage("OK","change_completed");
         }
@@ -246,8 +242,7 @@ public class InterfaceLoop {
     void displayRestaurants() {
         // displaying all the restaurants in the system by iterating through the collection
         for (Restaurant restaurant : restaurants) {
-            System.out.printf("Name: %s, Total Spent: $%d, Location: %s%n", restaurant.getName(),
-                    restaurant.getSpending(), restaurant.getLocation().getName());
+            System.out.println(restaurant.toString());
         }
 
         displayMessage("OK","display_completed");

@@ -105,4 +105,14 @@ public class Location {
             return this.getName().equals(l.getName());
         }
     }
+
+    /**
+     * Override of toString method to display information about a Location.
+     * @return String representation of a Location
+     */
+    @Override
+    public String toString() {
+        return String.format("Name: %s, (x,y): (%d, %d), Space: [%d / %d] remaining",
+                name, x_coordinate, y_coordinate, spacesLeft, spaceLimit);
+    }
 }
