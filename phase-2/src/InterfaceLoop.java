@@ -595,6 +595,11 @@ public class InterfaceLoop {
             return;
         }
 
+        if (quantity <= 0) {
+            displayMessage("ERROR","quantity_requested_must_be_greater_than_zero");
+            return;
+        }
+
         // completing the purchase if the drone has enough of the ingredient requested for purchase
         if (buyerDrone.getPayload().get(buyerIngredient).getQuantity().compareTo(quantity) < 0) {
             displayMessage("ERROR","drone_does_not_have_enough_of_ingredient_requested");
@@ -780,7 +785,7 @@ public class InterfaceLoop {
             restaurants.add(newRestaurant);
         } else {
             boolean added = false;
-            for (int i = 0; i < services.size(); i++) {
+            for (int i = 0; i < restaurants.size(); i++) {
                 if (newRestaurant.getName().compareTo(restaurants.get(i).getName()) < 0) {
                     restaurants.add(i, newRestaurant);
                     added = true;
