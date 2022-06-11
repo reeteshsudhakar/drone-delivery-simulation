@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 /*
@@ -16,11 +17,11 @@ TODO: code cleanup (see where methods can be moved to other classes, simplified)
 public class InterfaceLoop {
 
     // collections of objects for the interface loop
-    ArrayList<Ingredient> ingredients = new ArrayList<>();
-    ArrayList<Location> locations = new ArrayList<>();
-    ArrayList<DeliveryService> services = new ArrayList<>();
-    ArrayList<Restaurant> restaurants = new ArrayList<>();
-    ArrayList<Drone> drones = new ArrayList<>();
+    List<Ingredient> ingredients = new ArrayList<>();
+    List<Location> locations = new ArrayList<>();
+    List<DeliveryService> services = new ArrayList<>();
+    List<Restaurant> restaurants = new ArrayList<>();
+    List<Drone> drones = new ArrayList<>();
 
     InterfaceLoop() { }
 
@@ -50,7 +51,7 @@ public class InterfaceLoop {
 
         // creating the ingredient and adding it to the collection
         Ingredient ingredient = new Ingredient(barcode, name, weight);
-        addIngredient(ingredient);
+        ingredients.add(ingredient);
         displayMessage("OK","change_completed");
     }
 
@@ -59,6 +60,7 @@ public class InterfaceLoop {
      */
     void displayIngredients() {
         // displaying all the ingredients in the system by iterating through the collection
+        ingredients.sort(new IngredientComparator());
         for (Ingredient ingredient : ingredients) {
             System.out.println(ingredient.toString());
         }
@@ -179,7 +181,7 @@ public class InterfaceLoop {
             if (location.getName().equals(locatedAt)) {
                 found = true;
                 DeliveryService newService = new DeliveryService(name, revenue, location);
-                addDeliveryService(newService);
+                services.add(newService);
                 break;
             }
         }
@@ -197,6 +199,7 @@ public class InterfaceLoop {
      */
     void displayServices() {
         // displaying all the delivery services in the system by iterating through the collection
+        services.sort(new DeliveryServiceComparator());
         for (DeliveryService deliveryService : services) {
             System.out.println(deliveryService.toString());
         }
@@ -224,7 +227,7 @@ public class InterfaceLoop {
             if (location.getName().equals(locatedAt)) {
                 found = true;
                 Restaurant restaurant = new Restaurant(name, location);
-                addRestaurant(restaurant);
+                restaurants.add(restaurant);
             }
         }
 
@@ -241,6 +244,7 @@ public class InterfaceLoop {
      */
     void displayRestaurants() {
         // displaying all the restaurants in the system by iterating through the collection
+        restaurants.sort(new RestaurantComparator());
         for (Restaurant restaurant : restaurants) {
             System.out.println(restaurant.toString());
         }
@@ -293,12 +297,12 @@ public class InterfaceLoop {
         }
 
         // creating the drone IFF there is space in the service's home base for it
-        if (serviceLocation.getSpaces_left() == 0) {
+        if (serviceLocation.getSpacesLeft() == 0) {
             displayMessage("ERROR","not_enough_space_to_create_new_drone");
         } else {
             Drone newDrone = new Drone(newService, tag, capacity, fuel, serviceLocation);
-            addDrone(newDrone);
-            serviceLocation.decrementSpaces_left();
+            drones.add(newDrone);
+            serviceLocation.decrementSpacesLeft();
             displayMessage("OK","change_completed");
         }
     }
@@ -309,9 +313,10 @@ public class InterfaceLoop {
      */
     void displayDrones(String serviceName) {
         // displaying the drones in the system attached to the specified service
+        drones.sort(new DroneComparator());
         for (Drone drone : drones) {
             if (drone.getService().getName().equals(serviceName)) {
-                displayDroneInfo(drone);
+                drone.displayDroneInfo();
             }
         }
 
@@ -327,7 +332,7 @@ public class InterfaceLoop {
             System.out.printf("Service name [%s] drones:%n", service.getName());
             for (Drone drone : drones) {
                 if (drone.getService().getName().equals(service.getName())) {
-                    displayDroneInfo(drone);
+                    drone.displayDroneInfo();
                 }
             }
         }
@@ -384,14 +389,14 @@ public class InterfaceLoop {
         } else if (distance + returnDistance > movedDrone.getFuel()) {
             displayMessage("ERROR","not_enough_fuel_to_return_to_home_base_from_destination");
             return;
-        } else if (destinationLocation.getSpaces_left() == 0) {
+        } else if (destinationLocation.getSpacesLeft() == 0) {
             displayMessage("ERROR","not_enough_space_for_drone_at_destination");
             return;
         }
 
         // if the drone can fly to the destination, move it to the destination, update the fuel and the spaces left
-        movedDrone.getLocation().incrementSpaces_left();
-        destinationLocation.decrementSpaces_left();
+        movedDrone.getLocation().incrementSpacesLeft();
+        destinationLocation.decrementSpacesLeft();
 
         movedDrone.setLocation(destinationLocation);
         movedDrone.setFuel(movedDrone.getFuel() - distance);
@@ -470,7 +475,7 @@ public class InterfaceLoop {
                     return;
                 }
             }
-            Package newPackage = createPackage(quantity, unitPrice);
+            Package newPackage = new Package(quantity, unitPrice);
             loadDrone.getPayload().put(loadIngredient, newPackage);
 
             loadDrone.decrementCapacity(quantity);
@@ -708,130 +713,11 @@ public class InterfaceLoop {
     }
 
     /**
-     * Method to add an ingredient to a collection based on its barcode in alphanumeric order.
-     * @param newIngredient the ingredient to be added
-     */
-    void addIngredient(Ingredient newIngredient) {
-        if (ingredients.size() == 0) {
-            ingredients.add(newIngredient);
-        } else {
-            boolean added = false;
-            for (int i = 0; i < ingredients.size(); i++) {
-                if (newIngredient.getName().compareTo(ingredients.get(i).getName()) < 0) {
-                    ingredients.add(i, newIngredient);
-                    added = true;
-                    break;
-                }
-            }
-
-            if (!added) {
-                ingredients.add(newIngredient);
-            }
-        }
-    }
-
-    /**
-     * Method to add a service to a collection based on its name in alphanumeric order.
-     * @param newService the service to be added
-     */
-    void addDeliveryService(DeliveryService newService) {
-        if (services.size() == 0) {
-            services.add(newService);
-        } else {
-            boolean added = false;
-            for (int i = 0; i < services.size(); i++) {
-                if (newService.getName().compareTo(services.get(i).getName()) < 0) {
-                    services.add(i, newService);
-                    added = true;
-                    break;
-                }
-            }
-
-            if (!added) {
-                services.add(newService);
-            }
-        }
-    }
-
-    /**
-     * Method to add a drone to a collection based on its tag in numeric order.
-     * @param newDrone the drone to be added
-     */
-    void addDrone(Drone newDrone) {
-        if (drones.size() == 0) {
-            drones.add(newDrone);
-        } else {
-            boolean added = false;
-            for (int i = 0; i < drones.size(); i++) {
-                if (newDrone.getTag().compareTo(drones.get(i).getTag()) <= 0) {
-                    drones.add(i, newDrone);
-                    added = true;
-                    break;
-                }
-            }
-
-            if (!added) {
-                drones.add(newDrone);
-            }
-        }
-    }
-
-    /**
-     * Method to add a restaurant to a collection based on its name in alphanumeric order.
-     * @param newRestaurant the restaurant to be added
-     */
-    void addRestaurant(Restaurant newRestaurant) {
-        if (restaurants.size() == 0) {
-            restaurants.add(newRestaurant);
-        } else {
-            boolean added = false;
-            for (int i = 0; i < restaurants.size(); i++) {
-                if (newRestaurant.getName().compareTo(restaurants.get(i).getName()) < 0) {
-                    restaurants.add(i, newRestaurant);
-                    added = true;
-                    break;
-                }
-            }
-
-            if (!added) {
-                restaurants.add(newRestaurant);
-            }
-        }
-    }
-
-    /**
-     * Method to create a package to keep track of quantity and
-     * unit price of ingredients loaded on a drone.
-     * @param quantity the quantity of the ingredient
-     * @param unitPrice the unit price of the ingredient
-     * @return the package
-     */
-    Package createPackage(Integer quantity, Integer unitPrice) {
-        return new Package(quantity, unitPrice);
-    }
-
-    /**
      * Method to display a message from the interface
      * @param status the status of the message
      * @param text_output the text to be displayed
      */
     void displayMessage(String status, String text_output) {
         System.out.println(status.toUpperCase() + ":" + text_output.toLowerCase());
-    }
-
-    /**
-     * Method to display information about a drone based on its attributes
-     * @param drone the drone whose information is to be displayed
-     */
-    void displayDroneInfo(Drone drone) {
-        System.out.printf("Tag: %d, Capacity: %d, Remaining Capacity: %d, Fuel: %d, Sales: $%d, " +
-                        "Location: %s%n",
-                drone.getTag(), drone.getCapacity(), drone.getRemainingCapacity(), drone.getFuel(),
-                drone.getSales(), drone.getLocation().getName());
-
-        drone.getPayload().forEach((key,value) ->
-                System.out.printf("&> Barcode: %s, Item Name: %s, Quantity: %d, Unit Cost: %d, Total Weight: %d%n",
-                key.getBarcode(), key.getName(), value.getQuantity(), value.getUnitPrice(),
-                key.getWeight() * value.getQuantity()));
     }
 }

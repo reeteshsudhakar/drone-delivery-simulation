@@ -1,5 +1,5 @@
+import java.util.Comparator;
 import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Drone class used to represent a drone that delivers ingredients in the interface.
@@ -117,7 +117,7 @@ public class Drone {
     /**
      * Method to decrease the remaining capacity of a drone.
      * @param quantity the quantity to be decremented from the drone's remaining capacity
-     *                 based on ingredients laoded to the drone
+     *                 based on ingredients loaded to the drone
      */
     public void decrementCapacity(Integer quantity) {
         this.remainingCapacity -= quantity;
@@ -155,5 +155,28 @@ public class Drone {
      */
     public void addSales(Integer amountSold) {
         this.sales += amountSold;
+    }
+
+
+    /**
+     * Method to display information about a drone based on its attributes
+     */
+    public void displayDroneInfo() {
+        System.out.printf("Tag: %d, Capacity: %d, Remaining Capacity: %d, Fuel: %d, Sales: $%d, " +
+                        "Location: %s%n",
+                getTag(), getCapacity(), getRemainingCapacity(), getFuel(),
+                getSales(), getLocation().getName());
+
+        getPayload().forEach((key,value) ->
+                System.out.printf("&> Barcode: %s, Item Name: %s, Quantity: %d, Unit Cost: %d, Total Weight: %d%n",
+                        key.getBarcode(), key.getName(), value.getQuantity(), value.getUnitPrice(),
+                        key.getWeight() * value.getQuantity()));
+    }
+}
+
+class DroneComparator implements Comparator<Drone> {
+    @Override
+    public int compare(Drone d1, Drone d2) {
+        return d1.getTag().compareTo(d2.getTag());
     }
 }

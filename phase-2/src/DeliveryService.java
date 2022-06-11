@@ -1,3 +1,5 @@
+import java.util.Comparator;
+
 /**
  * Delivery Service class to handle the delivery of ingredients to restaurants.
  *
@@ -49,5 +51,12 @@ public class DeliveryService {
     @Override
     public String toString() {
         return String.format("Name: %s, Revenue: $%d, Location: %s", name, revenue, location.getName());
+    }
+}
+
+class DeliveryServiceComparator implements Comparator<DeliveryService> {
+    @Override
+    public int compare(DeliveryService o1, DeliveryService o2) {
+        return o1.getName().compareTo(o2.getName());
     }
 }

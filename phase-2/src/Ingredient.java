@@ -1,3 +1,5 @@
+import java.util.Comparator;
+
 /**
  * Ingredient class to create ingredients for restaurants to purchase from services.
  *
@@ -49,5 +51,12 @@ public class Ingredient {
     @Override
     public String toString() {
         return "Barcode: " + barcode + ", Name: " + name + ", Unit Weight: " + weight;
+    }
+}
+
+class IngredientComparator implements Comparator<Ingredient> {
+    @Override
+    public int compare(Ingredient o1, Ingredient o2) {
+        return o1.getName().compareTo(o2.getName());
     }
 }

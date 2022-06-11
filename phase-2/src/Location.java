@@ -65,7 +65,7 @@ public class Location {
      * Getter for spaceLimit.
      * @return Space limit for drones of the location
      */
-    public Integer getInit_space_limit() {
+    public Integer getSpaceLimit() {
         return spaceLimit;
     }
 
@@ -73,21 +73,21 @@ public class Location {
      * Getter for spacesLeft.
      * @return Spaces left for drones of the location
      */
-    public Integer getSpaces_left() {
+    public Integer getSpacesLeft() {
         return spacesLeft;
     }
 
     /**
      * Method to decrement the number of spaces left of a location if a drone arrives.
      */
-    public void decrementSpaces_left() {
+    public void decrementSpacesLeft() {
         this.spacesLeft -= 1;
     }
 
     /**
      * Method to increment the number of spaces left of a location if a drone leaves.
      */
-    public void incrementSpaces_left() {
+    public void incrementSpacesLeft() {
         this.spacesLeft += 1;
     }
 
