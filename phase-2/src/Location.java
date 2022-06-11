@@ -4,7 +4,7 @@
  * @author Reetesh Sudhakar, Sebastian Jaskowski, Yash Gupta, Kunal Daga
  * @version 1.0
  */
-public class Location {
+public class Location implements Comparable<Location> {
     // Object attributes
     private final String name;
     private final Integer x_coordinate;
@@ -62,14 +62,6 @@ public class Location {
     }
 
     /**
-     * Getter for spaceLimit.
-     * @return Space limit for drones of the location
-     */
-    public Integer getSpaceLimit() {
-        return spaceLimit;
-    }
-
-    /**
      * Getter for spacesLeft.
      * @return Spaces left for drones of the location
      */
@@ -114,5 +106,10 @@ public class Location {
     public String toString() {
         return String.format("Name: %s, (x,y): (%d, %d), Space: [%d / %d] remaining",
                 name, x_coordinate, y_coordinate, spacesLeft, spaceLimit);
+    }
+
+    @Override
+    public int compareTo(Location o) {
+        return this.name.compareTo(o.getName());
     }
 }

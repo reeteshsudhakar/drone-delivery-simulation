@@ -38,14 +38,6 @@ public class Restaurant implements Comparable<Restaurant> {
     }
 
     /**
-     * Getter for spending.
-     * @return spending of restaurant
-     */
-    public Integer getSpending() {
-        return spending;
-    }
-
-    /**
      * Setter for spending.
      * @param amount amount to increment spending by based on purchases made by restaurant
      */

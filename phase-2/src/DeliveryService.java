@@ -31,14 +31,6 @@ public class DeliveryService implements Comparable <DeliveryService> {
     }
 
     /**
-     * Getter for the revenue of the Delivery Service.
-     * @return revenue of the Delivery Service.
-     */
-    public Integer getRevenue() {
-        return revenue;
-    }
-
-    /**
      * Getter for the location of the Delivery Service.
      * @return location of the Delivery Service.
      */

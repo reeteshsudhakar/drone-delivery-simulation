@@ -103,6 +103,7 @@ public class InterfaceLoop {
      */
     void displayLocations() {
         // displaying all the locations in the system by iterating through the collection
+        Collections.sort(locations);
         for (Location location : locations) {
             System.out.println(location.toString());
         }
@@ -138,9 +139,7 @@ public class InterfaceLoop {
 
         // if the departure and arrival points are valid, calculate and display the distance between them
         int distance = departureLocation.calculateDistance(arrivalLocation);
-
         displayMessage("OK", String.format("distance = %d", distance));
-
     }
 
     /**
@@ -198,7 +197,6 @@ public class InterfaceLoop {
         for (DeliveryService deliveryService : services) {
             System.out.println(deliveryService.toString());
         }
-
         displayMessage("OK","display_completed");
     }
 
@@ -243,7 +241,6 @@ public class InterfaceLoop {
         for (Restaurant restaurant : restaurants) {
             System.out.println(restaurant.toString());
         }
-
         displayMessage("OK","display_completed");
     }
 
@@ -314,7 +311,6 @@ public class InterfaceLoop {
                 drone.displayDroneInfo();
             }
         }
-
         displayMessage("OK","display_completed");
     }
 
@@ -323,6 +319,8 @@ public class InterfaceLoop {
      */
     void displayAllDrones() {
         // displaying all the drones in the system by iterating through the collection
+        Collections.sort(services);
+        Collections.sort(drones);
         for (DeliveryService service : services) {
             System.out.printf("Service name [%s] drones:%n", service.getName());
             for (Drone drone : drones) {
@@ -331,7 +329,6 @@ public class InterfaceLoop {
                 }
             }
         }
-
         displayMessage("OK","display_completed");
     }
 
@@ -343,26 +340,22 @@ public class InterfaceLoop {
      */
     void flyDrone(String serviceName, Integer tag, String destination) {
         // checking if the drone exists in the system
-        boolean droneFound = false;
-        boolean destinationFound = false;
         Drone movedDrone = null;
         Location destinationLocation = null;
         for (Drone drone : drones) {
             if (drone.getTag().equals(tag) && drone.getService().getName().equals(serviceName)) {
-                droneFound = true;
                 movedDrone = drone;
                 break;
             }
         }
 
         // if the drone does not exist in the system, display an error message
-        if (!droneFound) {
+        if (movedDrone == null) {
             displayMessage("ERROR", "drone_not_found_in_system");
             return;
         } else {
             for (Location location : locations) {
                 if (location.getName().equals(destination)) {
-                    destinationFound = true;
                     destinationLocation = location;
                     break;
                 }
@@ -370,13 +363,13 @@ public class InterfaceLoop {
         }
 
         // if the destination location does not exist in the system, display an error message
-        if (!destinationFound) {
+        if (destinationLocation == null) {
             displayMessage("ERROR","destination_not_found_in_system");
             return;
         }
 
         // checking if the drone has enough fuel to fly to and whether there is space in the destination
-        int distance = movedDrone.getLocation().calculateDistance(destinationLocation);
+        int distance = movedDrone.getCurrentLocation().calculateDistance(destinationLocation);
         int returnDistance = destinationLocation.calculateDistance(movedDrone.getHomeBase());
         if (distance > movedDrone.getFuel()) {
             displayMessage("ERROR","not_enough_fuel_to_reach_destination");
@@ -390,13 +383,10 @@ public class InterfaceLoop {
         }
 
         // if the drone can fly to the destination, move it to the destination, update the fuel and the spaces left
-        movedDrone.getLocation().incrementSpacesLeft();
+        movedDrone.getCurrentLocation().incrementSpacesLeft();
         destinationLocation.decrementSpacesLeft();
-
-        movedDrone.setLocation(destinationLocation);
+        movedDrone.setCurrentLocation(destinationLocation);
         movedDrone.setFuel(movedDrone.getFuel() - distance);
-
-
         displayMessage("OK","change_completed");
     }
 
@@ -410,26 +400,22 @@ public class InterfaceLoop {
      */
     void loadIngredient(String serviceName, Integer tag, String barcode, Integer quantity, Integer unitPrice) {
         // checking if the drone exists in the system
-        boolean droneFound = false;
-        boolean ingredientFound = false;
         Drone loadDrone = null;
         Ingredient loadIngredient = null;
         for (Drone drone : drones) {
             if (drone.getTag().equals(tag) && drone.getService().getName().equals(serviceName)) {
-                droneFound = true;
                 loadDrone = drone;
                 break;
             }
         }
 
         // if the drone does not exist in the system, display an error message
-        if (!droneFound) {
+        if (loadDrone == null) {
             displayMessage("ERROR", "drone_not_found_in_system");
             return;
         } else { // if the drone exists in the system, check if the ingredient exists in the system
             for (Ingredient ingredient : ingredients) {
                 if (ingredient.getBarcode().equals(barcode)) {
-                    ingredientFound = true;
                     loadIngredient = ingredient;
                     break;
                 }
@@ -437,13 +423,13 @@ public class InterfaceLoop {
         }
 
         // if the ingredient does not exist in the system, display an error message
-        if (!ingredientFound) {
+        if (loadIngredient == null) {
             displayMessage("ERROR","ingredient_not_found_in_system");
             return;
         }
 
         // checking if the drone is at the service's home base
-        if (!loadDrone.getLocation().equals(loadDrone.getHomeBase())) {
+        if (!loadDrone.getCurrentLocation().equals(loadDrone.getHomeBase())) {
             displayMessage("ERROR","drone_not_located_at_home_base");
             return;
         }
@@ -470,9 +456,7 @@ public class InterfaceLoop {
                     return;
                 }
             }
-            Package newPackage = new Package(quantity, unitPrice);
-            loadDrone.getPayload().put(loadIngredient, newPackage);
-
+            loadDrone.getPayload().put(loadIngredient, new Package(quantity, unitPrice));
             loadDrone.decrementRemainingCapacity(quantity);
             displayMessage("OK","change_completed");
         }
@@ -486,11 +470,9 @@ public class InterfaceLoop {
      */
     void loadFuel(String serviceName, Integer tag, Integer petrol) {
         // checking if the drone exists in the system
-        boolean droneFound = false;
         Drone loadFuelDrone = null;
         for (Drone drone : drones) {
             if (drone.getTag().equals(tag) && drone.getService().getName().equals(serviceName)) {
-                droneFound = true;
                 loadFuelDrone = drone;
                 break;
             }
@@ -503,9 +485,9 @@ public class InterfaceLoop {
         }
 
         // if the drone exists in the system, update the fuel IFF the drone is at the service's home base
-        if (!droneFound) {
+        if (loadFuelDrone == null) {
             displayMessage("ERROR", "drone_not_found_in_system");
-        } else if (!loadFuelDrone.getLocation().equals(loadFuelDrone.getHomeBase())) {
+        } else if (!loadFuelDrone.getCurrentLocation().equals(loadFuelDrone.getHomeBase())) {
             displayMessage("ERROR", "drone_not_located_at_home_base");
         } else {
             loadFuelDrone.setFuel(loadFuelDrone.getFuel() + petrol);
@@ -524,41 +506,37 @@ public class InterfaceLoop {
     void purchaseIngredient(String restaurantName, String serviceName, Integer tag,
                             String barcode, Integer quantity) {
         // checking if the restaurant exists in the system
-        boolean restaurantFound = false;
         Restaurant buyerRestaurant = null;
         for (Restaurant restaurant : restaurants) {
             if (restaurant.getName().equals(restaurantName)) {
-                restaurantFound = true;
                 buyerRestaurant = restaurant;
                 break;
             }
         }
 
         // if the restaurant does not exist in the system, display an error message
-        if (!restaurantFound) {
+        if (buyerRestaurant == null) {
             displayMessage("ERROR", "restaurant_not_found_in_system");
             return;
         }
 
         // checking if the drone exists in the system
-        boolean droneFound = false;
         Drone buyerDrone = null;
         for (Drone drone : drones) {
             if (drone.getTag().equals(tag) && drone.getService().getName().equals(serviceName)) {
-                droneFound = true;
                 buyerDrone = drone;
                 break;
             }
         }
 
         // if the drone does not exist in the system, display an error message
-        if (!droneFound) {
+        if (buyerDrone == null) {
             displayMessage("ERROR","drone_not_found_in_system");
             return;
         }
 
         // if the drone is not at the restaurant's location, display an error message
-        if (!buyerDrone.getLocation().equals(buyerRestaurant.getLocation())) {
+        if (!buyerDrone.getCurrentLocation().equals(buyerRestaurant.getLocation())) {
             displayMessage("ERROR","drone_not_located_at_restaurant");
             return;
         }
@@ -579,23 +557,19 @@ public class InterfaceLoop {
         }
 
         // finding the ingredient in the drone's payload
-        boolean ingredientFound = false;
         Ingredient buyerIngredient = null;
         for (Ingredient ingredient : buyerDrone.getPayload().keySet()) {
             if (ingredient.getBarcode().equals(barcode)) {
-                ingredientFound = true;
                 buyerIngredient = ingredient;
                 break;
             }
         }
 
         // if the ingredient is not found in the drone's payload, display an error message
-        if (!ingredientFound) {
+        if (buyerIngredient == null) {
             displayMessage("ERROR","ingredient_not_found_in_payload");
             return;
-        }
-
-        if (quantity <= 0) {
+        } else if (quantity <= 0) {
             displayMessage("ERROR","quantity_requested_must_be_greater_than_zero");
             return;
         }
@@ -615,7 +589,6 @@ public class InterfaceLoop {
             buyerDrone.getPayload().get(buyerIngredient).decrementQuantity(quantity);
             buyerDrone.incrementRemainingCapacity(quantity);
         }
-
         displayMessage("OK","change_completed");
     }
 
@@ -638,62 +611,45 @@ public class InterfaceLoop {
                 //noinspection StatementWithEmptyBody
                 if (tokens[0].indexOf("//") == 0) {
                     // deliberate empty body to recognize and skip over comments
-
                 } else if (tokens[0].equals("make_ingredient")) {
                     makeIngredient(tokens[1], tokens[2], Integer.parseInt(tokens[3]));
-
                 } else if (tokens[0].equals("display_ingredients")) {
                     displayIngredients();
-
                 } else if (tokens[0].equals("make_location")) {
-                    makeLocation(tokens[1], Integer.parseInt(tokens[2]), Integer.parseInt(tokens[3]), Integer.parseInt(tokens[4]));
-
+                    makeLocation(tokens[1], Integer.parseInt(tokens[2]), Integer.parseInt(tokens[3]),
+                            Integer.parseInt(tokens[4]));
                 } else if (tokens[0].equals("display_locations")) {
                     displayLocations();
-
                 } else if (tokens[0].equals("check_distance")) {
                     checkDistance(tokens[1], tokens[2]);
-
                 } else if (tokens[0].equals("make_service")) {
                     makeDeliveryService(tokens[1], Integer.parseInt(tokens[2]), tokens[3]);
-
                 } else if (tokens[0].equals("display_services")) {
                     displayServices();
-
                 } else if (tokens[0].equals("make_restaurant")) {
                     makeRestaurant(tokens[1], tokens[2]);
-
                 } else if (tokens[0].equals("display_restaurants")) {
                     displayRestaurants();
-
                 } else if (tokens[0].equals("make_drone")) {
                     makeDrone(tokens[1], Integer.parseInt(tokens[2]), Integer.parseInt(tokens[3]),
                             Integer.parseInt(tokens[4]));
-
                 } else if (tokens[0].equals("display_drones")) {
                     displayDrones(tokens[1]);
-
                 } else if (tokens[0].equals("display_all_drones")) {
                     displayAllDrones();
-
                 } else if (tokens[0].equals("fly_drone")) {
                     flyDrone(tokens[1], Integer.parseInt(tokens[2]), tokens[3]);
-
                 } else if (tokens[0].equals("load_ingredient")) {
                     loadIngredient(tokens[1], Integer.parseInt(tokens[2]), tokens[3], Integer.parseInt(tokens[4]),
                             Integer.parseInt(tokens[5]));
-
                 } else if (tokens[0].equals("load_fuel")) {
                     loadFuel(tokens[1], Integer.parseInt(tokens[2]), Integer.parseInt(tokens[3]));
-
                 } else if (tokens[0].equals("purchase_ingredient")) {
                     purchaseIngredient(tokens[1], tokens[2], Integer.parseInt(tokens[3]), tokens[4],
                             Integer.parseInt(tokens[5]));
-
                 } else if (tokens[0].equals("stop")) {
                     System.out.println("stop acknowledged");
                     break;
-
                 } else {
                     System.out.println("command " + tokens[0] + " NOT acknowledged");
                 }
@@ -702,7 +658,6 @@ public class InterfaceLoop {
                 System.out.println();
             }
         }
-
         System.out.println("simulation terminated");
         commandLineInput.close();
     }

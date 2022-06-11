@@ -14,7 +14,7 @@ public class Drone implements Comparable<Drone> {
     private Integer remainingCapacity;
     private Integer fuel;
     private final Location homeBase;
-    private Location location;
+    private Location currentLocation;
     private Integer sales;
     private HashMap<Ingredient, Package> payload;
 
@@ -25,7 +25,7 @@ public class Drone implements Comparable<Drone> {
      * @param init_tag drone tag (unique)
      * @param init_capacity drone capacity for ingredients
      * @param init_fuel drone fuel
-     * @param homeBase home base location
+     * @param homeBase home base currentLocation
      */
     public Drone(DeliveryService service, Integer init_tag, Integer init_capacity,
                  Integer init_fuel, Location homeBase) {
@@ -34,7 +34,7 @@ public class Drone implements Comparable<Drone> {
         this.capacity = init_capacity;
         this.remainingCapacity = init_capacity;
         this.fuel = init_fuel;
-        this.location = homeBase;
+        this.currentLocation = homeBase;
         this.homeBase = homeBase;
         this.sales = 0;
         this.payload = new HashMap<>();
@@ -89,11 +89,11 @@ public class Drone implements Comparable<Drone> {
     }
 
     /**
-     * Getter for Drone location.
-     * @return the current location of the drone
+     * Getter for Drone currentLocation.
+     * @return the current currentLocation of the drone
      */
-    public Location getLocation() {
-        return location;
+    public Location getCurrentLocation() {
+        return currentLocation;
     }
 
     /**
@@ -132,11 +132,11 @@ public class Drone implements Comparable<Drone> {
     }
 
     /**
-     * Method to update the location of a drone.
-     * @param location the new location of the drone
+     * Method to update the currentLocation of a drone.
+     * @param currentLocation the new currentLocation of the drone
      */
-    public void setLocation(Location location) {
-        this.location = location;
+    public void setCurrentLocation(Location currentLocation) {
+        this.currentLocation = currentLocation;
     }
 
     /**
@@ -164,7 +164,7 @@ public class Drone implements Comparable<Drone> {
         System.out.printf("Tag: %d, Capacity: %d, Remaining Capacity: %d, Fuel: %d, Sales: $%d, " +
                         "Location: %s%n",
                 getTag(), getCapacity(), getRemainingCapacity(), getFuel(),
-                getSales(), getLocation().getName());
+                getSales(), getCurrentLocation().getName());
 
         getPayload().forEach((key,value) ->
                 System.out.printf("&> Barcode: %s, Item Name: %s, Quantity: %d, Unit Cost: %d, Total Weight: %d%n",
