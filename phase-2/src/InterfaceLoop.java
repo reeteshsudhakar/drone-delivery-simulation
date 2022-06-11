@@ -1,5 +1,5 @@
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Collections;
 import java.util.Scanner;
 
 /*
@@ -17,11 +17,11 @@ TODO: code cleanup (see where methods can be moved to other classes, simplified)
 public class InterfaceLoop {
 
     // collections of objects for the interface loop
-    List<Ingredient> ingredients = new ArrayList<>();
-    List<Location> locations = new ArrayList<>();
-    List<DeliveryService> services = new ArrayList<>();
-    List<Restaurant> restaurants = new ArrayList<>();
-    List<Drone> drones = new ArrayList<>();
+    ArrayList<Ingredient> ingredients = new ArrayList<>();
+    ArrayList<Location> locations = new ArrayList<>();
+    ArrayList<DeliveryService> services = new ArrayList<>();
+    ArrayList<Restaurant> restaurants = new ArrayList<>();
+    ArrayList<Drone> drones = new ArrayList<>();
 
     InterfaceLoop() { }
 
@@ -60,7 +60,7 @@ public class InterfaceLoop {
      */
     void displayIngredients() {
         // displaying all the ingredients in the system by iterating through the collection
-        ingredients.sort(new IngredientComparator());
+        Collections.sort(ingredients);
         for (Ingredient ingredient : ingredients) {
             System.out.println(ingredient.toString());
         }
@@ -199,7 +199,7 @@ public class InterfaceLoop {
      */
     void displayServices() {
         // displaying all the delivery services in the system by iterating through the collection
-        services.sort(new DeliveryServiceComparator());
+        Collections.sort(services);
         for (DeliveryService deliveryService : services) {
             System.out.println(deliveryService.toString());
         }
@@ -244,7 +244,7 @@ public class InterfaceLoop {
      */
     void displayRestaurants() {
         // displaying all the restaurants in the system by iterating through the collection
-        restaurants.sort(new RestaurantComparator());
+        Collections.sort(restaurants);
         for (Restaurant restaurant : restaurants) {
             System.out.println(restaurant.toString());
         }
@@ -313,7 +313,7 @@ public class InterfaceLoop {
      */
     void displayDrones(String serviceName) {
         // displaying the drones in the system attached to the specified service
-        drones.sort(new DroneComparator());
+        Collections.sort(drones);
         for (Drone drone : drones) {
             if (drone.getService().getName().equals(serviceName)) {
                 drone.displayDroneInfo();

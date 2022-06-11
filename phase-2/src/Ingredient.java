@@ -1,16 +1,14 @@
-import java.util.Comparator;
-
 /**
  * Ingredient class to create ingredients for restaurants to purchase from services.
  *
  * @author Reetesh Sudhakar, Sebastian Jaskowski, Yash Gupta, Kunal Daga
  * @version 1.0
  */
-public class Ingredient {
+public class Ingredient implements Comparable<Ingredient> {
     // Object attributes
-    private String barcode;
-    private String name;
-    private Integer weight;
+    private final String barcode;
+    private final String name;
+    private final Integer weight;
 
     /**
      * Constructor for Ingredient class.
@@ -52,11 +50,9 @@ public class Ingredient {
     public String toString() {
         return "Barcode: " + barcode + ", Name: " + name + ", Unit Weight: " + weight;
     }
-}
 
-class IngredientComparator implements Comparator<Ingredient> {
     @Override
-    public int compare(Ingredient o1, Ingredient o2) {
-        return o1.getName().compareTo(o2.getName());
+    public int compareTo(Ingredient o) {
+        return this.name.compareTo(o.getName());
     }
 }

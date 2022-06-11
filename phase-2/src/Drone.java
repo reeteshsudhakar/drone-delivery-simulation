@@ -1,4 +1,3 @@
-import java.util.Comparator;
 import java.util.HashMap;
 
 /**
@@ -7,7 +6,7 @@ import java.util.HashMap;
  * @author Reetesh Sudhakar, Sebastian Jaskowski, Yash Gupta, Kunal Daga
  * @version 1.0
  */
-public class Drone {
+public class Drone implements Comparable<Drone> {
     // Object attributes
     private final DeliveryService service;
     private final Integer tag;
@@ -172,11 +171,9 @@ public class Drone {
                         key.getBarcode(), key.getName(), value.getQuantity(), value.getUnitPrice(),
                         key.getWeight() * value.getQuantity()));
     }
-}
 
-class DroneComparator implements Comparator<Drone> {
     @Override
-    public int compare(Drone d1, Drone d2) {
-        return d1.getTag().compareTo(d2.getTag());
+    public int compareTo(Drone drone) {
+        return this.tag.compareTo(drone.getTag());
     }
 }

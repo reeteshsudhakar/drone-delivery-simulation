@@ -1,12 +1,10 @@
-import java.util.Comparator;
-
 /**
  * Restaurant class to represent a restaurant purchasing ingredients in the system.
  *
  * @author Reetesh Sudhakar, Sebastian Jaskowski, Yash Gupta, Kunal Daga
  * @version 1.0
  */
-public class Restaurant {
+public class Restaurant implements Comparable<Restaurant> {
     // Object attributes
     private final String name;
     private final Location location;
@@ -60,11 +58,8 @@ public class Restaurant {
         return String.format("Name: %s, Total Spent: $%d, Location: %s", name, spending, location.getName());
     }
 
-}
-
-class RestaurantComparator implements Comparator<Restaurant> {
     @Override
-    public int compare(Restaurant o1, Restaurant o2) {
-        return o1.getName().compareTo(o2.getName());
+    public int compareTo(Restaurant other) {
+        return this.name.compareTo(other.getName());
     }
 }
