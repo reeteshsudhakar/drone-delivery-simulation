@@ -119,7 +119,7 @@ public class Drone {
      * @param quantity the quantity to be decremented from the drone's remaining capacity
      *                 based on ingredients loaded to the drone
      */
-    public void decrementCapacity(Integer quantity) {
+    public void decrementRemainingCapacity(Integer quantity) {
         this.remainingCapacity -= quantity;
     }
 
@@ -128,7 +128,7 @@ public class Drone {
      * @param quantity the quantity to be incremented to the drone's remaining capacity
      *                 based on ingredients purchased from the drone
      */
-    public void incrementCapacity(Integer quantity) {
+    public void incrementRemainingCapacity(Integer quantity) {
         this.remainingCapacity += quantity;
     }
 

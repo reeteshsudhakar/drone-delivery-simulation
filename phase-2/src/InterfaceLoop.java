@@ -478,7 +478,7 @@ public class InterfaceLoop {
             Package newPackage = new Package(quantity, unitPrice);
             loadDrone.getPayload().put(loadIngredient, newPackage);
 
-            loadDrone.decrementCapacity(quantity);
+            loadDrone.decrementRemainingCapacity(quantity);
             displayMessage("OK","change_completed");
         }
     }
@@ -613,12 +613,12 @@ public class InterfaceLoop {
             buyerRestaurant.addSpending(buyerDrone.getPayload().get(buyerIngredient).getUnitPrice() * quantity);
             buyerDrone.addSales(buyerDrone.getPayload().get(buyerIngredient).getUnitPrice() * quantity);
             buyerDrone.getPayload().remove(buyerIngredient);
-            buyerDrone.incrementCapacity(quantity);
+            buyerDrone.incrementRemainingCapacity(quantity);
         } else {
             buyerRestaurant.addSpending(buyerDrone.getPayload().get(buyerIngredient).getUnitPrice() * quantity);
             buyerDrone.addSales(buyerDrone.getPayload().get(buyerIngredient).getUnitPrice() * quantity);
             buyerDrone.getPayload().get(buyerIngredient).decrementQuantity(quantity);
-            buyerDrone.incrementCapacity(quantity);
+            buyerDrone.incrementRemainingCapacity(quantity);
         }
 
         displayMessage("OK","change_completed");
