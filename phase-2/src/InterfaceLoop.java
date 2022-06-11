@@ -116,27 +116,22 @@ public class InterfaceLoop {
      */
     void checkDistance(String departurePoint, String arrivalPoint) {
         // checking if the departure and arrival points are valid
-        boolean departureFound = false;
-        boolean arrivalFound = false;
         Location departureLocation = null;
         Location arrivalLocation = null;
         for (Location location : locations) {
             if (location.getName().equals(departurePoint)) {
-                departureFound = true;
                 departureLocation = location;
             }
             if (location.getName().equals(arrivalPoint)) {
-                arrivalFound = true;
                 arrivalLocation = location;
             }
         }
 
         // if the departure or arrival points are not valid, display an error message
-        if (!departureFound) {
+        if (departureLocation == null) {
             displayMessage("ERROR", "invalid_departure_location_specified");
             return;
-        }
-        if (!arrivalFound) {
+        } else if (arrivalLocation == null) {
             displayMessage("ERROR", "invalid_arrival_location_specified");
             return;
         }
