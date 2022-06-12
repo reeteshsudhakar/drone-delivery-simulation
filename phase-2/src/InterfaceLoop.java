@@ -35,7 +35,7 @@ public class InterfaceLoop {
         // checking if the ingredient already exists
         for (Ingredient ingredient : ingredients) {
             if (ingredient.getBarcode().equals(barcode)) {
-                displayMessage("ERROR", "ingredient_already_exists_within_system");
+                displayMessage("ERROR", "ingredient_already_exists");
                 return;
             }
         }
@@ -78,7 +78,7 @@ public class InterfaceLoop {
         // checking if the location already exists
         for (Location location : locations) {
             if (location.getName().equals(name)) {
-                displayMessage("ERROR", "location_already_exists_within_system");
+                displayMessage("ERROR", "location_already_exists");
                 return;
             }
         }
@@ -130,10 +130,10 @@ public class InterfaceLoop {
 
         // if the departure or arrival points are not valid, display an error message
         if (departureLocation == null) {
-            displayMessage("ERROR", "invalid_departure_location_specified");
+            displayMessage("ERROR", "departure_location_does_not_exist");
             return;
         } else if (arrivalLocation == null) {
-            displayMessage("ERROR", "invalid_arrival_location_specified");
+            displayMessage("ERROR", "arrival_location_does_not_exist");
             return;
         }
 
@@ -152,7 +152,7 @@ public class InterfaceLoop {
         // checking if the service already exists
         for (DeliveryService service : services) {
             if (service.getName().equals(name)) {
-                displayMessage("ERROR", "service_already_exists_within_system");
+                displayMessage("ERROR", "service_already_exists");
                 return;
             }
         }
@@ -182,7 +182,7 @@ public class InterfaceLoop {
 
         // if the location does not exist in the system, display an error message
         if (!found) {
-            displayMessage("ERROR", "location_not_found_in_system");
+            displayMessage("ERROR", "location_identifier_does_not_exist");
         } else {
             displayMessage("OK","service_created");
         }
@@ -209,7 +209,7 @@ public class InterfaceLoop {
         // checking if the restaurant already exists
         for (Restaurant restaurant : restaurants) {
             if (restaurant.getName().equals(name)) {
-                displayMessage("ERROR", "restaurant_already_exists_within_system");
+                displayMessage("ERROR", "restaurant_already_exists");
                 return;
             }
         }
@@ -226,7 +226,7 @@ public class InterfaceLoop {
 
         // if the location does not exist in the system, display an error message
         if (!found) {
-            displayMessage("ERROR", "location_not_found_in_system");
+            displayMessage("ERROR", "location_identifier_does_not_exist");
         } else {
             displayMessage("OK","change_completed");
         }
@@ -267,14 +267,14 @@ public class InterfaceLoop {
 
         // if the service does not exist in the system, display an error message
         if (!found) {
-            displayMessage("ERROR","service_not_found_in_system");
+            displayMessage("ERROR","service_identifier_does_not_exist");
             return;
         }
 
         // checking if the drone already exists in the system
         for (Drone drone : drones) {
             if (drone.getTag().equals(tag) && drone.getService().getName().equals(serviceName)) {
-                displayMessage("ERROR","drone_already_exists_within_system");
+                displayMessage("ERROR","drone_already_exists");
                 return;
             }
         }
@@ -351,7 +351,7 @@ public class InterfaceLoop {
 
         // if the drone does not exist in the system, display an error message
         if (movedDrone == null) {
-            displayMessage("ERROR", "drone_not_found_in_system");
+            displayMessage("ERROR", "drone_does_not_exist");
             return;
         } else {
             for (Location location : locations) {
@@ -364,7 +364,7 @@ public class InterfaceLoop {
 
         // if the destination location does not exist in the system, display an error message
         if (destinationLocation == null) {
-            displayMessage("ERROR","destination_not_found_in_system");
+            displayMessage("ERROR","flight_destination_does_not_exist");
             return;
         }
 
@@ -375,7 +375,7 @@ public class InterfaceLoop {
             displayMessage("ERROR","not_enough_fuel_to_reach_destination");
             return;
         } else if (distance + returnDistance > movedDrone.getFuel()) {
-            displayMessage("ERROR","not_enough_fuel_to_return_to_home_base_from_destination");
+            displayMessage("ERROR","not_enough_fuel_to_reach_home_base_from_destination");
             return;
         } else if (destinationLocation.getSpacesLeft() == 0) {
             displayMessage("ERROR","not_enough_space_for_drone_at_destination");
@@ -411,7 +411,7 @@ public class InterfaceLoop {
 
         // if the drone does not exist in the system, display an error message
         if (loadDrone == null) {
-            displayMessage("ERROR", "drone_not_found_in_system");
+            displayMessage("ERROR", "drone_does_not_exist");
             return;
         } else { // if the drone exists in the system, check if the ingredient exists in the system
             for (Ingredient ingredient : ingredients) {
@@ -424,7 +424,7 @@ public class InterfaceLoop {
 
         // if the ingredient does not exist in the system, display an error message
         if (loadIngredient == null) {
-            displayMessage("ERROR","ingredient_not_found_in_system");
+            displayMessage("ERROR","ingredient_identifier_does_not_exist");
             return;
         }
 
@@ -478,16 +478,17 @@ public class InterfaceLoop {
             }
         }
 
-        // if the petrol is not valid, display an error message
-        if (petrol == null || petrol < 0) {
-            displayMessage("ERROR","petrol_must_be_greater_than_zero");
+        // if the drone does not exist or the petrol to fill the drone is not valid, display an error message
+        if (loadFuelDrone == null) {
+            displayMessage("ERROR", "drone_does_not_exist");
+            return;
+        } else if (petrol <= 0) {
+            displayMessage("ERROR", "petrol_must_be_greater_than_zero");
             return;
         }
 
-        // if the drone exists in the system, update the fuel IFF the drone is at the service's home base
-        if (loadFuelDrone == null) {
-            displayMessage("ERROR", "drone_not_found_in_system");
-        } else if (!loadFuelDrone.getCurrentLocation().equals(loadFuelDrone.getHomeBase())) {
+        // if the drone is at the service's home base, fill the drone with fuel
+        if (!loadFuelDrone.getCurrentLocation().equals(loadFuelDrone.getHomeBase())) {
             displayMessage("ERROR", "drone_not_located_at_home_base");
         } else {
             loadFuelDrone.setFuel(loadFuelDrone.getFuel() + petrol);
@@ -516,7 +517,7 @@ public class InterfaceLoop {
 
         // if the restaurant does not exist in the system, display an error message
         if (buyerRestaurant == null) {
-            displayMessage("ERROR", "restaurant_not_found_in_system");
+            displayMessage("ERROR", "restaurant_identifier_does_not_exist");
             return;
         }
 
@@ -531,13 +532,7 @@ public class InterfaceLoop {
 
         // if the drone does not exist in the system, display an error message
         if (buyerDrone == null) {
-            displayMessage("ERROR","drone_not_found_in_system");
-            return;
-        }
-
-        // if the drone is not at the restaurant's location, display an error message
-        if (!buyerDrone.getCurrentLocation().equals(buyerRestaurant.getLocation())) {
-            displayMessage("ERROR","drone_not_located_at_restaurant");
+            displayMessage("ERROR","drone_does_not_exist");
             return;
         }
 
@@ -552,7 +547,13 @@ public class InterfaceLoop {
 
         // if the ingredient does not exist in the system, display an error message
         if (!ingredientExists) {
-            displayMessage("ERROR","ingredient_not_found_in_system");
+            displayMessage("ERROR","ingredient_identifier_does_not_exist");
+            return;
+        }
+
+        // if the drone is not at the restaurant's location, display an error message
+        if (!buyerDrone.getCurrentLocation().equals(buyerRestaurant.getLocation())) {
+            displayMessage("ERROR","drone_not_located_at_restaurant");
             return;
         }
 

@@ -47,7 +47,7 @@ public class Restaurant implements Comparable<Restaurant> {
 
     @Override
     public String toString() {
-        return String.format("Name: %s, Total Spent: $%d, Location: %s", name, spending, location.getName());
+        return String.format("Name: %s, Money Spent: $%d, Location: %s", name, spending, location.getName());
     }
 
     @Override

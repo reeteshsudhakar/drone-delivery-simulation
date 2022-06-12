@@ -167,9 +167,9 @@ public class Drone implements Comparable<Drone> {
                 getSales(), getCurrentLocation().getName());
 
         getPayload().forEach((key,value) ->
-                System.out.printf("&> Barcode: %s, Item Name: %s, Quantity: %d, Unit Cost: %d, Total Weight: %d%n",
-                        key.getBarcode(), key.getName(), value.getQuantity(), value.getUnitPrice(),
-                        key.getWeight() * value.getQuantity()));
+                System.out.printf("&> Barcode: %s, Item Name: %s, Total Quantity: %d, Unit Cost: %d, " +
+                                "Total Weight: %d%n", key.getBarcode(), key.getName(), value.getQuantity(),
+                        value.getUnitPrice(), key.getWeight() * value.getQuantity()));
     }
 
     @Override

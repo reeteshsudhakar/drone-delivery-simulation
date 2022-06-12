@@ -1,0 +1,4 @@
+make_location,plaza,10,18,2
+make_location,plaza,10,19,2
+check_distance,plaza,plaza
+stop
