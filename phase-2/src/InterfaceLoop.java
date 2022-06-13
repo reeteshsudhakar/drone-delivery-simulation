@@ -584,7 +584,7 @@ public class InterfaceLoop {
         String[] tokens;
         final String DELIMITER = ",";
 
-        while (true) {
+        while (commandLineInput.hasNextLine()) {
             try {
                 // Determine the next command and echo it to the monitor for testing purposes
                 wholeInputLine = commandLineInput.nextLine();

@@ -1,0 +1,19 @@
+Welcome to the Restaurant Supply Express System!
+> make_location,plaza,10,18,2
+OK:change_completed
+> make_service,swift_spices,0,plaza
+OK:service_created
+> make_service,star_shine,0,plaza
+OK:service_created
+> make_drone,swift_spices,4,2,10
+OK:change_completed
+> make_drone,swift_spices,5,2,10
+OK:change_completed
+> make_drone,star_shine,5,2,10
+ERROR:not_enough_space_to_create_new_drone
+> display_locations
+name: plaza, (x,y): (10, 18), space: [0 / 2] remaining
+OK:display_completed
+> stop
+stop acknowledged
+simulation terminated
