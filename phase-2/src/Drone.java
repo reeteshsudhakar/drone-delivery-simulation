@@ -140,11 +140,19 @@ public class Drone implements Comparable<Drone> {
     }
 
     /**
-     * Method to update the fuel of a drone
-     * @param fuel the new fuel of the drone
+     * Method to load the fuel of a drone
+     * @param fuel the fuel to be loaded to the drone
      */
-    public void setFuel(Integer fuel) {
-        this.fuel = fuel;
+    public void loadDroneFuel(Integer fuel) {
+        this.fuel += fuel;
+    }
+
+    /**
+     * Method to use the fuel of a drone as it flies to a location
+     * @param fuel the fuel to be used
+     */
+    public void useDroneFuel(Integer fuel) {
+        this.fuel -= fuel;
     }
 
     /**
@@ -175,5 +183,35 @@ public class Drone implements Comparable<Drone> {
     @Override
     public int compareTo(Drone drone) {
         return this.tag.compareTo(drone.getTag());
+    }
+
+    public void addToPayload(Ingredient loadIngredient, String barcode, Integer quantity, Integer unitPrice) {
+        for (Ingredient ingredient : getPayload().keySet()) {
+            if (ingredient.getBarcode().equals(barcode)) {
+                getPayload().get(ingredient).incrementQuantity(quantity);
+                return;
+            }
+        }
+        getPayload().put(loadIngredient, new Package(quantity, unitPrice));
+        decrementRemainingCapacity(quantity);
+    }
+
+    public void flyToDestination(Location destination) {
+        this.getCurrentLocation().incrementSpacesLeft();
+        destination.decrementSpacesLeft();
+        this.setCurrentLocation(destination);
+        this.useDroneFuel(getCurrentLocation().calculateDistance(destination));
+    }
+
+    public void completePurchase(Ingredient ingredient, Integer quantity) {
+        this.addSales(quantity * this.getPayload().get(ingredient).getUnitPrice());
+
+        if (this.getPayload().get(ingredient).getQuantity().equals(quantity)) {
+            this.getPayload().remove(ingredient);
+        } else {
+            this.getPayload().get(ingredient).decrementQuantity(quantity);
+        }
+
+        this.incrementRemainingCapacity(quantity);
     }
 }

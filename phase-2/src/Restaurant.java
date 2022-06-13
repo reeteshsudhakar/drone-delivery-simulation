@@ -7,7 +7,7 @@
 public class Restaurant implements Comparable<Restaurant> {
     // Object attributes
     private final String name;
-    private final Location location;
+    private final Location locatedAt;
     private Integer spending;
 
     /**
@@ -17,7 +17,7 @@ public class Restaurant implements Comparable<Restaurant> {
      */
     public Restaurant(String init_name, Location location) {
         this.name = init_name;
-        this.location = location;
+        this.locatedAt = location;
         this.spending = 0;
     }
 
@@ -34,7 +34,7 @@ public class Restaurant implements Comparable<Restaurant> {
      * @return location of restaurant
      */
     public Location getLocation() {
-        return location;
+        return locatedAt;
     }
 
     /**
@@ -47,11 +47,15 @@ public class Restaurant implements Comparable<Restaurant> {
 
     @Override
     public String toString() {
-        return String.format("Name: %s, Money Spent: $%d, Location: %s", name, spending, location.getName());
+        return String.format("Name: %s, Money Spent: $%d, Location: %s", name, spending, locatedAt.getName());
     }
 
     @Override
     public int compareTo(Restaurant other) {
         return this.name.compareTo(other.getName());
+    }
+
+    public void makePurchase(Drone drone, Ingredient ingredient, Integer quantity) {
+        this.addSpending(drone.getPayload().get(ingredient).getUnitPrice() * quantity);
     }
 }

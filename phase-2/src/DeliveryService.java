@@ -8,7 +8,7 @@ public class DeliveryService implements Comparable <DeliveryService> {
     // Object attributes
     private final String name;
     private Integer revenue;
-    private final Location location;
+    private final Location locatedAt;
 
     /**
      * Constructor for DeliveryService class.
@@ -19,7 +19,7 @@ public class DeliveryService implements Comparable <DeliveryService> {
     public DeliveryService(String init_name, Integer init_revenue, Location location) {
         this.name = init_name;
         this.revenue = init_revenue;
-        this.location = location;
+        this.locatedAt = location;
     }
 
     /**
@@ -35,12 +35,12 @@ public class DeliveryService implements Comparable <DeliveryService> {
      * @return location of the Delivery Service.
      */
     public Location getLocation() {
-        return location;
+        return locatedAt;
     }
 
     @Override
     public String toString() {
-        return String.format("Name: %s, Revenue: $%d, Location: %s", name, revenue, location.getName());
+        return String.format("Name: %s, Revenue: $%d, Location: %s", name, revenue, locatedAt.getName());
     }
 
     @Override

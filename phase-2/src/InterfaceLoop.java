@@ -383,10 +383,7 @@ public class InterfaceLoop {
         }
 
         // if the drone can fly to the destination, move it to the destination, update the fuel and the spaces left
-        movedDrone.getCurrentLocation().incrementSpacesLeft();
-        destinationLocation.decrementSpacesLeft();
-        movedDrone.setCurrentLocation(destinationLocation);
-        movedDrone.setFuel(movedDrone.getFuel() - distance);
+        movedDrone.flyToDestination(destinationLocation);
         displayMessage("OK","change_completed");
     }
 
@@ -449,15 +446,7 @@ public class InterfaceLoop {
         } else if (loadDrone.getRemainingCapacity() < quantity) {
             displayMessage("ERROR","not_enough_space_for_requested_ingredients");
         } else {
-            for (Ingredient ingredient : loadDrone.getPayload().keySet()) {
-                if (ingredient.getBarcode().equals(barcode)) {
-                    loadDrone.getPayload().get(ingredient).incrementQuantity(quantity);
-                    displayMessage("OK","change_completed");
-                    return;
-                }
-            }
-            loadDrone.getPayload().put(loadIngredient, new Package(quantity, unitPrice));
-            loadDrone.decrementRemainingCapacity(quantity);
+            loadDrone.addToPayload(loadIngredient, barcode, quantity, unitPrice);
             displayMessage("OK","change_completed");
         }
     }
@@ -491,7 +480,7 @@ public class InterfaceLoop {
         if (!loadFuelDrone.getCurrentLocation().equals(loadFuelDrone.getHomeBase())) {
             displayMessage("ERROR", "drone_not_located_at_home_base");
         } else {
-            loadFuelDrone.setFuel(loadFuelDrone.getFuel() + petrol);
+            loadFuelDrone.loadDroneFuel(petrol);
             displayMessage("OK", "change_completed");
         }
     }
@@ -579,16 +568,9 @@ public class InterfaceLoop {
         if (buyerDrone.getPayload().get(buyerIngredient).getQuantity().compareTo(quantity) < 0) {
             displayMessage("ERROR","drone_does_not_have_enough_of_ingredient_requested");
             return;
-        } else if (buyerDrone.getPayload().get(buyerIngredient).getQuantity().equals(quantity)) {
-            buyerRestaurant.addSpending(buyerDrone.getPayload().get(buyerIngredient).getUnitPrice() * quantity);
-            buyerDrone.addSales(buyerDrone.getPayload().get(buyerIngredient).getUnitPrice() * quantity);
-            buyerDrone.getPayload().remove(buyerIngredient);
-            buyerDrone.incrementRemainingCapacity(quantity);
         } else {
-            buyerRestaurant.addSpending(buyerDrone.getPayload().get(buyerIngredient).getUnitPrice() * quantity);
-            buyerDrone.addSales(buyerDrone.getPayload().get(buyerIngredient).getUnitPrice() * quantity);
-            buyerDrone.getPayload().get(buyerIngredient).decrementQuantity(quantity);
-            buyerDrone.incrementRemainingCapacity(quantity);
+            buyerRestaurant.makePurchase(buyerDrone, buyerIngredient, quantity);
+            buyerDrone.completePurchase(buyerIngredient, quantity);
         }
         displayMessage("OK","change_completed");
     }
