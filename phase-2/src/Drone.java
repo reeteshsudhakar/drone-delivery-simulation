@@ -1,4 +1,4 @@
-import java.util.HashMap;
+import java.util.TreeMap;
 
 /**
  * Drone class used to represent a drone that delivers ingredients in the interface.
@@ -16,7 +16,7 @@ public class Drone implements Comparable<Drone> {
     private final Location homeBase;
     private Location currentLocation;
     private Integer sales;
-    private HashMap<Ingredient, Package> payload;
+    private TreeMap<Ingredient, Package> payload;
 
     /**
      * Constructor for Drone class.
@@ -37,7 +37,7 @@ public class Drone implements Comparable<Drone> {
         this.currentLocation = homeBase;
         this.homeBase = homeBase;
         this.sales = 0;
-        this.payload = new HashMap<>();
+        this.payload = new TreeMap<>();
     }
 
     /**
@@ -109,7 +109,7 @@ public class Drone implements Comparable<Drone> {
      * ingredients and their quantity and price
      * @return the payload of the drone
      */
-    public HashMap<Ingredient, Package> getPayload() {
+    public TreeMap<Ingredient, Package> getPayload() {
         return payload;
     }
 
@@ -199,8 +199,8 @@ public class Drone implements Comparable<Drone> {
     public void flyToDestination(Location destination) {
         this.getCurrentLocation().incrementSpacesLeft();
         destination.decrementSpacesLeft();
-        this.setCurrentLocation(destination);
         this.useDroneFuel(getCurrentLocation().calculateDistance(destination));
+        this.setCurrentLocation(destination);
     }
 
     public void completePurchase(Ingredient ingredient, Integer quantity) {
