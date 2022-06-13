@@ -33,6 +33,7 @@ public class InterfaceLoop {
         // checking if the ingredient already exists
         if (ingredients.containsKey(barcode)) {
             displayMessage("ERROR","ingredient_already_exists");
+            return;
         }
         // checking if the weight is valid (positive) and whether the passed in arguments are valid
         if (weight <= 0) {
@@ -69,6 +70,7 @@ public class InterfaceLoop {
         // checking if the location already exists
         if (locations.containsKey(name)) {
             displayMessage("ERROR","location_already_exists");
+            return;
         }
 
         // checking if the space limit is valid (positive) and whether the passed in arguments are valid
@@ -157,6 +159,7 @@ public class InterfaceLoop {
             displayMessage("OK","service_created");
         } else {
             displayMessage("ERROR", "location_identifier_does_not_exist");
+            return;
         }
     }
 
@@ -189,6 +192,7 @@ public class InterfaceLoop {
             displayMessage("OK","change_completed");
         } else {
             displayMessage("ERROR", "location_identifier_does_not_exist");
+            return;
         }
     }
 
@@ -242,6 +246,7 @@ public class InterfaceLoop {
         // creating the drone IFF there is space in the service's home base for it
         if (serviceLocation.getSpacesLeft() == 0) {
             displayMessage("ERROR","not_enough_space_to_create_new_drone");
+            return;
         } else {
             Drone newDrone = new Drone(tag, capacity, fuel, serviceLocation);
             newService.getDrones().put(tag, newDrone);
@@ -262,6 +267,7 @@ public class InterfaceLoop {
             displayMessage("OK","display_completed");
         } else {
             displayMessage("ERROR","service_does_not_exist");
+            return;
         }
     }
 
@@ -386,8 +392,10 @@ public class InterfaceLoop {
         // load the ingredient and track quantity and price using a package if there is space to load it
         if (loadDrone.getRemainingCapacity() == 0) {
             displayMessage("ERROR","no_space_left_to_load_ingredients");
+            return;
         } else if (loadDrone.getRemainingCapacity() < quantity) {
             displayMessage("ERROR","not_enough_space_for_requested_ingredients");
+            return;
         } else {
             loadDrone.addToPayload(loadIngredient, barcode, quantity, unitPrice);
             displayMessage("OK","change_completed");
@@ -422,6 +430,7 @@ public class InterfaceLoop {
         // if the drone is at the service's home base, fill the drone with fuel
         if (!loadFuelDrone.getCurrentLocation().equals(loadFuelDrone.getHomeBase())) {
             displayMessage("ERROR", "drone_not_located_at_home_base");
+            return;
         } else {
             loadFuelDrone.loadDroneFuel(petrol);
             displayMessage("OK", "change_completed");
