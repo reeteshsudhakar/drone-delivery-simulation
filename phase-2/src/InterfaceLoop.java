@@ -258,7 +258,7 @@ public class InterfaceLoop {
         // displaying the drones in the system attached to the specified service
         if (services.containsKey(serviceName)) {
             DeliveryService service = services.get(serviceName);
-            service.getDrones().forEach((k, v) -> System.out.println(v.toString()));
+            service.getDrones().forEach((k, v) -> v.displayDroneInfo());
             displayMessage("OK","display_completed");
         } else {
             displayMessage("ERROR","service_does_not_exist");
