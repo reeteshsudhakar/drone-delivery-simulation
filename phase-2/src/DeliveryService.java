@@ -1,3 +1,5 @@
+import java.util.TreeMap;
+
 /**
  * Delivery Service class to handle the delivery of ingredients to restaurants.
  *
@@ -9,6 +11,7 @@ public class DeliveryService implements Comparable <DeliveryService> {
     private final String name;
     private Integer revenue;
     private final Location locatedAt;
+    private TreeMap<Integer, Drone> drones;
 
     /**
      * Constructor for DeliveryService class.
@@ -20,6 +23,7 @@ public class DeliveryService implements Comparable <DeliveryService> {
         this.name = init_name;
         this.revenue = init_revenue;
         this.locatedAt = location;
+        this.drones = new TreeMap<>();
     }
 
     /**
@@ -36,6 +40,10 @@ public class DeliveryService implements Comparable <DeliveryService> {
      */
     public Location getLocation() {
         return locatedAt;
+    }
+
+    public TreeMap<Integer, Drone> getDrones() {
+        return drones;
     }
 
     @Override

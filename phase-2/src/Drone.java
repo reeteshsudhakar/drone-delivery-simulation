@@ -8,7 +8,6 @@ import java.util.TreeMap;
  */
 public class Drone implements Comparable<Drone> {
     // Object attributes
-    private final DeliveryService service;
     private final Integer tag;
     private final Integer capacity;
     private Integer remainingCapacity;
@@ -21,15 +20,12 @@ public class Drone implements Comparable<Drone> {
     /**
      * Constructor for Drone class.
      *
-     * @param service delivery service for the drone
      * @param init_tag drone tag (unique)
      * @param init_capacity drone capacity for ingredients
      * @param init_fuel drone fuel
      * @param homeBase home base currentLocation
      */
-    public Drone(DeliveryService service, Integer init_tag, Integer init_capacity,
-                 Integer init_fuel, Location homeBase) {
-        this.service = service;
+    public Drone(Integer init_tag, Integer init_capacity, Integer init_fuel, Location homeBase) {
         this.tag = init_tag;
         this.capacity = init_capacity;
         this.remainingCapacity = init_capacity;
@@ -38,14 +34,6 @@ public class Drone implements Comparable<Drone> {
         this.homeBase = homeBase;
         this.sales = 0;
         this.payload = new TreeMap<>();
-    }
-
-    /**
-     * Getter for Delivery Service.
-     * @return delivery service for the drone
-     */
-    public DeliveryService getService() {
-        return service;
     }
 
     /**

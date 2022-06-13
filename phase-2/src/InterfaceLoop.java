@@ -1,6 +1,5 @@
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Scanner;
+import java.util.TreeMap;
 
 /*
 TODO: test interface against NEW test commands
@@ -17,11 +16,10 @@ TODO: code cleanup (see where methods can be moved to other classes, simplified)
 public class InterfaceLoop {
 
     // collections of objects for the interface loop
-    ArrayList<Ingredient> ingredients = new ArrayList<>();
-    ArrayList<Location> locations = new ArrayList<>();
-    ArrayList<DeliveryService> services = new ArrayList<>();
-    ArrayList<Restaurant> restaurants = new ArrayList<>();
-    ArrayList<Drone> drones = new ArrayList<>();
+    TreeMap<String, Ingredient> ingredients = new TreeMap<>();
+    TreeMap<String, Location> locations = new TreeMap<>();
+    TreeMap<String, DeliveryService> services = new TreeMap<>();
+    TreeMap<String, Restaurant> restaurants = new TreeMap<>();
 
     InterfaceLoop() { }
 
@@ -33,13 +31,9 @@ public class InterfaceLoop {
      */
     void makeIngredient(String barcode, String name, Integer weight) {
         // checking if the ingredient already exists
-        for (Ingredient ingredient : ingredients) {
-            if (ingredient.getBarcode().equals(barcode)) {
-                displayMessage("ERROR", "ingredient_already_exists");
-                return;
-            }
+        if (ingredients.containsKey(barcode)) {
+            displayMessage("ERROR","ingredient_already_exists");
         }
-
         // checking if the weight is valid (positive) and whether the passed in arguments are valid
         if (weight <= 0) {
             displayMessage("ERROR", "ingredient_weight_must_be_greater_than_zero");
@@ -51,7 +45,7 @@ public class InterfaceLoop {
 
         // creating the ingredient and adding it to the collection
         Ingredient ingredient = new Ingredient(barcode, name, weight);
-        ingredients.add(ingredient);
+        ingredients.put(barcode, ingredient);
         displayMessage("OK","change_completed");
     }
 
@@ -60,10 +54,7 @@ public class InterfaceLoop {
      */
     void displayIngredients() {
         // displaying all the ingredients in the system by iterating through the collection
-        Collections.sort(ingredients);
-        for (Ingredient ingredient : ingredients) {
-            System.out.println(ingredient.toString());
-        }
+        ingredients.forEach((k, v) -> System.out.println(v.toString()));
         displayMessage("OK","display_completed");
     }
 
@@ -76,11 +67,8 @@ public class InterfaceLoop {
      */
     void makeLocation(String name, Integer x_coordinate, Integer y_coordinate, Integer spaceLimit) {
         // checking if the location already exists
-        for (Location location : locations) {
-            if (location.getName().equals(name)) {
-                displayMessage("ERROR", "location_already_exists");
-                return;
-            }
+        if (locations.containsKey(name)) {
+            displayMessage("ERROR","location_already_exists");
         }
 
         // checking if the space limit is valid (positive) and whether the passed in arguments are valid
@@ -94,7 +82,7 @@ public class InterfaceLoop {
 
         // creating the location and adding it to the collection
         Location location = new Location(name, x_coordinate, y_coordinate, spaceLimit);
-        locations.add(location);
+        locations.put(name, location);
         displayMessage("OK","change_completed");
     }
 
@@ -103,10 +91,7 @@ public class InterfaceLoop {
      */
     void displayLocations() {
         // displaying all the locations in the system by iterating through the collection
-        Collections.sort(locations);
-        for (Location location : locations) {
-            System.out.println(location.toString());
-        }
+        locations.forEach((k, v) -> System.out.println(v.toString()));
         displayMessage("OK","display_completed");
     }
 
@@ -117,22 +102,19 @@ public class InterfaceLoop {
      */
     void checkDistance(String departurePoint, String arrivalPoint) {
         // checking if the departure and arrival points are valid
-        Location departureLocation = null;
-        Location arrivalLocation = null;
-        for (Location location : locations) {
-            if (location.getName().equals(departurePoint)) {
-                departureLocation = location;
-            }
-            if (location.getName().equals(arrivalPoint)) {
-                arrivalLocation = location;
-            }
-        }
+        Location departureLocation;
+        Location arrivalLocation;
 
-        // if the departure or arrival points are not valid, display an error message
-        if (departureLocation == null) {
+        if (locations.containsKey(departurePoint)) {
+            departureLocation = locations.get(departurePoint);
+        } else {
             displayMessage("ERROR", "departure_location_does_not_exist");
             return;
-        } else if (arrivalLocation == null) {
+        }
+
+        if (locations.containsKey(arrivalPoint)) {
+            arrivalLocation = locations.get(arrivalPoint);
+        } else {
             displayMessage("ERROR", "arrival_location_does_not_exist");
             return;
         }
@@ -150,11 +132,9 @@ public class InterfaceLoop {
      */
     void makeDeliveryService(String name, Integer revenue, String locatedAt) {
         // checking if the service already exists
-        for (DeliveryService service : services) {
-            if (service.getName().equals(name)) {
-                displayMessage("ERROR", "service_already_exists");
-                return;
-            }
+        if (services.containsKey(name)) {
+            displayMessage("ERROR", "service_already_exists");
+            return;
         }
 
         // checking if the revenue is valid (positive) and whether the passed in arguments are valid
@@ -170,21 +150,13 @@ public class InterfaceLoop {
         }
 
         // creating the service and adding it to the collection IF the location exists in the system
-        boolean found = false;
-        for (Location location : locations) {
-            if (location.getName().equals(locatedAt)) {
-                found = true;
-                DeliveryService newService = new DeliveryService(name, revenue, location);
-                services.add(newService);
-                break;
-            }
-        }
-
         // if the location does not exist in the system, display an error message
-        if (!found) {
-            displayMessage("ERROR", "location_identifier_does_not_exist");
-        } else {
+        if (locations.containsKey(locatedAt)) {
+            DeliveryService newService = new DeliveryService(name, revenue, locations.get(locatedAt));
+            services.put(name, newService);
             displayMessage("OK","service_created");
+        } else {
+            displayMessage("ERROR", "location_identifier_does_not_exist");
         }
     }
 
@@ -193,10 +165,7 @@ public class InterfaceLoop {
      */
     void displayServices() {
         // displaying all the delivery services in the system by iterating through the collection
-        Collections.sort(services);
-        for (DeliveryService deliveryService : services) {
-            System.out.println(deliveryService.toString());
-        }
+        services.forEach((k, v) -> System.out.println(v.toString()));
         displayMessage("OK","display_completed");
     }
 
@@ -207,28 +176,19 @@ public class InterfaceLoop {
      */
     void makeRestaurant(String name, String locatedAt) {
         // checking if the restaurant already exists
-        for (Restaurant restaurant : restaurants) {
-            if (restaurant.getName().equals(name)) {
-                displayMessage("ERROR", "restaurant_already_exists");
-                return;
-            }
+        if (restaurants.containsKey(name)) {
+            displayMessage("ERROR", "restaurant_already_exists");
+            return;
         }
 
         // checking if the passed in location exists
-        boolean found = false;
-        for (Location location : locations) {
-            if (location.getName().equals(locatedAt)) {
-                found = true;
-                Restaurant restaurant = new Restaurant(name, location);
-                restaurants.add(restaurant);
-            }
-        }
-
         // if the location does not exist in the system, display an error message
-        if (!found) {
-            displayMessage("ERROR", "location_identifier_does_not_exist");
-        } else {
+        if (locations.containsKey(locatedAt)) {
+            Restaurant restaurant = new Restaurant(name, locations.get(locatedAt));
+            restaurants.put(name, restaurant);
             displayMessage("OK","change_completed");
+        } else {
+            displayMessage("ERROR", "location_identifier_does_not_exist");
         }
     }
 
@@ -237,10 +197,7 @@ public class InterfaceLoop {
      */
     void displayRestaurants() {
         // displaying all the restaurants in the system by iterating through the collection
-        Collections.sort(restaurants);
-        for (Restaurant restaurant : restaurants) {
-            System.out.println(restaurant.toString());
-        }
+        restaurants.forEach((k, v) -> System.out.println(v.toString()));
         displayMessage("OK","display_completed");
     }
 
@@ -255,28 +212,22 @@ public class InterfaceLoop {
         // checking if the service for the drone exists
         DeliveryService newService = null;
         Location serviceLocation = null;
-        boolean found = false;
-        for (DeliveryService service : services) {
-            if (service.getName().equals(serviceName)) {
-                found = true;
-                newService = service;
-                serviceLocation = service.getLocation();
-                break;
-            }
+
+        if (services.containsKey(serviceName)) {
+            newService = services.get(serviceName);
+            serviceLocation = newService.getLocation();
         }
 
         // if the service does not exist in the system, display an error message
-        if (!found) {
+        if (newService == null) {
             displayMessage("ERROR","service_identifier_does_not_exist");
             return;
         }
 
         // checking if the drone already exists in the system
-        for (Drone drone : drones) {
-            if (drone.getTag().equals(tag) && drone.getService().getName().equals(serviceName)) {
-                displayMessage("ERROR","drone_already_exists");
-                return;
-            }
+        if (newService.getDrones().containsKey(tag)) {
+            displayMessage("ERROR","drone_already_exists");
+            return;
         }
 
         // checking if the capacity is valid (positive) and whether the fuel is valid (non-negative)
@@ -292,8 +243,8 @@ public class InterfaceLoop {
         if (serviceLocation.getSpacesLeft() == 0) {
             displayMessage("ERROR","not_enough_space_to_create_new_drone");
         } else {
-            Drone newDrone = new Drone(newService, tag, capacity, fuel, serviceLocation);
-            drones.add(newDrone);
+            Drone newDrone = new Drone(tag, capacity, fuel, serviceLocation);
+            newService.getDrones().put(tag, newDrone);
             serviceLocation.decrementSpacesLeft();
             displayMessage("OK","change_completed");
         }
@@ -305,13 +256,13 @@ public class InterfaceLoop {
      */
     void displayDrones(String serviceName) {
         // displaying the drones in the system attached to the specified service
-        Collections.sort(drones);
-        for (Drone drone : drones) {
-            if (drone.getService().getName().equals(serviceName)) {
-                drone.displayDroneInfo();
-            }
+        if (services.containsKey(serviceName)) {
+            DeliveryService service = services.get(serviceName);
+            service.getDrones().forEach((k, v) -> System.out.println(v.toString()));
+            displayMessage("OK","display_completed");
+        } else {
+            displayMessage("ERROR","service_does_not_exist");
         }
-        displayMessage("OK","display_completed");
     }
 
     /**
@@ -319,16 +270,13 @@ public class InterfaceLoop {
      */
     void displayAllDrones() {
         // displaying all the drones in the system by iterating through the collection
-        Collections.sort(services);
-        Collections.sort(drones);
-        for (DeliveryService service : services) {
+        for (DeliveryService service : services.values()) {
             System.out.printf("Service name [%s] drones:%n", service.getName());
-            for (Drone drone : drones) {
-                if (drone.getService().getName().equals(service.getName())) {
-                    drone.displayDroneInfo();
-                }
+            for (Drone drone : service.getDrones().values()) {
+                drone.displayDroneInfo();
             }
         }
+
         displayMessage("OK","display_completed");
     }
 
@@ -342,10 +290,11 @@ public class InterfaceLoop {
         // checking if the drone exists in the system
         Drone movedDrone = null;
         Location destinationLocation = null;
-        for (Drone drone : drones) {
-            if (drone.getTag().equals(tag) && drone.getService().getName().equals(serviceName)) {
-                movedDrone = drone;
-                break;
+
+        if (services.containsKey(serviceName)) {
+            DeliveryService service = services.get(serviceName);
+            if (service.getDrones().containsKey(tag)) {
+                movedDrone = service.getDrones().get(tag);
             }
         }
 
@@ -354,11 +303,8 @@ public class InterfaceLoop {
             displayMessage("ERROR", "drone_does_not_exist");
             return;
         } else {
-            for (Location location : locations) {
-                if (location.getName().equals(destination)) {
-                    destinationLocation = location;
-                    break;
-                }
+            if (locations.containsKey(destination)) {
+                destinationLocation = locations.get(destination);
             }
         }
 
@@ -399,10 +345,10 @@ public class InterfaceLoop {
         // checking if the drone exists in the system
         Drone loadDrone = null;
         Ingredient loadIngredient = null;
-        for (Drone drone : drones) {
-            if (drone.getTag().equals(tag) && drone.getService().getName().equals(serviceName)) {
-                loadDrone = drone;
-                break;
+        if (services.containsKey(serviceName)) {
+            DeliveryService service = services.get(serviceName);
+            if (service.getDrones().containsKey(tag)) {
+                loadDrone = service.getDrones().get(tag);
             }
         }
 
@@ -411,11 +357,8 @@ public class InterfaceLoop {
             displayMessage("ERROR", "drone_does_not_exist");
             return;
         } else { // if the drone exists in the system, check if the ingredient exists in the system
-            for (Ingredient ingredient : ingredients) {
-                if (ingredient.getBarcode().equals(barcode)) {
-                    loadIngredient = ingredient;
-                    break;
-                }
+            if (ingredients.containsKey(barcode)) {
+                loadIngredient = ingredients.get(barcode);
             }
         }
 
@@ -460,10 +403,10 @@ public class InterfaceLoop {
     void loadFuel(String serviceName, Integer tag, Integer petrol) {
         // checking if the drone exists in the system
         Drone loadFuelDrone = null;
-        for (Drone drone : drones) {
-            if (drone.getTag().equals(tag) && drone.getService().getName().equals(serviceName)) {
-                loadFuelDrone = drone;
-                break;
+        if (services.containsKey(serviceName)) {
+            DeliveryService service = services.get(serviceName);
+            if (service.getDrones().containsKey(tag)) {
+                loadFuelDrone = service.getDrones().get(tag);
             }
         }
 
@@ -497,11 +440,8 @@ public class InterfaceLoop {
                             String barcode, Integer quantity) {
         // checking if the restaurant exists in the system
         Restaurant buyerRestaurant = null;
-        for (Restaurant restaurant : restaurants) {
-            if (restaurant.getName().equals(restaurantName)) {
-                buyerRestaurant = restaurant;
-                break;
-            }
+        if (restaurants.containsKey(restaurantName)) {
+            buyerRestaurant = restaurants.get(restaurantName);
         }
 
         // if the restaurant does not exist in the system, display an error message
@@ -512,10 +452,10 @@ public class InterfaceLoop {
 
         // checking if the drone exists in the system
         Drone buyerDrone = null;
-        for (Drone drone : drones) {
-            if (drone.getTag().equals(tag) && drone.getService().getName().equals(serviceName)) {
-                buyerDrone = drone;
-                break;
+        if (services.containsKey(serviceName)) {
+            DeliveryService service = services.get(serviceName);
+            if (service.getDrones().containsKey(tag)) {
+                buyerDrone = service.getDrones().get(tag);
             }
         }
 
@@ -526,13 +466,7 @@ public class InterfaceLoop {
         }
 
         // checking if the ingredient exists in the system
-        boolean ingredientExists = false;
-        for (Ingredient ingredient : ingredients) {
-            if (ingredient.getBarcode().equals(barcode)) {
-                ingredientExists = true;
-                break;
-            }
-        }
+        boolean ingredientExists = ingredients.containsKey(barcode);
 
         // if the ingredient does not exist in the system, display an error message
         if (!ingredientExists) {
