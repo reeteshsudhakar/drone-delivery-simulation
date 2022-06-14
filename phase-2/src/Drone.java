@@ -175,14 +175,19 @@ public class Drone implements Comparable<Drone> {
      * @param unitPrice the unit price of the ingredient to be loaded to the drone
      */
     public void addToPayload(Ingredient loadIngredient, String barcode, Integer quantity, Integer unitPrice) {
+        boolean ingredientInPayload = false;
         for (Ingredient ingredient : getPayload().keySet()) {
             if (ingredient.getBarcode().equals(barcode)) {
                 getPayload().get(ingredient).incrementQuantity(quantity);
-                return;
+                ingredientInPayload = true;
+                break;
             }
         }
-        getPayload().put(loadIngredient, new Package(quantity, unitPrice));
-        decrementRemainingCapacity(quantity);
+
+        if (!ingredientInPayload) {
+            getPayload().put(loadIngredient, new Package(quantity, unitPrice));
+            decrementRemainingCapacity(quantity);
+        }
     }
 
     /**
