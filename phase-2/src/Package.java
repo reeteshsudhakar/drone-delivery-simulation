@@ -7,7 +7,7 @@
 public class Package {
     // Object attributes
     private Integer quantity;
-    private final Integer unitPrice;
+    private Integer unitPrice;
 
     /**
      * Constructor for Package class.

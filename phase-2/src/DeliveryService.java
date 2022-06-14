@@ -8,9 +8,9 @@ import java.util.TreeMap;
  */
 public class DeliveryService implements Comparable <DeliveryService> {
     // Object attributes
-    private final String name;
+    private String name;
     private Integer revenue;
-    private final Location locatedAt;
+    private Location locatedAt;
     private TreeMap<Integer, Drone> drones;
 
     /**
@@ -42,17 +42,30 @@ public class DeliveryService implements Comparable <DeliveryService> {
         return locatedAt;
     }
 
+    /**
+     * Getter for the drones under a delivery service.
+     * @return collection of drones associated with a delivery service.
+     */
     public TreeMap<Integer, Drone> getDrones() {
         return drones;
     }
 
+    /**
+     * Override to string method to print the info about the Delivery Service.
+     * @return string representation of the Delivery Service.
+     */
     @Override
     public String toString() {
         return String.format("Name: %s, Revenue: $%d, Location: %s", name, revenue, locatedAt.getName());
     }
 
+    /**
+     * Override compareTo method to compare the Delivery Services for sorting in their TreeMap.
+     * @param other Delivery Service to compare with.
+     * @return integer value representing the comparison.
+     */
     @Override
-    public int compareTo(DeliveryService o) {
-        return this.name.compareTo(o.getName());
+    public int compareTo(DeliveryService other) {
+        return this.name.compareTo(other.name);
     }
 }

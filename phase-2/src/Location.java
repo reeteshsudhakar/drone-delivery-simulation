@@ -6,10 +6,10 @@
  */
 public class Location implements Comparable<Location> {
     // Object attributes
-    private final String name;
-    private final Integer x_coordinate;
-    private final Integer y_coordinate;
-    private final Integer spaceLimit;
+    private String name;
+    private Integer x_coordinate;
+    private Integer y_coordinate;
+    private Integer spaceLimit;
     private Integer spacesLeft;
 
     /**
@@ -108,8 +108,13 @@ public class Location implements Comparable<Location> {
                 name, x_coordinate, y_coordinate, spacesLeft, spaceLimit);
     }
 
+    /**
+     * Override of compareTo method to compare two locations to sort them.
+     * @param other Location to compare to
+     * @return Integer representing the comparison of locations based on their name
+     */
     @Override
-    public int compareTo(Location o) {
-        return this.name.compareTo(o.getName());
+    public int compareTo(Location other) {
+        return this.getName().compareTo(other.getName());
     }
 }

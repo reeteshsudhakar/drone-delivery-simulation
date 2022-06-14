@@ -8,14 +8,14 @@ import java.util.TreeMap;
  */
 public class Drone implements Comparable<Drone> {
     // Object attributes
-    private final Integer tag;
-    private final Integer capacity;
+    private Integer tag;
+    private Integer capacity;
     private Integer remainingCapacity;
     private Integer fuel;
-    private final Location homeBase;
+    private Location homeBase;
     private Location currentLocation;
     private Integer sales;
-    private TreeMap<Ingredient, Package> payload;
+    private TreeMap<Ingredient, Package> payload = new TreeMap<>();
 
     /**
      * Constructor for Drone class.
@@ -33,7 +33,6 @@ public class Drone implements Comparable<Drone> {
         this.currentLocation = homeBase;
         this.homeBase = homeBase;
         this.sales = 0;
-        this.payload = new TreeMap<>();
     }
 
     /**
@@ -168,11 +167,13 @@ public class Drone implements Comparable<Drone> {
                         value.getUnitPrice(), key.getWeight() * value.getQuantity()));
     }
 
-    @Override
-    public int compareTo(Drone drone) {
-        return this.tag.compareTo(drone.getTag());
-    }
-
+    /**
+     * Method to load a package to a drone.
+     * @param loadIngredient the ingredient to be loaded to the drone
+     * @param barcode the barcode of the ingredient to be loaded to the drone
+     * @param quantity the quantity of the ingredient to be loaded to the drone
+     * @param unitPrice the unit price of the ingredient to be loaded to the drone
+     */
     public void addToPayload(Ingredient loadIngredient, String barcode, Integer quantity, Integer unitPrice) {
         for (Ingredient ingredient : getPayload().keySet()) {
             if (ingredient.getBarcode().equals(barcode)) {
@@ -184,6 +185,10 @@ public class Drone implements Comparable<Drone> {
         decrementRemainingCapacity(quantity);
     }
 
+    /**
+     * Method to fly the drone to a location.
+     * @param destination the location to which the drone is to be flown to
+     */
     public void flyToDestination(Location destination) {
         this.getCurrentLocation().incrementSpacesLeft();
         destination.decrementSpacesLeft();
@@ -191,6 +196,11 @@ public class Drone implements Comparable<Drone> {
         this.setCurrentLocation(destination);
     }
 
+    /**
+     * Method to complete a transaction with a drone.
+     * @param ingredient the ingredient to be purchased from the drone
+     * @param quantity the quantity of the ingredient to be purchased from the drone
+     */
     public void completePurchase(Ingredient ingredient, Integer quantity) {
         this.addSales(quantity * this.getPayload().get(ingredient).getUnitPrice());
 
@@ -201,5 +211,15 @@ public class Drone implements Comparable<Drone> {
         }
 
         this.incrementRemainingCapacity(quantity);
+    }
+
+    /**
+     * Override of the compareTo method to compare two drones based on their tag to sort them.
+     * @param drone the drone to be compared to the current drone
+     * @return an integer representing the comparison of the two drones
+     */
+    @Override
+    public int compareTo(Drone drone) {
+        return this.getTag().compareTo(drone.getTag());
     }
 }
