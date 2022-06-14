@@ -24,7 +24,7 @@ public class Package {
      * @return quantity of ingredient in package
      */
     public Integer getQuantity() {
-        return quantity;
+        return this.quantity;
     }
 
     /**
@@ -32,7 +32,7 @@ public class Package {
      * @return unity price of ingredient
      */
     public Integer getUnitPrice() {
-        return unitPrice;
+        return this.unitPrice;
     }
 
     /**

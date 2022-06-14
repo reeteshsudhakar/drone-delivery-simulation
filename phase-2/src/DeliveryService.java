@@ -31,7 +31,7 @@ public class DeliveryService implements Comparable <DeliveryService> {
      * @return name of the Delivery Service.
      */
     public String getName() {
-        return name;
+        return this.name;
     }
 
     /**
@@ -39,7 +39,7 @@ public class DeliveryService implements Comparable <DeliveryService> {
      * @return location of the Delivery Service.
      */
     public Location getLocation() {
-        return locatedAt;
+        return this.locatedAt;
     }
 
     /**
@@ -47,7 +47,7 @@ public class DeliveryService implements Comparable <DeliveryService> {
      * @return collection of drones associated with a delivery service.
      */
     public TreeMap<Integer, Drone> getDrones() {
-        return drones;
+        return this.drones;
     }
 
     /**
@@ -56,7 +56,7 @@ public class DeliveryService implements Comparable <DeliveryService> {
      */
     @Override
     public String toString() {
-        return String.format("Name: %s, Revenue: $%d, Location: %s", name, revenue, locatedAt.getName());
+        return String.format("Name: %s, Revenue: $%d, Location: %s", this.name, this.revenue, this.locatedAt.getName());
     }
 
     /**

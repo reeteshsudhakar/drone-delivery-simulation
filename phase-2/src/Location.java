@@ -42,7 +42,7 @@ public class Location implements Comparable<Location> {
      * @return Name of location
      */
     public String getName() {
-        return name;
+        return this.name;
     }
 
     /**
@@ -50,7 +50,7 @@ public class Location implements Comparable<Location> {
      * @return X coordinate of location
      */
     public Integer getX_coordinate() {
-        return x_coordinate;
+        return this.x_coordinate;
     }
 
     /**
@@ -58,7 +58,7 @@ public class Location implements Comparable<Location> {
      * @return Y coordinate of location
      */
     public Integer getY_coordinate() {
-        return y_coordinate;
+        return this.y_coordinate;
     }
 
     /**
@@ -66,7 +66,7 @@ public class Location implements Comparable<Location> {
      * @return Spaces left for drones of the location
      */
     public Integer getSpacesLeft() {
-        return spacesLeft;
+        return this.spacesLeft;
     }
 
     /**
@@ -105,7 +105,7 @@ public class Location implements Comparable<Location> {
     @Override
     public String toString() {
         return String.format("Name: %s, (x,y): (%d, %d), Space: [%d / %d] remaining",
-                name, x_coordinate, y_coordinate, spacesLeft, spaceLimit);
+                this.name, this.x_coordinate, this.y_coordinate, this.spacesLeft, this.spaceLimit);
     }
 
     /**

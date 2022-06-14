@@ -27,7 +27,7 @@ public class Ingredient implements Comparable<Ingredient> {
      * @return Barcode of ingredient
      */
     public String getBarcode() {
-        return barcode;
+        return this.barcode;
     }
 
     /**
@@ -35,7 +35,7 @@ public class Ingredient implements Comparable<Ingredient> {
      * @return Name of ingredient
      */
     public Integer getWeight() {
-        return weight;
+        return this.weight;
     }
 
     /**
@@ -43,7 +43,7 @@ public class Ingredient implements Comparable<Ingredient> {
      * @return Name of ingredient
      */
     public String getName() {
-        return name;
+        return this.name;
     }
 
     /**
@@ -52,7 +52,7 @@ public class Ingredient implements Comparable<Ingredient> {
      */
     @Override
     public String toString() {
-        return "Barcode: " + barcode + ", Name: " + name + ", Unit Weight: " + weight;
+        return "Barcode: " + this.barcode + ", Name: " + this.name + ", Unit Weight: " + this.weight;
     }
 
     /**

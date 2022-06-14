@@ -26,7 +26,7 @@ public class Restaurant implements Comparable<Restaurant> {
      * @return name of restaurant
      */
     public String getName() {
-        return name;
+        return this.name;
     }
 
     /**
@@ -34,7 +34,7 @@ public class Restaurant implements Comparable<Restaurant> {
      * @return location of restaurant
      */
     public Location getLocation() {
-        return locatedAt;
+        return this.locatedAt;
     }
 
     /**
@@ -51,7 +51,8 @@ public class Restaurant implements Comparable<Restaurant> {
      */
     @Override
     public String toString() {
-        return String.format("Name: %s, Money Spent: $%d, Location: %s", name, spending, locatedAt.getName());
+        return String.format("Name: %s, Money Spent: $%d, Location: %s", this.name,
+                this.spending, this.locatedAt.getName());
     }
 
     /**

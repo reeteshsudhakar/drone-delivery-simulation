@@ -40,7 +40,7 @@ public class Drone implements Comparable<Drone> {
      * @return the tag of the drone
      */
     public Integer getTag() {
-        return tag;
+        return this.tag;
     }
 
     /**
@@ -48,7 +48,7 @@ public class Drone implements Comparable<Drone> {
      * @return the capacity of the drone
      */
     public Integer getCapacity() {
-        return capacity;
+        return this.capacity;
     }
 
     /**
@@ -56,7 +56,7 @@ public class Drone implements Comparable<Drone> {
      * @return the remaining capacity of the drone
      */
     public Integer getRemainingCapacity() {
-        return remainingCapacity;
+        return this.remainingCapacity;
     }
 
     /**
@@ -64,7 +64,7 @@ public class Drone implements Comparable<Drone> {
      * @return the fuel of the drone
      */
     public Integer getFuel() {
-        return fuel;
+        return this.fuel;
     }
 
     /**
@@ -72,7 +72,7 @@ public class Drone implements Comparable<Drone> {
      * @return the home base of the drone
      */
     public Location getHomeBase() {
-        return homeBase;
+        return this.homeBase;
     }
 
     /**
@@ -80,7 +80,7 @@ public class Drone implements Comparable<Drone> {
      * @return the current currentLocation of the drone
      */
     public Location getCurrentLocation() {
-        return currentLocation;
+        return this.currentLocation;
     }
 
     /**
@@ -88,7 +88,7 @@ public class Drone implements Comparable<Drone> {
      * @return the sales of the drone
      */
     public Integer getSales() {
-        return sales;
+        return this.sales;
     }
 
     /**
@@ -97,7 +97,7 @@ public class Drone implements Comparable<Drone> {
      * @return the payload of the drone
      */
     public TreeMap<Ingredient, Package> getPayload() {
-        return payload;
+        return this.payload;
     }
 
     /**
@@ -158,8 +158,8 @@ public class Drone implements Comparable<Drone> {
     public void displayDroneInfo() {
         System.out.printf("Tag: %d, Capacity: %d, Remaining Capacity: %d, Fuel: %d, Sales: $%d, " +
                         "Location: %s%n",
-                getTag(), getCapacity(), getRemainingCapacity(), getFuel(),
-                getSales(), getCurrentLocation().getName());
+                this.getTag(), this.getCapacity(), this.getRemainingCapacity(), this.getFuel(),
+                this.getSales(), this.getCurrentLocation().getName());
 
         getPayload().forEach((key,value) ->
                 System.out.printf("&> Barcode: %s, Item Name: %s, Total Quantity: %d, Unit Cost: %d, " +
@@ -176,16 +176,16 @@ public class Drone implements Comparable<Drone> {
      */
     public void addToPayload(Ingredient loadIngredient, String barcode, Integer quantity, Integer unitPrice) {
         boolean ingredientInPayload = false;
-        for (Ingredient ingredient : getPayload().keySet()) {
+        for (Ingredient ingredient : this.getPayload().keySet()) {
             if (ingredient.getBarcode().equals(barcode)) {
-                getPayload().get(ingredient).incrementQuantity(quantity);
+                this.getPayload().get(ingredient).incrementQuantity(quantity);
                 ingredientInPayload = true;
                 break;
             }
         }
 
         if (!ingredientInPayload) {
-            getPayload().put(loadIngredient, new Package(quantity, unitPrice));
+            this.getPayload().put(loadIngredient, new Package(quantity, unitPrice));
             decrementRemainingCapacity(quantity);
         }
     }
