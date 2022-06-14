@@ -1,0 +1,17 @@
+Welcome to the Restaurant Supply Express System!
+> make_ingredients,a,z,10
+command make_ingredients NOT acknowledged
+> make_ingredient,a,z,10
+OK:change_completed
+> make_ingredient,b,y,15
+OK:change_completed
+> make_ingredient,c,x,12
+OK:change_completed
+> display_ingredients
+barcode: a, name: z, unit_weight: 10
+barcode: b, name: y, unit_weight: 15
+barcode: c, name: x, unit_weight: 12
+OK:display_completed
+> stop
+stop acknowledged
+simulation terminated

@@ -74,8 +74,8 @@ public class InterfaceLoop {
         }
 
         // checking if the space limit is valid (positive) and whether the passed in arguments are valid
-        if (spaceLimit <= 0) {
-            displayMessage("ERROR", "location_space_limit_must_be_greater_than_zero");
+        if (spaceLimit < 0) {
+            displayMessage("ERROR", "location_space_limit_must_not_be_negative");
             return;
         } else if (name == null || name.equals("")) {
             displayMessage("ERROR", "location_name_must_not_be_empty");
@@ -387,9 +387,9 @@ public class InterfaceLoop {
 
         // load the ingredient and track quantity and price using a package if there is space to load it
         if (loadDrone.getRemainingCapacity() == 0) {
-            displayMessage("ERROR","no_space_left_to_load_ingredients");
+            displayMessage("ERROR","no_capacity_left_to_load_more_packages");
         } else if (loadDrone.getRemainingCapacity() < quantity) {
-            displayMessage("ERROR","not_enough_space_for_requested_ingredients");
+            displayMessage("ERROR","not_enough_capacity_to_hold_new_packages");
         } else {
             loadDrone.addToPayload(loadIngredient, barcode, quantity, unitPrice);
             displayMessage("OK","change_completed");

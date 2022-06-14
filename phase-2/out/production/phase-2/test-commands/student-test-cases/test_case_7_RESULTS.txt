@@ -1,0 +1,114 @@
+Welcome to the Restaurant Supply Express System!
+> make_location,alpha,0,0,2
+OK:change_completed
+> make_location,beta,0,1,2
+OK:change_completed
+> make_location,gamma,0,2,2
+OK:change_completed
+> make_service,a,0,alpha
+OK:service_created
+> make_service,b,0,beta
+OK:service_created
+> make_restaurant,rg,gamma
+OK:change_completed
+> make_drone,a,1,1,1
+OK:change_completed
+> fly_drone,z,1,alpha
+ERROR:store_identifier_does_not_exist
+> fly_drone,a,2,alpha
+ERROR:drone_identifier_does_not_exist
+> fly_drone,a,1,zeta
+ERROR:flight_destination_does_not_exist
+> fly_drone,a,1,beta
+ERROR:not_enough_fuel_to_reach_the_destination
+> load_fuel,a,1,1
+OK:change_completed
+> fly_drone,a,1,beta
+ERROR:not_enough_fuel_to_reach_home_base_from_the_destination
+> load_fuel,a,1,1
+OK:change_completed
+> fly_drone,a,1,beta
+ERROR:not_enough_fuel_to_reach_home_base_from_the_destination
+> load_fuel,a,1,1
+OK:change_completed
+> fly_drone,a,1,beta
+OK:change_completed
+> load_fuel,a,1,2
+ERROR:drone_not_located_at_home_base
+> fly_drone,a,1,gamma
+ERROR:not_enough_fuel_to_reach_home_base_from_the_destination
+> load_fuel,a,1,2
+ERROR:drone_not_located_at_home_base
+> load_fuel,z,1,2
+ERROR:store_identifier_does_not_exist
+> load_fuel,a,5,2
+ERROR:drone_identifier_does_not_exist
+> make_drone,a,2,1,6
+OK:change_completed
+> fly_drone,a,2,gamma
+OK:change_completed
+> make_drone,b,1,1,6
+OK:change_completed
+> fly_drone,b,1,gamma
+OK:change_completed
+> make_location,alpha,0,0,5
+ERROR:location_already_exists
+> make_service,a,0,alpha
+ERROR:service_identifier_already_exists
+> make_drone,a,1,1,1
+ERROR:drone_identifier_tag_already_exists
+> make_drone,a,2,2,2
+ERROR:drone_identifier_tag_already_exists
+> make_service,b,0,alpha
+ERROR:service_identifier_already_exists
+> make_drone,b,3,3,3
+OK:change_completed
+> make_ingredient,saf,saffron,1
+OK:change_completed
+> make_ingredient,truf,truffles,2
+OK:change_completed
+> load_ingredient,z,1,1,1,1
+ERROR:store_identifier_does_not_exist
+> load_ingredient,a,5,5,5,5
+ERROR:drone_identifier_does_not_exist
+> load_ingredient,a,1,noodles,5,5
+ERROR:ingredient_identifier_does_not_exist
+> load_ingredient,a,1,saf,5,-5
+ERROR:negative_unit_price_not_allowed
+> load_ingredient,a,1,saf,-5,5
+ERROR:negative_quantity_not_allowed
+> load_ingredient,a,1,saf,5,5
+ERROR:drone_not_located_at_home_base
+> load_ingredient,a,1,saf,1,5
+ERROR:drone_not_located_at_home_base
+> load_ingredient,a,2,saf,1,10
+ERROR:drone_not_located_at_home_base
+> load_ingredient,a,2,truf,1,11
+ERROR:drone_not_located_at_home_base
+> load_ingredient,b,3,truf,2,9
+OK:change_completed
+> load_ingredient,b,3,saf,1,2
+OK:change_completed
+> display_drones,a
+tag: 1, capacity: 1, remaining_cap: 1, fuel: 2, sales: $0, location: beta
+tag: 2, capacity: 1, remaining_cap: 1, fuel: 3, sales: $0, location: gamma
+OK:display_completed
+> display_drones,b
+tag: 1, capacity: 1, remaining_cap: 1, fuel: 4, sales: $0, location: gamma
+tag: 3, capacity: 3, remaining_cap: 0, fuel: 3, sales: $0, location: beta
+&> barcode: saf,  item_name: saffron, total_quantity: 1, unit_cost:2, total_weight: 1
+&> barcode: truf,  item_name: truffles, total_quantity: 2, unit_cost:9, total_weight: 4
+OK:display_completed
+> display_all_drones
+service name [a] drones:
+tag: 1, capacity: 1, remaining_cap: 1, fuel: 2, sales: $0, location: beta
+tag: 2, capacity: 1, remaining_cap: 1, fuel: 3, sales: $0, location: gamma
+service name [b] drones:
+tag: 1, capacity: 1, remaining_cap: 1, fuel: 4, sales: $0, location: gamma
+tag: 3, capacity: 3, remaining_cap: 0, fuel: 3, sales: $0, location: beta
+&> barcode: saf,  item_name: saffron, total_quantity: 1, unit_cost:2, total_weight: 1
+&> barcode: truf,  item_name: truffles, total_quantity: 2, unit_cost:9, total_weight: 4
+OK:display_completed
+> stop
+stop acknowledged
+simulation terminated

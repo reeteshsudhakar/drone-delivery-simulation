@@ -1,0 +1,32 @@
+// TEST CASE MAKING A DRONE BEFORE A DELIVERY SERVICE OR MAKING TWO DELIVERY SERVICES AT
+// THE SAME SPOT AND THEN MAKING THE DRONE AT THAT SPOT
+// making test location
+make_location,airport,3,4,5
+display_locations
+// making drone before DS
+make_drone,swift_spices,1,2,3
+display_all_drones
+// make delivery service
+make_service,swift_spices,0,airport
+// testing with negative
+make_service,genericName,-3,airport
+// testing with positive
+make_service,wheeee,2,airport
+// making a second delivery service at the same location
+make_service,testTest,0,airport
+// test if a service can be made in a nonexistent location
+make_service,namedService,0,subway
+// test if you can make the same service again
+make_service,swift_spices,0,airport
+display_services
+// making drones officially
+// testing negative value
+make_drone,swift_spices,-1,2,3
+// testing negative value
+make_drone,swift_spices,1,-2,3
+// testing negative value
+make_drone,swift_spices,1,2,-3
+// check if you can make a drone to a service in a nonexistent location
+make_drone,namedService,7,8,9
+display_all_drones
+stop

@@ -1,0 +1,6 @@
+make_ingredients,a,z,10
+make_ingredient,a,z,10
+make_ingredient,b,y,15
+make_ingredient,c,x,12
+display_ingredients
+stop

@@ -1,0 +1,74 @@
+Welcome to the Restaurant Supply Express System!
+> display_services
+OK:display_completed
+> make_ingredient
+
+> make_ingredient,cc,carrot,-2
+ERROR:negative_weight_not_allowed
+> make_ingredient,cc,carrot,2
+OK:change_completed
+> make_ingredient,cc,cc,carrot,412,5,
+
+> make_location,,,,,
+
+> ??,@%!
+command ?? NOT acknowledged
+> hello_world
+command hello_world NOT acknowledged
+> display_restaurants
+OK:display_completed
+> hello,world
+command hello NOT acknowledged
+> ,make_location
+command  NOT acknowledged
+> make_location,airport,10,10,10
+OK:change_completed
+> make_location,midtown,20,20,2
+OK:change_completed
+> make_service,youber_eats,9999,airport
+OK:service_created
+> make_resterant,bobsburgers,midtown
+command make_resterant NOT acknowledged
+> make_restaurant,bobs_burgers,midtown
+OK:change_completed
+> make_restaurant,bobs_burgers,midtown
+ERROR:restaurant_already_exists
+> display_restaurants
+name: bobs_burgers, money_spent: $0, location: midtown
+OK:display_completed
+> DROP TABLE restaurants;
+command DROP TABLE restaurants; NOT acknowledged
+> display_restaurants
+name: bobs_burgers, money_spent: $0, location: midtown
+OK:display_completed
+> display_drone
+command display_drone NOT acknowledged
+> display_drones
+
+> display_drones,
+
+> display_all_drones,
+service name [youber_eats] drones:
+OK:display_completed
+> make_drone,youber_eats,4,0
+
+> make_drone,youber_eats,4,1
+
+> display_drones,
+
+> display_drones,youber_eats
+OK:display_completed
+> load_fuel,youber_eats,99999
+
+> load_fuel,youber_eats,-1000
+
+> fly_drone,youber_eats,4,midtown
+ERROR:drone_identifier_does_not_exist
+> fly_drone,youber_eats,4,bobs_burgers
+ERROR:drone_identifier_does_not_exist
+> display_all_drones
+service name [youber_eats] drones:
+OK:display_completed
+> stop
+stop acknowledged
+simulation terminated

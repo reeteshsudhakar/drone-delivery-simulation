@@ -1,0 +1,100 @@
+// create some locations
+make_location,plaza,3,4,5
+make_location,hotel,5,6,2
+make_location,mall,2,1,5
+make_location,bad1,2,1,0
+//check if you can make a location with negative capacity
+make_location,bad,4,5,-4
+display_locations
+// check some distances
+check_distance,plaza,hotel
+// check if you can check the distance to a location with an invalid attribute
+check_distance,mall,bad
+// check if you can check the distance to a location with an invalid attribute
+check_distance,hotel,bad
+// check if you can calculate a distance to a nonexistent location
+check_distance,hotel,subway
+// create a delivery service
+make_service,genericName,5,plaza
+// test if a service can be made in a nonexistent location
+make_service,namedService,3,subway
+display_services
+// make some drones
+make_drone,genericName,10,10,10
+make_drone,genericName,16,10,2
+// check if you can make a drone with a negative loading capacity
+make_drone,genericName,-10,-10,10
+// check if you can make a drone with negative fuel capacity
+make_drone,genericName,5,5,-10
+// check Drone with no fuel capacity
+make_drone,genericName,5,1,0
+//check if you can make a drone to a nonexistent service
+make_drone,someService,5,6,7
+//check if you can make a drone in a nonexistent location
+make_drone,namedService,7,8,9
+display_all_drones
+// make some restaurants
+make_restaurant,realRestaurant,mall
+//if you can make restaurant in non-existent location
+make_restaraunt,aRestaurant,subway
+//if you can make restaurant in non-valid location
+make_restaurant,twoRestaurant,bad
+display_restaraunts
+// make some ingredients
+make_ingredient,bf_id,beef,10
+make_ingredient,tmt_id,tomatoes,10
+make_ingredient,pasta_id,pasta,1
+//testing if the barcode does not exist
+make_ingredient, ,steak,1
+//testing if you can have 2 different ingredients with the same barcode
+make_ingredient,tmt_id,toboggan,2
+//testing if you can have negative quantity of an ingredient
+make_ingredient,cbg_id,cabbage,-1
+//testing if you can have an ingredient with no quantity
+make_ingredient,crrt_id,carrot,0
+display_ingredients
+// load a drone
+load_ingredient,genericName,10,bf_id,5,1
+//testing load ingredients with negative capacity
+load_ingredient,genericName,-10,bf_id,1,2
+//testing if you can load the ingredient with a null barcode
+load_ingredient,genericName,10, ,1,1
+//testing which ingredient it would have loaded
+load_ingredient,genericName,10,tmt_id,3,1
+//testing load more of an ingredient than exists
+load_ingredient,genericName,10,pasta_id,2,1
+//testing  negative quantity of an ingredient
+load_ingredient,genericName,10,bf_id,-1,1
+//test if you can load more than the capacity of drone
+load_ingredient,genericName,16,bf_id,3,1
+display_all_drones
+// test if a restaurant can buy from a drone not there
+// flying drone
+purchase_ingredient,realRestaurant,genericName,10,bf_id,1
+// flying to working location
+flyDrone,mall,10,plaza
+// flying to location with insufficient fuel
+flyDrone,mall,1,plaza
+// flying to location that doesn’t exist
+flyDrone,mall,10,airport
+// flying to location that doesn’t have enough space
+flyDrone,mall,10,bad1
+display_locations
+// restaurant buying some ingredients
+purchase_ingredient,realRestauraunt,genericName,10,bf_id,2
+purchase_ingredient,realRestauraunt,genericName,10,not_id,1
+// testing if you can buy a non-existent ingredient
+purchase_ingredient,realRestauraunt,genericName,10,pasta_id,1
+// testing if you can buy more of an ingredient than exists
+purchase_ingredient,realRestaurant,someService,16,bf_id,2,1
+// testing if you can buy more of an ingredient than is on the drone
+purchase_ingredient,realRestaurant,genericName,2,bf_id,1
+// testing if you can purchase from a non-existent drone
+purchase_ingredient,realRestaurant,genericName,10,bf_id,-2
+// testing if you can purchase negative ingredients
+display_restaurants
+display_all_drones
+display_locations
+display_services
+stop
+

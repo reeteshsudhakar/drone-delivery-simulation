@@ -1,0 +1,52 @@
+// TEST CASE ABOUT REFUELING/RESTOCKING THE DRONE WHILE AWAY FROM HOME
+// make some ingredients
+make_ingredient,bf_id,beef,10
+make_ingedient,ch_id,chicken,11
+// making test location
+make_location,airport,3,4,5
+make_location,nearby,3,3,5
+make_location,bad,3,20,5
+display_locations
+// make delivery service
+make_service,swift_spices,0,airport
+display_services
+// making drone
+// tag, capacity, fuel
+make_drone,swift_spices,1,3,10
+display_all_drones
+// fueling drone
+// service, tag, fuel capacity
+load_fuel,swift_spices,1,10
+// load fuel past capacity
+load_fuel,swift_spices,1,1
+// load fuel into non existent drone
+load_fuel,swift_spices,2,10
+// restocking drone
+// service, tag, barcode, quantity, price
+load_ingredient,swift_spices,1,bf_id,2,5
+// loading the same ingredient at a different price
+load_ingedient,swift_spices,1,bf_id,1,6
+// loading ingredient at a negative price
+load_ingedient,swift_spices,1,ch_id,1,-1
+// overloading the drone
+load_ingredient,swift_spices,1,bf_id,2,5
+// loading ingredients into a nonexistent drone
+load_ingredient,swift_spices,2,bf_id,1,3
+display_all_drones
+// make some restaurants
+make_restaurant,realRestaurant,airport
+make_restaurant,realRestaurant2,mall
+display_restaurants
+// fly drone to restaurant
+fly_drone,swift_spices,1,nearby
+// flying nonexistent drone
+fly_drone,swift_spices,2,nearby
+display_all_drones
+// loading fuel into drone away from home base
+// good amount of fuel
+load_fuel,swift_spices,1,2
+// loading ingredients into the drone away from home base
+load_ingredient,swift_spices,1,bf_id,1,5
+// try to fly to a restaurant that’s too far away
+fly_drone,swift_spices,1,bad
+stop

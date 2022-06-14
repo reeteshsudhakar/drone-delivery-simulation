@@ -1,0 +1,32 @@
+Welcome to the Restaurant Supply Express System!
+> make_ingredient,bananas_frt,_,5
+OK:change_completed
+> display_ingredients
+barcode: bananas_frt, name: _, unit_weight: 5
+OK:display_completed
+> make_location,bobby_warehouse,5,6,1
+OK:change_completed
+> make_location,airport,10,18,1
+OK:change_completed
+> display_locations
+name: airport, (x,y): (10, 18), space: [1 / 1] remaining
+name: bobby_warehouse, (x,y): (5, 6), space: [1 / 1] remaining
+OK:display_completed
+> make_service,bobby_delivery,0,bobby_warehouse
+OK:service_created
+> make_restaurant,frank_diner,airport
+OK:change_completed
+> // Purchase ingredient from non-existant drone. Should error
+> purchase_ingredient,frank_diner,bobby_delivery,99,bananas_frt,1
+ERROR:drone_identifier_does_not_exist
+> make_drone,bobby_delivery,99,2,1000
+OK:change_completed
+> // should not error
+> purchase_ingredient,frank_diner,bobby_delivery,99,bananas_frt,1
+ERROR:drone_not_located_at_restaurant
+> // Trying to purchase from a location instead of a restaurant
+> purchase_ingredient,airport,bobby_delivery,99,bananas_frt,1
+ERROR:restaurant_identifier_does_not_exist
+> stop
+stop acknowledged
+simulation terminated
