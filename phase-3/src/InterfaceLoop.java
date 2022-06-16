@@ -1,11 +1,6 @@
 import java.util.Scanner;
 import java.util.TreeMap;
 
-/*
-TODO: test interface against NEW test commands
-TODO: code cleanup (see where methods can be moved to other classes, simplified)
- */
-
 /**
  * Minimum Viable Product (MVP) of the interface loop for restaurants
  * to purchase ingredients via drones operated by a delivery service.
