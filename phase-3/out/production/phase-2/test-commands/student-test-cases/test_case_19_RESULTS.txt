@@ -1,0 +1,116 @@
+Welcome to the Restaurant Supply Express System!
+> make_ingredient,saf_spc,saffron,-4
+ERROR:negative_weight_not_allowed
+> display_ingredients
+OK:display_completed
+> make_ingredient,iku_sfd,ikura,9
+OK:change_completed
+> make_ingredient,truf_fgs,truffles,6
+OK:change_completed
+> display_ingredients
+barcode: iku_sfd, name: ikura, unit_weight: 9
+barcode: truf_fgs, name: truffles, unit_weight: 6
+OK:display_completed
+> make_location,@airport,0,0,0
+OK:change_completed
+> display_locations
+name: @airport, (x,y): (0, 0), space: [0 / 0] remaining
+OK:display_completed
+> make_location,47,10,18,2
+OK:change_completed
+> display_locations
+name: 47, (x,y): (10, 18), space: [2 / 2] remaining
+name: @airport, (x,y): (0, 0), space: [0 / 0] remaining
+OK:display_completed
+> check_distance,airport,plaza
+ERROR:departure_point_does_not_exist
+> make_service,1,0,airport
+ERROR:location_does_not_exist
+> display_services
+OK:display_completed
+> make_service,mobile_sous_chef,0,1
+ERROR:location_does_not_exist
+> display_services
+OK:display_completed
+> make_restaurant,tre_vele,plaza
+ERROR:location_does_not_exist
+> display_restaurants
+OK:display_completed
+> make_drone,swift_spices,-4,-2,-10
+ERROR:service_identifier_does_not_exist
+> make_drone,swift_spices,16,-2,20
+ERROR:service_identifier_does_not_exist
+> make_drone,swift_spices,9,2,-30
+ERROR:service_identifier_does_not_exist
+> display_drones,swift_spices
+ERROR:service_identifier_does_not_exist
+> load_ingredient,swift_spices,16,saf_spc,2,8
+ERROR:store_identifier_does_not_exist
+> load_ingredient,_spices,9,saf_spc,1,10
+ERROR:store_identifier_does_not_exist
+> load_ingrediet,swift_spices,9,truf_fgs,1,7
+command load_ingrediet NOT acknowledged
+> display_drones,swift_spices
+ERROR:service_identifier_does_not_exist
+> purchase_ingredient,tre_vele,swift_spices,16,saf_spc,2
+ERROR:restaurant_identifier_does_not_exist
+> fly_drone,swift_spices,4,plaza
+ERROR:store_identifier_does_not_exist
+> fly_drone,swift_spices,9,plaza
+ERROR:store_identifier_does_not_exist
+> fly_drone,swift_spices,9,airport
+ERROR:store_identifier_does_not_exist
+> display_drones,swift_spices
+ERROR:service_identifier_does_not_exist
+> purchase_ingredient,tre_vele,swift_spices,9,saf_spc,2
+ERROR:restaurant_identifier_does_not_exist
+> purchase_ingredient,tre_vele,swift_spices,9,saf_spc,1
+ERROR:restaurant_identifier_does_not_exist
+> display_drones,swift_spices
+ERROR:service_identifier_does_not_exist
+> display_restaurants,swift_spices
+OK:display_completed
+> make_drone,mobile_sous_chef,4,5,35
+ERROR:service_identifier_does_not_exist
+> display_drones
+
+> display_all_drones,souse_chef
+OK:display_completed
+> make_drone, mobile_sous_chef,7,8,100
+ERROR:service_identifier_does_not_exist
+> display_drones,mobile_sous_chef
+ERROR:service_identifier_does_not_exist
+> load_ingredient,mobile_sous_chef,4,trf_fgs,2,8
+ERROR:store_identifier_does_not_exist
+> load_ingredient,mobile_sous_chef,4,iku_sfd,2,17
+ERROR:store_identifier_does_not_exist
+> display_all_drones
+OK:display_completed
+> make_location,southside,8,3,2
+OK:change_completed
+> display_locations
+name: 47, (x,y): (10, 18), space: [2 / 2] remaining
+name: @airport, (x,y): (0, 0), space: [0 / 0] remaining
+name: southside, (x,y): (8, 3), space: [2 / 2] remaining
+OK:display_completed
+> check_distance,plaza,0
+ERROR:departure_point_does_not_exist
+> make_restaurant,77,southside
+OK:change_completed
+> display_restaurants
+name: 77, money_spent: $0, location: southside
+OK:display_completed
+> fly_drone,swift_spices,9,southside
+ERROR:store_identifier_does_not_exist
+> display_all_drones
+OK:display_completed
+> display_ingredients
+barcode: iku_sfd, name: ikura, unit_weight: 9
+barcode: truf_fgs, name: truffles, unit_weight: 6
+OK:display_completed
+> display_restaurants
+name: 77, money_spent: $0, location: southside
+OK:display_completed
+> stop
+stop acknowledged
+simulation terminated

@@ -1,0 +1,11 @@
+make_location,a,0,0,1
+make_location,a,0,0,1
+make_location,b,0,0,1
+check_distance,a,a
+check_distance,a,b
+check_distance,a,c
+make_service,aaa,0,a
+make_service,bbb,0,a
+make_service,ccc,0,b
+make_service,aaa,0,b
+stop

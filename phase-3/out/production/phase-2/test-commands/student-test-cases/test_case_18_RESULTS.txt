@@ -1,0 +1,24 @@
+Welcome to the Restaurant Supply Express System!
+> make_location,a,0,0,1
+OK:change_completed
+> make_location,a,0,0,1
+ERROR:location_already_exists
+> make_location,b,0,0,1
+OK:change_completed
+> check_distance,a,a
+OK:distance = 1
+> check_distance,a,b
+OK:distance = 1
+> check_distance,a,c
+ERROR:arrival_point_does_not_exist
+> make_service,aaa,0,a
+OK:service_created
+> make_service,bbb,0,a
+OK:service_created
+> make_service,ccc,0,b
+OK:service_created
+> make_service,aaa,0,b
+ERROR:service_identifier_already_exists
+> stop
+stop acknowledged
+simulation terminated

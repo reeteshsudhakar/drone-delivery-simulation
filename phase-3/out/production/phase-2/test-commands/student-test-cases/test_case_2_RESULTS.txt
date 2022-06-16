@@ -1,0 +1,96 @@
+Welcome to the Restaurant Supply Express System!
+> // TEST CASE ABOUT REFUELING/RESTOCKING THE DRONE WHILE AWAY FROM HOME
+> // make some ingredients
+> make_ingredient,bf_id,beef,10
+OK:change_completed
+> make_ingedient,ch_id,chicken,11
+command make_ingedient NOT acknowledged
+> // making test location
+> make_location,airport,3,4,5
+OK:change_completed
+> make_location,nearby,3,3,5
+OK:change_completed
+> make_location,bad,3,20,5
+OK:change_completed
+> display_locations
+name: airport, (x,y): (3, 4), space: [5 / 5] remaining
+name: bad, (x,y): (3, 20), space: [5 / 5] remaining
+name: nearby, (x,y): (3, 3), space: [5 / 5] remaining
+OK:display_completed
+> // make delivery service
+> make_service,swift_spices,0,airport
+OK:service_created
+> display_services
+name: swift_spices, revenue: $0, location: airport
+OK:display_completed
+> // making drone
+> // tag, capacity, fuel
+> make_drone,swift_spices,1,3,10
+OK:change_completed
+> display_all_drones
+service name [swift_spices] drones:
+tag: 1, capacity: 3, remaining_cap: 3, fuel: 10, sales: $0, location: airport
+OK:display_completed
+> // fueling drone
+> // service, tag, fuel capacity
+> load_fuel,swift_spices,1,10
+OK:change_completed
+> // load fuel past capacity
+> load_fuel,swift_spices,1,1
+OK:change_completed
+> // load fuel into non existent drone
+> load_fuel,swift_spices,2,10
+ERROR:drone_identifier_does_not_exist
+> // restocking drone
+> // service, tag, barcode, quantity, price
+> load_ingredient,swift_spices,1,bf_id,2,5
+OK:change_completed
+> // loading the same ingredient at a different price
+> load_ingedient,swift_spices,1,bf_id,1,6
+command load_ingedient NOT acknowledged
+> // loading ingredient at a negative price
+> load_ingedient,swift_spices,1,ch_id,1,-1
+command load_ingedient NOT acknowledged
+> // overloading the drone
+> load_ingredient,swift_spices,1,bf_id,2,5
+ERROR:not_enough_capacity_to_hold_new_packages
+> // loading ingredients into a nonexistent drone
+> load_ingredient,swift_spices,2,bf_id,1,3
+ERROR:drone_identifier_does_not_exist
+> display_all_drones
+service name [swift_spices] drones:
+tag: 1, capacity: 3, remaining_cap: 1, fuel: 21, sales: $0, location: airport
+&> barcode: bf_id,  item_name: beef, total_quantity: 2, unit_cost:5, total_weight: 20
+OK:display_completed
+> // make some restaurants
+> make_restaurant,realRestaurant,airport
+OK:change_completed
+> make_restaurant,realRestaurant2,mall
+ERROR:location_does_not_exist
+> display_restaurants
+name: realRestaurant, money_spent: $0, location: airport
+OK:display_completed
+> // fly drone to restaurant
+> fly_drone,swift_spices,1,nearby
+OK:change_completed
+> // flying nonexistent drone
+> fly_drone,swift_spices,2,nearby
+ERROR:drone_identifier_does_not_exist
+> display_all_drones
+service name [swift_spices] drones:
+tag: 1, capacity: 3, remaining_cap: 1, fuel: 19, sales: $0, location: nearby
+&> barcode: bf_id,  item_name: beef, total_quantity: 2, unit_cost:5, total_weight: 20
+OK:display_completed
+> // loading fuel into drone away from home base
+> // good amount of fuel
+> load_fuel,swift_spices,1,2
+ERROR:drone_not_located_at_home_base
+> // loading ingredients into the drone away from home base
+> load_ingredient,swift_spices,1,bf_id,1,5
+ERROR:drone_not_located_at_home_base
+> // try to fly to a restaurant that’s too far away
+> fly_drone,swift_spices,1,bad
+ERROR:not_enough_fuel_to_reach_home_base_from_the_destination
+> stop
+stop acknowledged
+simulation terminated

@@ -1,0 +1,59 @@
+Welcome to the Restaurant Supply Express System!
+> // TEST CASE MAKING A DRONE BEFORE A DELIVERY SERVICE OR MAKING TWO DELIVERY SERVICES AT
+> // THE SAME SPOT AND THEN MAKING THE DRONE AT THAT SPOT
+> // making test location
+> make_location,airport,3,4,5
+OK:change_completed
+> display_locations
+name: airport, (x,y): (3, 4), space: [5 / 5] remaining
+OK:display_completed
+> // making drone before DS
+> make_drone,swift_spices,1,2,3
+ERROR:service_identifier_does_not_exist
+> display_all_drones
+OK:display_completed
+> // make delivery service
+> make_service,swift_spices,0,airport
+OK:service_created
+> // testing with negative
+> make_service,genericName,-3,airport
+ERROR:negative_revenue_not_allowed
+> // testing with positive
+> make_service,wheeee,2,airport
+OK:service_created
+> // making a second delivery service at the same location
+> make_service,testTest,0,airport
+OK:service_created
+> // test if a service can be made in a nonexistent location
+> make_service,namedService,0,subway
+ERROR:location_does_not_exist
+> // test if you can make the same service again
+> make_service,swift_spices,0,airport
+ERROR:service_identifier_already_exists
+> display_services
+name: swift_spices, revenue: $0, location: airport
+name: testTest, revenue: $0, location: airport
+name: wheeee, revenue: $2, location: airport
+OK:display_completed
+> // making drones officially
+> // testing negative value
+> make_drone,swift_spices,-1,2,3
+OK:change_completed
+> // testing negative value
+> make_drone,swift_spices,1,-2,3
+ERROR:negative_capacity_not_allowed
+> // testing negative value
+> make_drone,swift_spices,1,2,-3
+ERROR:negative_fuel_not_allowed
+> // check if you can make a drone to a service in a nonexistent location
+> make_drone,namedService,7,8,9
+ERROR:service_identifier_does_not_exist
+> display_all_drones
+service name [swift_spices] drones:
+tag: -1, capacity: 2, remaining_cap: 2, fuel: 3, sales: $0, location: airport
+service name [testTest] drones:
+service name [wheeee] drones:
+OK:display_completed
+> stop
+stop acknowledged
+simulation terminated

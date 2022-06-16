@@ -1,0 +1,103 @@
+Welcome to the Restaurant Supply Express System!
+> make_ingredient,1,saffron,1
+OK:change_completed
+> make_ingredient,1,saffron,1
+ERROR:ingredient_already_exists
+> make_ingredient,2,saffron,-1
+ERROR:negative_weight_not_allowed
+> make_ingredient,2,saffron,1
+OK:change_completed
+> display_ingredients
+barcode: 1, name: saffron, unit_weight: 1
+barcode: 2, name: saffron, unit_weight: 1
+OK:display_completed
+> make_location,alpha,1,1,2
+OK:change_completed
+> make_location,beta,1,1,2
+OK:change_completed
+> make_location,gamma,1,2,2
+OK:change_completed
+> make_location,gamma,1,2,2
+ERROR:location_already_exists
+> display_locations
+name: alpha, (x,y): (1, 1), space: [2 / 2] remaining
+name: beta, (x,y): (1, 1), space: [2 / 2] remaining
+name: gamma, (x,y): (1, 2), space: [2 / 2] remaining
+OK:display_completed
+> OK:display_completed
+command OK:display_completed NOT acknowledged
+> check_distance,alpha,beta
+OK:distance = 1
+> check_distance,beta,alpha
+OK:distance = 1
+> check_distance,delta,alpha
+ERROR:departure_point_does_not_exist
+> check_distance,alpha,delta
+ERROR:arrival_point_does_not_exist
+> check_distance,delta,epsilon
+ERROR:departure_point_does_not_exist
+> check_distance,alpha,gamma
+OK:distance = 2
+> make_service,a,0,alpha
+OK:service_created
+> make_service,a,0,alpha
+ERROR:service_identifier_already_exists
+> make_service,a1,0,alpha
+OK:service_created
+> make_service,d,0,delta
+ERROR:location_does_not_exist
+> make_service,b,0,beta
+OK:service_created
+> display_services
+name: a, revenue: $0, location: alpha
+name: a1, revenue: $0, location: alpha
+name: b, revenue: $0, location: beta
+OK:display_completed
+> make_restaurant,rb,beta
+OK:change_completed
+> make_restaurant,rg,gamma
+OK:change_completed
+> make_restaurant,rd,delta
+ERROR:location_does_not_exist
+> make_restaurant,rb,delta
+ERROR:restaurant_already_exists
+> make_restaurant,rb,gamma
+ERROR:restaurant_already_exists
+> display_restaurants
+name: rb, money_spent: $0, location: beta
+name: rg, money_spent: $0, location: gamma
+OK:display_completed
+> make_drone,z,1,-1,-1
+ERROR:service_identifier_does_not_exist
+> make_drone,a,1,-1,-1
+ERROR:negative_capacity_not_allowed
+> make_drone,a,1,1,-1
+ERROR:negative_fuel_not_allowed
+> make_drone,a,1,1,1
+OK:change_completed
+> make_drone,a,2,1,1
+OK:change_completed
+> make_drone,a,3,1,1
+ERROR:not_enough_space_to_create_new_drone
+> make_drone,b,1,1,1
+OK:change_completed
+> make_drone,b,1,1,5
+ERROR:drone_identifier_tag_already_exists
+> display_drones,a
+tag: 1, capacity: 1, remaining_cap: 1, fuel: 1, sales: $0, location: alpha
+tag: 2, capacity: 1, remaining_cap: 1, fuel: 1, sales: $0, location: alpha
+OK:display_completed
+> display_drones,b
+tag: 1, capacity: 1, remaining_cap: 1, fuel: 1, sales: $0, location: beta
+OK:display_completed
+> display_all_drones
+service name [a] drones:
+tag: 1, capacity: 1, remaining_cap: 1, fuel: 1, sales: $0, location: alpha
+tag: 2, capacity: 1, remaining_cap: 1, fuel: 1, sales: $0, location: alpha
+service name [a1] drones:
+service name [b] drones:
+tag: 1, capacity: 1, remaining_cap: 1, fuel: 1, sales: $0, location: beta
+OK:display_completed
+> stop
+stop acknowledged
+simulation terminated
