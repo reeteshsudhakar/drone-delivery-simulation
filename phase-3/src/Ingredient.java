@@ -1,3 +1,5 @@
+import java.util.TreeMap;
+
 /**
  * Ingredient class to create ingredients for restaurants to purchase from services.
  *
@@ -63,5 +65,26 @@ public class Ingredient implements Comparable<Ingredient> {
     @Override
     public int compareTo(Ingredient other) {
         return this.getBarcode().compareTo(other.getBarcode());
+    }
+
+    public static void makeIngredient(String barcode, String name, Integer weight,
+                                      TreeMap<String, Ingredient> ingredients) {
+        // checking if the ingredient already exists
+        if (ingredients.containsKey(barcode)) {
+            Display.displayMessage("ERROR","ingredient_already_exists");
+            return;
+        }
+        // checking if the weight is valid (positive) and whether the passed in arguments are valid
+        if (weight <= 0) {
+            Display.displayMessage("ERROR", "ingredient_weight_must_be_greater_than_zero");
+            return;
+        } else if (barcode == null || name == null || barcode.equals("") || name.equals("")) {
+            Display.displayMessage("ERROR", "ingredient_barcode_and_name_must_not_be_empty");
+            return;
+        }
+
+        // creating the ingredient and adding it to the collection
+        ingredients.put(barcode, new Ingredient(barcode, name, weight));
+        Display.displayMessage("OK","change_completed");
     }
 }

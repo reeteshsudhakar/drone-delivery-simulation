@@ -78,4 +78,37 @@ public class DeliveryService implements Comparable <DeliveryService> {
     public int compareTo(DeliveryService other) {
         return this.name.compareTo(other.name);
     }
+
+    public static void makeDeliveryService(String name, Integer revenue, String locatedAt,
+                                           TreeMap<String, Location> locations,
+                                           TreeMap<String, DeliveryService> services) {
+        // checking if the service already exists
+        if (services.containsKey(name)) {
+            Display.displayMessage("ERROR", "service_already_exists");
+            return;
+        }
+
+        // checking if the revenue is valid (positive) and whether the passed in arguments are valid
+        if (revenue < 0) {
+            Display.displayMessage("ERROR", "service_revenue_must_be_greater_than_or_equal_to_zero");
+            return;
+        } else if (name == null || name.equals("")) {
+            Display.displayMessage("ERROR", "service_name_must_not_be_empty");
+            return;
+        } else if (locatedAt == null || locatedAt.equals("")) {
+            Display.displayMessage("ERROR", "service_located_at_must_not_be_empty");
+            return;
+        }
+
+        // creating the service and adding it to the collection IF the location exists in the system
+        // if the location does not exist in the system, display an error message
+        if (locations.containsKey(locatedAt)) {
+            DeliveryService newService = new DeliveryService(name, revenue, locations.get(locatedAt));
+            services.put(name, newService);
+            Display.displayMessage("OK","service_created");
+        } else {
+            Display.displayMessage("ERROR", "location_identifier_does_not_exist");
+        }
+
+    }
 }

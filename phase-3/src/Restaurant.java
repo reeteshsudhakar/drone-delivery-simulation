@@ -1,3 +1,5 @@
+import java.util.TreeMap;
+
 /**
  * Restaurant class to represent a restaurant purchasing ingredients in the system.
  *
@@ -73,5 +75,24 @@ public class Restaurant implements Comparable<Restaurant> {
     @Override
     public int compareTo(Restaurant other) {
         return this.getName().compareTo(other.getName());
+    }
+
+    public static void makeRestaurant(String name, String locatedAt, TreeMap<String, Restaurant> restaurants,
+                                      TreeMap<String, Location> locations) {
+        // checking if the restaurant already exists
+        if (restaurants.containsKey(name)) {
+            Display.displayMessage("ERROR", "restaurant_already_exists");
+            return;
+        }
+
+        // checking if the passed in location exists
+        // if the location does not exist in the system, display an error message
+        if (locations.containsKey(locatedAt)) {
+            Restaurant restaurant = new Restaurant(name, locations.get(locatedAt));
+            restaurants.put(name, restaurant);
+            Display.displayMessage("OK","change_completed");
+        } else {
+            Display.displayMessage("ERROR", "location_identifier_does_not_exist");
+        }
     }
 }

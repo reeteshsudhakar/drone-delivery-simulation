@@ -167,7 +167,7 @@ public class Drone implements Comparable<Drone> {
                 this.getTag(), this.getCapacity(), this.getRemainingCapacity(), this.getFuel(),
                 this.getSales(), this.getCurrentLocation().getName());
 
-        getPayload().forEach((key,value) ->
+        this.getPayload().forEach((key,value) ->
                 System.out.printf("&> Barcode: %s, Item Name: %s, Total Quantity: %d, Unit Cost: %d, " +
                                 "Total Weight: %d%n", key.getBarcode(), key.getName(), value.getQuantity(),
                         value.getUnitPrice(), key.getWeight() * value.getQuantity()));
@@ -232,5 +232,48 @@ public class Drone implements Comparable<Drone> {
     @Override
     public int compareTo(Drone drone) {
         return this.getTag().compareTo(drone.getTag());
+    }
+
+    public static void makeDrone(String serviceName, Integer tag, Integer capacity, Integer fuel,
+                                 TreeMap<String, DeliveryService> services) {
+        // checking if the service for the drone exists
+        DeliveryService newService = null;
+        Location serviceLocation = null;
+
+        if (services.containsKey(serviceName)) {
+            newService = services.get(serviceName);
+            serviceLocation = newService.getLocation();
+        }
+
+        // if the service does not exist in the system, display an error message
+        if (newService == null) {
+            Display.displayMessage("ERROR","service_identifier_does_not_exist");
+            return;
+        }
+
+        // checking if the drone already exists in the system
+        if (newService.getDrones().containsKey(tag)) {
+            Display.displayMessage("ERROR","drone_already_exists");
+            return;
+        }
+
+        // checking if the capacity is valid (positive) and whether the fuel is valid (non-negative)
+        if (capacity == null || capacity <= 0) {
+            Display.displayMessage("ERROR","drone_capacity_must_be_greater_than_zero");
+            return;
+        } else if (fuel == null || fuel < 0) {
+            Display.displayMessage("ERROR","drone_fuel_must_be_greater_than_or_equal_to_zero");
+            return;
+        }
+
+        // creating the drone IFF there is space in the service's home base for it
+        if (serviceLocation.getSpacesLeft() == 0) {
+            Display.displayMessage("ERROR","not_enough_space_to_create_new_drone");
+        } else {
+            Drone newDrone = new Drone(tag, capacity, fuel, serviceLocation);
+            newService.getDrones().put(tag, newDrone);
+            serviceLocation.decrementSpacesLeft();
+            Display.displayMessage("OK","change_completed");
+        }
     }
 }

@@ -1,3 +1,5 @@
+import java.util.TreeMap;
+
 /**
  * Location class to represent a location for services, restaurants, and drones in the system.
  *
@@ -121,4 +123,52 @@ public class Location implements Comparable<Location> {
     public int compareTo(Location other) {
         return this.getName().compareTo(other.getName());
     }
+
+    public static void makeLocation(String name, Integer x_coordinate, Integer y_coordinate,
+                                    Integer spaceLimit, TreeMap<String, Location> locations) {
+        // checking if the location already exists
+        if (locations.containsKey(name)) {
+            Display.displayMessage("ERROR","location_already_exists");
+            return;
+        }
+
+        // checking if the space limit is valid (positive) and whether the passed in arguments are valid
+        if (spaceLimit < 0) {
+            Display.displayMessage("ERROR", "location_space_limit_must_not_be_negative");
+            return;
+        } else if (name == null || name.equals("")) {
+            Display.displayMessage("ERROR", "location_name_must_not_be_empty");
+            return;
+        }
+
+        // creating the location and adding it to the collection
+        Location location = new Location(name, x_coordinate, y_coordinate, spaceLimit);
+        locations.put(name, location);
+        Display.displayMessage("OK","change_completed");
+    }
+
+    public static void checkDistance(String departurePoint, String arrivalPoint, TreeMap<String, Location> locations) {
+        // checking if the departure and arrival points are valid
+        Location departureLocation;
+        Location arrivalLocation;
+
+        if (locations.containsKey(departurePoint)) {
+            departureLocation = locations.get(departurePoint);
+        } else {
+            Display.displayMessage("ERROR", "departure_location_does_not_exist");
+            return;
+        }
+
+        if (locations.containsKey(arrivalPoint)) {
+            arrivalLocation = locations.get(arrivalPoint);
+        } else {
+            Display.displayMessage("ERROR", "arrival_location_does_not_exist");
+            return;
+        }
+
+        // if the departure and arrival points are valid, calculate and display the distance between them
+        int distance = departureLocation.calculateDistance(arrivalLocation);
+        Display.displayMessage("OK", String.format("distance = %d", distance));
+    }
+
 }
