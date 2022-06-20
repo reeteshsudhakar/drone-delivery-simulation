@@ -4,7 +4,7 @@ import java.util.TreeMap;
  * Drone class used to represent a drone that delivers ingredients in the interface.
  *
  * @author Reetesh Sudhakar, Sebastian Jaskowski, Yash Gupta, Kunal Daga
- * @version 1.0
+ * @version 2.0
  */
 public class Drone implements Comparable<Drone> {
     // Object attributes

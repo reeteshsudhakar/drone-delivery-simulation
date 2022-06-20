@@ -2,11 +2,11 @@ import java.util.Scanner;
 import java.util.TreeMap;
 
 /**
- * Minimum Viable Product (MVP) of the interface loop for restaurants
+ * Ingredient delivery service system for restaurants
  * to purchase ingredients via drones operated by a delivery service.
  *
  * @author Reetesh Sudhakar, Sebastian Jaskowski, Yash Gupta, Kunal Daga
- * @version 1.0
+ * @version 2.0
  */
 public class InterfaceLoop {
 
@@ -79,12 +79,27 @@ public class InterfaceLoop {
         Drone.makeDrone(serviceName, tag, capacity, fuel, services);
     }
 
+    /**
+     * Method to make a person for the system.
+     * @param init_username the username of the person
+     * @param init_fname the first name of the person
+     * @param init_lname the last name of the person
+     * @param init_year the year of birth of the person
+     * @param init_month the month of birth of the person
+     * @param init_date the date of birth of the person
+     * @param init_address the address of the person
+     */
     void makePerson(String init_username, String init_fname, String init_lname,
                     Integer init_year, Integer init_month, Integer init_date, String init_address) {
         Person.makePerson(init_username, init_fname, init_lname,
                 init_year, init_month, init_date, init_address, people);
     }
 
+    /**
+     * Method to hire a person for a service as a worker
+     * @param service_name the name of the service
+     * @param user_name the username of the person to be hired as a worker
+     */
     void hireWorker(String service_name, String user_name) {
         if (checkUserName(user_name) && checkServiceName(service_name)) {
             //TODO: What happens when managers or pilots become workers (Kunal)
@@ -95,6 +110,11 @@ public class InterfaceLoop {
         }
     }
 
+    /**
+     * Method to fire a worker from a specified service
+     * @param service_name the name of the service
+     * @param user_name the username of the worker to be fired
+     */
     void fireWorker(String service_name, String user_name) {
         if (checkUserName(user_name) && checkServiceName(service_name)) {
             Person firedPerson = people.get(user_name);
@@ -482,20 +502,30 @@ public class InterfaceLoop {
         commandLineInput.close();
     }
 
+    /**
+     * Method to check if the username exists
+     * @param user_name the username to check
+     * @return true if the username exists, false otherwise
+     */
     boolean checkUserName(String user_name) {
         if (people.containsKey(user_name)) {
             return true;
         } else {
-            Display.displayMessage("ERROR", "Not an existing username");
+            Display.displayMessage("ERROR", "username_does_not_exist");
             return false;
         }
     }
 
+    /**
+     * Method to check if the service exists
+     * @param service_name the service to check
+     * @return true if the service exists, false otherwise
+     */
     boolean checkServiceName(String service_name) {
         if (services.containsKey(service_name)) {
             return true;
         } else {
-            Display.displayMessage("ERROR", "Not an existing delivery service");
+            Display.displayMessage("ERROR", "service_does_not_exist");
             return false;
         }
     }

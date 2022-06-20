@@ -4,7 +4,7 @@ import java.util.TreeMap;
  * Ingredient class to create ingredients for restaurants to purchase from services.
  *
  * @author Reetesh Sudhakar, Sebastian Jaskowski, Yash Gupta, Kunal Daga
- * @version 1.0
+ * @version 2.0
  */
 public class Ingredient implements Comparable<Ingredient> {
     // Object attributes

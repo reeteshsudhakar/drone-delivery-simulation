@@ -2,7 +2,7 @@
  * Main class to run the interface for the ingredient purchasing system.
  *
  * @author Reetesh Sudhakar, Sebastian Jaskowski, Yash Gupta, Kunal Daga
- * @version 1.0
+ * @version 2.0
  */
 public class Main {
 

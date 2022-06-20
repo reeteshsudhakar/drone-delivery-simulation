@@ -2,7 +2,7 @@
  * Package class to track quantity and price of ingredients in a drone's payload.
  *
  * @author Reetesh Sudhakar, Sebastian Jaskowski, Yash Gupta, Kunal Daga
- * @version 1.0
+ * @version 2.0
  */
 public class Package {
     // Object attributes

@@ -4,7 +4,7 @@ import java.util.TreeMap;
  * Delivery Service class to handle the delivery of ingredients to restaurants.
  *
  * @author Reetesh Sudhakar, Sebastian Jaskowski, Yash Gupta, Kunal Daga
- * @version 1.0
+ * @version 2.0
  */
 public class DeliveryService implements Comparable <DeliveryService> {
     // Object attributes

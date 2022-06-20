@@ -4,7 +4,7 @@ import java.util.TreeMap;
  * Restaurant class to represent a restaurant purchasing ingredients in the system.
  *
  * @author Reetesh Sudhakar, Sebastian Jaskowski, Yash Gupta, Kunal Daga
- * @version 1.0
+ * @version 2.0
  */
 public class Restaurant implements Comparable<Restaurant> {
     // Object attributes

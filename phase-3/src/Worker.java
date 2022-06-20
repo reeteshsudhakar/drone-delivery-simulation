@@ -1,6 +1,12 @@
 import java.util.TreeMap;
 import java.util.ArrayList;
 
+/**
+ * Worker class to represent workers for delivery services.
+ *
+ * @author Reetesh Sudhakar, Sebastian Jaskowski, Yash Gupta, Kunal Daga
+ * @version 2.0
+ */
 public class Worker extends Person {
 
     final private ArrayList<DeliveryService> employers = new ArrayList<>();
@@ -12,7 +18,8 @@ public class Worker extends Person {
     }
 
     public Worker(Person person, DeliveryService init_employer) {
-        super(person.getUsername(), person.getFname(), person.getLname(), person.getYear(), person.getMonth(), person.getDate(), person.getAddress());
+        super(person.getUsername(), person.getFname(), person.getLname(), person.getYear(), person.getMonth(),
+                person.getDate(), person.getAddress());
         this.employers.add(init_employer);
     }
 

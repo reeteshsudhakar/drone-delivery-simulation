@@ -1,3 +1,9 @@
+/**
+ * Manager class to represent a person who runs a delivery service.
+ *
+ * @author Reetesh Sudhakar, Sebastian Jaskowski, Yash Gupta, Kunal Daga
+ * @version 2.0
+ */
 public class Manager extends Person {
 
     private DeliveryService employer;
@@ -9,7 +15,8 @@ public class Manager extends Person {
     }
 
     public Manager(Person person, DeliveryService init_employer) {
-        super(person.getUsername(), person.getFname(), person.getLname(), person.getYear(), person.getMonth(), person.getDate(), person.getAddress());
+        super(person.getUsername(), person.getFname(), person.getLname(), person.getYear(), person.getMonth(),
+                person.getDate(), person.getAddress());
         this.employer = init_employer;
     }
 }

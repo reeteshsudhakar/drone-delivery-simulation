@@ -4,7 +4,7 @@ import java.util.TreeMap;
  * Location class to represent a location for services, restaurants, and drones in the system.
  *
  * @author Reetesh Sudhakar, Sebastian Jaskowski, Yash Gupta, Kunal Daga
- * @version 1.0
+ * @version 2.0
  */
 public class Location implements Comparable<Location> {
     // Object attributes

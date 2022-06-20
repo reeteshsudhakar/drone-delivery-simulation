@@ -1,5 +1,11 @@
 import java.util.TreeMap;
 
+/**
+ * Person class to represent a person in the system.
+ *
+ * @author Reetesh Sudhakar, Sebastian Jaskowski, Yash Gupta, Kunal Daga
+ * @version 2.0
+ */
 public class Person implements Comparable<Person> {
     private String username;
     private String fname;
