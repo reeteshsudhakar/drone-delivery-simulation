@@ -33,8 +33,12 @@ public class Location implements Comparable<Location> {
      * @return Distance between two locations
      */
     Integer calculateDistance(Location destination) {
-        return 1 + (int) Math.floor(Math.sqrt(Math.pow(getX_coordinate() - destination.getX_coordinate(), 2)
-                + Math.pow(getY_coordinate() - destination.getY_coordinate(), 2)));
+        if (this.equals(destination)) {
+            return 0;
+        } else {
+            return 1 + (int) Math.floor(Math.sqrt(Math.pow(this.getX_coordinate() - destination.getX_coordinate(), 2)
+                    + Math.pow(this.getY_coordinate() - destination.getY_coordinate(), 2)));
+        }
     }
 
     /**

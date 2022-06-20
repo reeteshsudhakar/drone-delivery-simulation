@@ -151,6 +151,12 @@ public class Drone implements Comparable<Drone> {
         this.sales += amountSold;
     }
 
+    /**
+     * Method to clear the sales of a drone to 0.
+     */
+    public void clearSales() {
+        this.sales = 0;
+    }
 
     /**
      * Method to display information about a drone based on its attributes

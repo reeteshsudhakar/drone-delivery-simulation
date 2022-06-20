@@ -51,6 +51,16 @@ public class DeliveryService implements Comparable <DeliveryService> {
     }
 
     /**
+     * Method to collect the sales of a drone from a delivery service.
+     */
+    public void collectDroneSales() {
+        for (Drone drone : this.getDrones().values()) {
+            this.revenue += drone.getSales();
+            drone.clearSales();
+        }
+    }
+
+    /**
      * Override to string method to print the info about the Delivery Service.
      * @return string representation of the Delivery Service.
      */

@@ -277,6 +277,35 @@ public class InterfaceLoop {
         displayMessage("OK","display_completed");
     }
 
+    void makePerson(String init_username, String init_fname, String init_lname,
+                    Integer init_year, Integer init_month, Integer init_date, String init_address) {
+        // new method to make a person
+    }
+
+    void displayPersons() {
+        // new method to display all the persons in the system
+    }
+
+    void hireWorker(String service_name, String user_name) {
+        // new method to hire a worker
+    }
+
+    void fireWorker(String service_name, String user_name) {
+        // new method to fire a worker
+    }
+
+    void appointManager(String service_name, String user_name) {
+        // new method to appoint a manager
+    }
+
+    void trainPilot(String service_name, String user_name, String init_license, Integer init_experience) {
+        // new method to train a pilot
+    }
+
+    void appointPilot(String service_name, String user_name, Integer drone_tag) {
+        // new method to appoint a pilot
+    }
+
     /**
      * Method to fly a drone from one location to another.
      * @param serviceName the name of the service the drone is assigned to
@@ -328,6 +357,14 @@ public class InterfaceLoop {
         // if the drone can fly to the destination, move it to the destination, update the fuel and the spaces left
         movedDrone.flyToDestination(destinationLocation);
         displayMessage("OK","change_completed");
+    }
+
+    void joinSwarm(String service_name, Integer lead_drone_tag, Integer swarm_drone_tag) {
+        // new method to join a swarm
+    }
+
+    void leaveSwarm(String service_name, Integer swarm_drone_tag) {
+
     }
 
     /**
@@ -506,6 +543,21 @@ public class InterfaceLoop {
         displayMessage("OK","change_completed");
     }
 
+    void collectRevenue(String service_name) {
+        // checking if the service exists in the system
+        DeliveryService service = null;
+        if (services.containsKey(service_name)) {
+            service = services.get(service_name);
+        }
+
+        if (service == null) {
+            displayMessage("ERROR","service_does_not_exist");
+            return;
+        }
+
+        service.collectDroneSales();
+    }
+
     /**
      * Main loop to run the simulation and pass in arguments from the command line.
      */
@@ -564,6 +616,25 @@ public class InterfaceLoop {
                 } else if (tokens[0].equals("stop")) {
                     System.out.println("stop acknowledged");
                     break;
+                } else if (tokens[0].equals("make_person")) {
+                    makePerson(tokens[1], tokens[2], tokens[3], Integer.parseInt(tokens[4]),
+                            Integer.parseInt(tokens[5]), Integer.parseInt(tokens[6]), tokens[7]);
+                } else if (tokens[0].equals("display_persons")) {
+                    displayPersons();
+                } else if (tokens[0].equals("hire_worker")) {
+                    hireWorker(tokens[1], tokens[2]);
+                } else if (tokens[0].equals("fire_worker")) {
+                    fireWorker(tokens[1], tokens[2]);
+                } else if (tokens[0].equals("appoint_manager")) {
+                    appointManager(tokens[1], tokens[2]);
+                } else if (tokens[0].equals("train_pilot")) {
+                    trainPilot(tokens[1], tokens[2], tokens[3], Integer.parseInt(tokens[4]));
+                } else if (tokens[0].equals("join_swarm")) {
+                    joinSwarm(tokens[1], Integer.parseInt(tokens[2]), Integer.parseInt(tokens[3]));
+                } else if (tokens[0].equals("leave_swarm")) {
+                    leaveSwarm(tokens[1], Integer.parseInt(tokens[2]));
+                } else if (tokens[0].equals("collect_revenue")) {
+                    collectRevenue(tokens[1]);
                 } else {
                     System.out.println("command " + tokens[0] + " NOT acknowledged");
                 }
