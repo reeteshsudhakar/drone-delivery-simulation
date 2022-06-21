@@ -1,8 +1,0 @@
-make_location,plaza,10,18,2
-make_service,swift_spices,0,plaza
-make_service,star_shine,0,plaza
-make_drone,swift_spices,4,2,10
-make_drone,swift_spices,5,2,10
-make_drone,star_shine,5,2,10
-display_locations
-stop

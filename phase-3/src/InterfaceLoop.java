@@ -157,7 +157,17 @@ public class InterfaceLoop {
     }
 
     void trainPilot(String service_name, String user_name, String init_license, Integer init_experience) {
-        // new method to train a pilot
+        //TODO: can experience be == 0
+        if (init_experience == null || init_license == null || init_license.equals("")) {
+            Display.displayMessage("ERROR", "Invalid arguments entered");
+        } else if (checkServiceName(service_name) && checkUserName(user_name)) {
+            Person tempPerson = people.get(user_name);
+            if (tempPerson instanceof Manager) {
+                Display.displayMessage("ERROR", "A manager can't train to be a pilot");
+            } else {
+                //TODO: what if person is worker or just normal person
+            }
+        }
     }
 
     void appointPilot(String service_name, String user_name, Integer drone_tag) {
