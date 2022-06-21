@@ -123,12 +123,12 @@ public class InterfaceLoop {
                 Worker firedWorker = (Worker) firedPerson;
                 DeliveryService employer = services.get(service_name);
                 if (!firedWorker.getEmployers().contains(employer)) {
-                    Display.displayMessage("ERROR", "Worker doesn't work for this delivery service");
+                    Display.displayMessage("ERROR", "worker_not_found");
                 } else {
                     firedWorker.removeEmployer(employer);
                 }
             } else {
-                Display.displayMessage("ERROR", "Username is not associated to a worker so cannot be fired");
+                Display.displayMessage("ERROR", "username_not_found");
             }
         }
     }
@@ -138,7 +138,7 @@ public class InterfaceLoop {
             Person tempPerson = people.get(user_name);
             DeliveryService employer = services.get(service_name);
             if (tempPerson instanceof Pilot) {
-                Display.displayMessage("ERROR", "A pilot cannot become a manager");
+                Display.displayMessage("ERROR", "pilot_cannot_become_manager");
             } else if (tempPerson instanceof Manager) {
                 Manager newManager = new Manager(tempPerson, employer);
                 people.put(user_name, newManager);
@@ -146,7 +146,7 @@ public class InterfaceLoop {
                 Worker tempWorker = (Worker) tempPerson;
                 if (!tempWorker.getEmployers().contains(employer)) {
                     if (tempWorker.getEmployers().size() > 1) {
-                        Display.displayMessage("ERROR", "Cannot appoint worker as manager because worker works at more than 1 delivery service");
+                        Display.displayMessage("ERROR", "worker_has_multiple_employers_cannot_be_appointed");
                     } else {
                         Manager newManager = new Manager(tempPerson, employer);
                         people.put(user_name, newManager);
@@ -159,11 +159,11 @@ public class InterfaceLoop {
     void trainPilot(String service_name, String user_name, String init_license, Integer init_experience) {
         //TODO: can experience be == 0
         if (init_experience == null || init_license == null || init_license.equals("")) {
-            Display.displayMessage("ERROR", "Invalid arguments entered");
+            Display.displayMessage("ERROR", "invalid_arguments_entered");
         } else if (checkServiceName(service_name) && checkUserName(user_name)) {
             Person tempPerson = people.get(user_name);
             if (tempPerson instanceof Manager) {
-                Display.displayMessage("ERROR", "A manager can't train to be a pilot");
+                Display.displayMessage("ERROR", "manager_cannot_train_to_be_pilot");
             } else {
                 //TODO: what if person is worker or just normal person
             }
