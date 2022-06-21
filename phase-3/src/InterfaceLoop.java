@@ -128,15 +128,31 @@ public class InterfaceLoop {
                     firedWorker.removeEmployer(employer);
                 }
             } else {
-                Display.displayMessage("ERROR", "Username is not associated to a worker");
+                Display.displayMessage("ERROR", "Username is not associated to a worker so cannot be fired");
             }
         }
     }
 
-    //TODO: finish this method (Kunal)
     void appointManager(String service_name, String user_name) {
         if (checkUserName(user_name) && checkServiceName(service_name)) {
             Person tempPerson = people.get(user_name);
+            DeliveryService employer = services.get(service_name);
+            if (tempPerson instanceof Pilot) {
+                Display.displayMessage("ERROR", "A pilot cannot become a manager");
+            } else if (tempPerson instanceof Manager) {
+                Manager newManager = new Manager(tempPerson, employer);
+                people.put(user_name, newManager);
+            } else if (tempPerson instanceof Worker) {
+                Worker tempWorker = (Worker) tempPerson;
+                if (!tempWorker.getEmployers().contains(employer)) {
+                    if (tempWorker.getEmployers().size() > 1) {
+                        Display.displayMessage("ERROR", "Cannot appoint worker as manager because worker works at more than 1 delivery service");
+                    } else {
+                        Manager newManager = new Manager(tempPerson, employer);
+                        people.put(user_name, newManager);
+                    }
+                }
+            }
         }
     }
 
