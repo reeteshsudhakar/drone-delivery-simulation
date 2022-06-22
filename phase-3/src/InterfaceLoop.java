@@ -618,6 +618,7 @@ public class InterfaceLoop {
         }
     }
 
+    /**
      * Method to check if the drone exists
      * @param service_name the drone to check
      * @param drone_tag the drone tag to check
