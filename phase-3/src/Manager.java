@@ -11,9 +11,9 @@ public class Manager extends Worker {
         super(init_username, init_fname, init_lname, init_year, init_month, init_date, init_address, init_employer);
     }
 
-    public Manager(Person person, DeliveryService init_employer) {
-        super(person.getUsername(), person.getFname(), person.getLname(), person.getYear(),
-                person.getMonth(), person.getDate(), person.getAddress(), init_employer);
+    public Manager(Worker worker, DeliveryService init_employer) {
+        super(worker.getUsername(), worker.getFname(), worker.getLname(), worker.getYear(),
+                worker.getMonth(), worker.getDate(), worker.getAddress(), init_employer);
     }
 
     @Override

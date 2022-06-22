@@ -41,7 +41,6 @@ public class Worker extends Person {
     public String toString() {
         if (!(this instanceof Manager)) {
             StringBuilder works_at = new StringBuilder("\nemployee is working at:");
-            System.out.println(employers.size());
             for (DeliveryService service : employers) {
                 works_at.append(String.format("\n&> %s", service.getName()));
             }

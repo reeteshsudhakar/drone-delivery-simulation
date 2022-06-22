@@ -12,6 +12,7 @@ public class DeliveryService implements Comparable <DeliveryService> {
     private Integer revenue;
     private Location locatedAt;
     private TreeMap<Integer, Drone> drones;
+    private Manager manager = null;
 
     /**
      * Constructor for DeliveryService class.
@@ -110,5 +111,13 @@ public class DeliveryService implements Comparable <DeliveryService> {
             Display.displayMessage("ERROR", "location_identifier_does_not_exist");
         }
 
+    }
+
+    public Manager getManager() {
+        return manager;
+    }
+
+    public void setManager(Manager manager) {
+        this.manager = manager;
     }
 }

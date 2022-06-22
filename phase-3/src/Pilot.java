@@ -18,16 +18,18 @@ public class Pilot extends Worker {
         this.experience = init_experience;
     }
 
-    public Pilot(Person person, DeliveryService init_employer, String init_license, int init_experience) {
-        super(person.getUsername(), person.getFname(), person.getLname(), person.getYear(), person.getMonth(),
-                person.getDate(), person.getAddress(), init_employer);
+    public Pilot(Worker worker, DeliveryService init_employer, String init_license, int init_experience) {
+        super(worker.getUsername(), worker.getFname(), worker.getLname(), worker.getYear(), worker.getMonth(),
+                worker.getDate(), worker.getAddress(), init_employer);
         this.getEmployers().add(init_employer);
         this.license = init_license;
         this.experience = init_experience;
     }
 
+    /**
+     * @return The display string for this Pilot
+     */
     public String toString() {
         return super.toString() + String.format("\nuser has a pilot's license (%s) with %d successful flight(s)", this.license, this.experience);
     }
-
 }

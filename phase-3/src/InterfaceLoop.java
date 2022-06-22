@@ -110,6 +110,10 @@ public class InterfaceLoop {
                 Display.displayMessage("ERROR", "pilot_cannot_be_assigned_as_worker");
             } else if (temp instanceof Pilot) {
                 Display.displayMessage("ERROR", "manager_cannot_be_assigned_as_worker");
+            } else if (temp instanceof Worker) {
+                Worker hiredWorker = (Worker) temp;
+                hiredWorker.addEmployer(employer);
+                Display.displayMessage("OK", "change_completed");
             } else {
                 Worker hiredWorker = new Worker(temp, employer);
                 people.put(user_name, hiredWorker);
@@ -131,13 +135,19 @@ public class InterfaceLoop {
 
             //If person is a Worker, removes employer from ArrayList of employers if they exist
             if (firedPerson instanceof Worker) {
-                //TODO: If a worker has no more delivery services attached to him, does he remain a worker? (Kunal)
                 Worker firedWorker = (Worker) firedPerson;
                 DeliveryService employer = services.get(service_name);
                 if (!firedWorker.getEmployers().contains(employer)) {
                     Display.displayMessage("ERROR", "worker_does_not_work_for_service");
                 } else {
                     firedWorker.removeEmployer(employer);
+                    if (firedWorker.getEmployers().isEmpty()) {
+                        Person newPerson = new Person(firedPerson.getUsername(), firedPerson.getFname(),
+                                firedPerson.getLname(), firedPerson.getYear(), firedPerson.getMonth(),
+                                firedPerson.getDate(), firedPerson.getAddress());
+                        people.put(user_name, newPerson);
+                    }
+                    Display.displayMessage("OK", "change_completed");
                 }
             } else {
                 Display.displayMessage("ERROR", "username_not_found");
@@ -145,6 +155,11 @@ public class InterfaceLoop {
         }
     }
 
+    /**
+     * Method to appoint a new manager to a one service
+     * @param service_name the name of the service
+     * @param user_name the name of the manager to be hired
+     */
     void appointManager(String service_name, String user_name) {
         if (checkUserName(user_name) && checkServiceName(service_name)) {
             Person tempPerson = people.get(user_name);
@@ -152,17 +167,19 @@ public class InterfaceLoop {
             if (tempPerson instanceof Pilot) {
                 Display.displayMessage("ERROR", "pilot_cannot_become_manager");
             } else if (tempPerson instanceof Manager) {
-                Manager newManager = new Manager(tempPerson, employer);
-                people.put(user_name, newManager);
+                Display.displayMessage("ERROR", "manager_does_not_work_for_this_delivery_service");
             } else if (tempPerson instanceof Worker) {
                 Worker tempWorker = (Worker) tempPerson;
-                if (!tempWorker.getEmployers().contains(employer)) {
+                if (tempWorker.getEmployers().contains(employer)) {
                     if (tempWorker.getEmployers().size() > 1) {
                         Display.displayMessage("ERROR", "worker_has_multiple_employers_cannot_be_appointed");
                     } else {
-                        Manager newManager = new Manager(tempPerson, employer);
+                        Manager newManager = new Manager(tempWorker, employer);
                         people.put(user_name, newManager);
+                        Display.displayMessage("OK", "change_completed");
                     }
+                } else {
+                    Display.displayMessage("ERROR", "worker_does_not_work_for_this_delivery_service");
                 }
             }
         }
@@ -173,16 +190,44 @@ public class InterfaceLoop {
             Display.displayMessage("ERROR", "invalid_arguments_entered");
         } else if (checkServiceName(service_name) && checkUserName(user_name)) {
             Person tempPerson = people.get(user_name);
+            DeliveryService employer = services.get(service_name);
             if (tempPerson instanceof Manager) {
                 Display.displayMessage("ERROR", "manager_cannot_train_to_be_pilot");
-            } else {
-                //TODO: what if person is worker or just normal person
+            } else if (tempPerson instanceof Pilot) {
+                Display.displayMessage("ERROR", "pilot_already_trained");
+            } else if (tempPerson instanceof Worker) {
+                Worker tempWorker = (Worker) tempPerson;
+                if (tempWorker.getEmployers().contains(employer)) {
+                    if (employer.getManager() != null) {
+                        Pilot newPilot = new Pilot(tempWorker, employer, init_license, init_experience);
+                        people.put(user_name, newPilot);
+                        Display.displayMessage("OK", "change_completed");
+                    } else {
+                        Display.displayMessage("ERROR", "delivery_service_does_not_have_a_manager");
+                    }
+                } else {
+                    Display.displayMessage("ERROR", "worker_does_not_work_for_delivery_service");
+                }
             }
         }
     }
 
     void appointPilot(String service_name, String user_name, Integer drone_tag) {
-        // new method to appoint a pilot
+        if (checkServiceName(service_name) && checkUserName(user_name)) {
+            Person tempPerson = people.get(user_name);
+            DeliveryService employer = services.get(service_name);
+            if (tempPerson instanceof Pilot) {
+                Pilot appointedPilot = (Pilot) tempPerson;
+                if (appointedPilot.getEmployers().contains(employer)) {
+                    //TODO: Check for valid license
+                    //TODO: method body
+                } else {
+                    Display.displayMessage("ERROR", "pilot_does_not_work_for_delivery_service");
+                }
+            } else {
+                Display.displayMessage("ERROR", "person_is_not_a_pilot");
+            }
+        }
     }
 
     /*
@@ -201,6 +246,7 @@ public class InterfaceLoop {
         Drone movedDrone = null;
         Location destinationLocation = null;
 
+        //TODO Move flight eligibility checks into separate method
         if (services.containsKey(serviceName)) {
             DeliveryService service = services.get(serviceName);
             if (service.getDrones().containsKey(tag)) {
@@ -252,10 +298,6 @@ public class InterfaceLoop {
 
     }
 
-    /*
-     * TODO: execute loadIngredient IFF the service has at least 1 normal worker
-     */
-
     /**
      * Method to load a drone with ingredients.
      * @param serviceName the name of the service the drone is assigned to
@@ -297,6 +339,11 @@ public class InterfaceLoop {
             return;
         }
 
+        if (noWorkersExist()) {
+            Display.displayMessage("ERROR","no_worker_present_to_load_ingredient");
+            return;
+        }
+
         // checking if the quantity and price of the ingredient are valid
         if (quantity <= 0) {
             Display.displayMessage("ERROR","quantity_must_be_greater_than_zero");
@@ -316,10 +363,6 @@ public class InterfaceLoop {
             Display.displayMessage("OK","change_completed");
         }
     }
-
-    /*
-     * TODO: execute loadFuel IFF the service has at least 1 normal worker
-     */
 
     /**
      * Method to load a drone with fuel.
@@ -349,10 +392,16 @@ public class InterfaceLoop {
         // if the drone is at the service's home base, fill the drone with fuel
         if (!loadFuelDrone.getCurrentLocation().equals(loadFuelDrone.getHomeBase())) {
             Display.displayMessage("ERROR", "drone_not_located_at_home_base");
-        } else {
-            loadFuelDrone.loadDroneFuel(petrol);
-            Display.displayMessage("OK", "change_completed");
+            return;
         }
+
+        if (noWorkersExist()) {
+            Display.displayMessage("ERROR", "no_worker_present_to_load_fuel");
+            return;
+        }
+
+        loadFuelDrone.loadDroneFuel(petrol);
+        Display.displayMessage("OK", "change_completed");
     }
 
     /**
@@ -566,5 +615,12 @@ public class InterfaceLoop {
             Display.displayMessage("ERROR", "service_does_not_exist");
             return false;
         }
+    }
+
+    /**
+     * @return A boolean that is true if there are no workers at home base, and false otherwise
+     */
+    boolean noWorkersExist() {
+        return people.values().stream().findAny().filter((item) -> (item instanceof Worker)).isEmpty();
     }
 }
