@@ -95,4 +95,10 @@ public class Person implements Comparable<Person> {
             people.put(init_username, newPerson);
         }
     }
+
+    @Override
+    public String toString() {
+        return String.format("userID: %s, name: %s, birth date: %d-%d-%d, address: %s", this.username,
+                this.fname + " " + this.lname, this.year, this.month, this.date, this.address);
+    }
 }

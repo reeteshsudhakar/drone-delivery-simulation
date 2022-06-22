@@ -119,7 +119,7 @@ public class InterfaceLoop {
         if (checkUserName(user_name) && checkServiceName(service_name)) {
             Person firedPerson = people.get(user_name);
             if (firedPerson instanceof Worker) {
-                //TODO: If a worker has no more delivery services attached to he, does he remain a worker? (Kunal)
+                //TODO: If a worker has no more delivery services attached to him, does he remain a worker? (Kunal)
                 Worker firedWorker = (Worker) firedPerson;
                 DeliveryService employer = services.get(service_name);
                 if (!firedWorker.getEmployers().contains(employer)) {
