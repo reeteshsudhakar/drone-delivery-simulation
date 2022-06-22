@@ -618,6 +618,20 @@ public class InterfaceLoop {
         }
     }
 
+     * Method to check if the drone exists
+     * @param service_name the drone to check
+     * @param drone_tag the drone tag to check
+     * @return true if the drone exists, false otherwise
+     */
+    boolean checkDroneExists(String service_name, Integer drone_tag) {
+        if (services.get(service_name).getDrones().containsKey(drone_tag)) {
+            return true;
+        } else {
+            Display.displayMessage("ERROR", "drone_does_not_exist");
+            return false;
+        }
+    }
+
     /**
      * @return A boolean that is true if there are no workers at home base, and false otherwise
      */

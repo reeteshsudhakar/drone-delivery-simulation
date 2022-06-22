@@ -1,4 +1,4 @@
-import java.util.ArrayList;
+import java.util.TreeMap;
 
 /**
  * Pilot class to represent pilots who fly drones for delivery services.
@@ -9,6 +9,7 @@ import java.util.ArrayList;
 public class Pilot extends Worker {
     String license;
     int experience;
+    TreeMap<Integer, Drone> pilotedDrones;
 
     public Pilot(String init_username, String init_fname, String init_lname, Integer init_year, Integer init_month,
                   Integer init_date, String init_address, DeliveryService init_employer, String init_license, int init_experience) {
@@ -16,6 +17,7 @@ public class Pilot extends Worker {
         this.getEmployers().add(init_employer);
         this.license = init_license;
         this.experience = init_experience;
+        this.pilotedDrones = new TreeMap<>();
     }
 
     public Pilot(Worker worker, DeliveryService init_employer, String init_license, int init_experience) {
@@ -31,5 +33,9 @@ public class Pilot extends Worker {
      */
     public String toString() {
         return super.toString() + String.format("\nuser has a pilot's license (%s) with %d successful flight(s)", this.license, this.experience);
+    }
+
+    public TreeMap<Integer, Drone> getPilotedDrones() {
+        return pilotedDrones;
     }
 }
