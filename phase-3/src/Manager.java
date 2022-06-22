@@ -19,4 +19,10 @@ public class Manager extends Person {
                 person.getDate(), person.getAddress());
         this.employer = init_employer;
     }
+
+    @Override
+    public String toString() {
+        String manages = String.format("\nemployee is managing: %s", this.employer.getName());
+        return super.toString() + manages;
+    }
 }

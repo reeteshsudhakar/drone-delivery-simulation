@@ -30,4 +30,13 @@ public class Worker extends Person {
     public void removeEmployer(DeliveryService employer) {
         employers.remove(employer);
     }
+
+    @Override
+    public String toString() {
+        String works_at = "\nemployee is working at:";
+        for (DeliveryService service: employers) {
+            works_at += String.format("\n&> %s", service.getName());
+        }
+        return super.toString() + works_at;
+    }
 }
