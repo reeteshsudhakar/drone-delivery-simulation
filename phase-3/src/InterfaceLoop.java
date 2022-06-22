@@ -102,11 +102,21 @@ public class InterfaceLoop {
      */
     void hireWorker(String service_name, String user_name) {
         if (checkUserName(user_name) && checkServiceName(service_name)) {
-            //TODO: What happens when managers or pilots become workers (Kunal)
-            Person temp = people.get(user_name);
             DeliveryService employer = services.get(service_name);
-            Worker hiredWorker = new Worker(temp, employer);
-            people.put(user_name, hiredWorker);
+            Person temp = people.get(user_name);
+
+            //Replaces Person object in TreeMap iff they are not a Manager or Pilot
+            if (temp instanceof Manager) {
+                Display.displayMessage("ERROR", "pilot_cannot_be_assigned_as_worker");
+            } else if (temp instanceof Pilot) {
+                Display.displayMessage("ERROR", "manager_cannot_be_assigned_as_worker");
+            } else {
+                Worker hiredWorker = new Worker(temp, employer);
+                people.put(user_name, hiredWorker);
+                Display.displayMessage("OK", "change_completed");
+            }
+        } else {
+            Display.displayMessage("ERROR", "invalid_username_or_service_name");
         }
     }
 
@@ -118,12 +128,14 @@ public class InterfaceLoop {
     void fireWorker(String service_name, String user_name) {
         if (checkUserName(user_name) && checkServiceName(service_name)) {
             Person firedPerson = people.get(user_name);
+
+            //If person is a Worker, removes employer from ArrayList of employers if they exist
             if (firedPerson instanceof Worker) {
                 //TODO: If a worker has no more delivery services attached to him, does he remain a worker? (Kunal)
                 Worker firedWorker = (Worker) firedPerson;
                 DeliveryService employer = services.get(service_name);
                 if (!firedWorker.getEmployers().contains(employer)) {
-                    Display.displayMessage("ERROR", "worker_not_found");
+                    Display.displayMessage("ERROR", "worker_does_not_work_for_service");
                 } else {
                     firedWorker.removeEmployer(employer);
                 }
@@ -157,7 +169,6 @@ public class InterfaceLoop {
     }
 
     void trainPilot(String service_name, String user_name, String init_license, Integer init_experience) {
-        //TODO: can experience be == 0
         if (init_experience == null || init_license == null || init_license.equals("")) {
             Display.displayMessage("ERROR", "invalid_arguments_entered");
         } else if (checkServiceName(service_name) && checkUserName(user_name)) {
@@ -234,6 +245,7 @@ public class InterfaceLoop {
 
     void joinSwarm(String service_name, Integer lead_drone_tag, Integer swarm_drone_tag) {
         // new method to join a swarm
+        //TODO: how is the swarm implemented
     }
 
     void leaveSwarm(String service_name, Integer swarm_drone_tag) {

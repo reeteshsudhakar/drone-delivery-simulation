@@ -1,3 +1,4 @@
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.TreeMap;
 
@@ -88,6 +89,7 @@ public class Display {
      * Method to display the people in our service
      */
     static void displayPersons(Collection<Person> people) {
+        System.out.println(people);
         people.forEach(item -> System.out.println(item.toString()));
         Display.displayMessage("OK","display_completed");
     }
