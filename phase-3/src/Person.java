@@ -64,11 +64,11 @@ public class Person implements Comparable<Person> {
      * @param init_username Person's username
      * @param init_fname Person's first name
      * @param init_lname Person's last name
-     * @param init_year
-     * @param init_month
-     * @param init_date
-     * @param init_address
-     * @param people
+     * @param init_year Person's starting year
+     * @param init_month Person's starting month
+     * @param init_date Person's starting day
+     * @param init_address Person's address
+     * @param people the Treemap of all people and their names
      */
     public static void makePerson(String init_username, String init_fname, String init_lname,
                                   Integer init_year, Integer init_month, Integer init_date, String init_address,

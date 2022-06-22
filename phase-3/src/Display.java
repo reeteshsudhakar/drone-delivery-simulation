@@ -86,7 +86,6 @@ public class Display {
 
     /**
      * Method to display the people in our service
-     * todo: figure out how to display this class (dependent on demo)
      */
     static void displayPersons(Collection<Person> people) {
         people.forEach(item -> System.out.println(item.toString()));
