@@ -133,8 +133,9 @@ public class InterfaceLoop {
         if (checkUserName(user_name) && checkServiceName(service_name)) {
             Person firedPerson = people.get(user_name);
 
-            //If person is a Worker, removes employer from ArrayList of employers if they exist
-            if (firedPerson instanceof Worker) {
+            if (firedPerson instanceof Manager) {
+                Display.displayMessage("ERROR", "employee_is_managing_a_service");
+            } else if (firedPerson instanceof Worker) { //If person is a Worker, removes employer from ArrayList of employers if they exist
                 Worker firedWorker = (Worker) firedPerson;
                 DeliveryService employer = services.get(service_name);
                 if (!firedWorker.getEmployers().contains(employer)) {
