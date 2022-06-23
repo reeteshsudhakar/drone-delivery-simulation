@@ -25,12 +25,12 @@ public class Drone implements Comparable<Drone> {
      * @param init_fuel drone fuel
      * @param homeBase home base currentLocation
      */
-    public Drone(Integer init_tag, Integer init_capacity, Integer init_fuel, Location homeBase) {
+    public Drone(Integer init_tag, Integer init_capacity, Integer init_fuel, Location homeBase, Location currentLocation) {
         this.tag = init_tag;
         this.capacity = init_capacity;
         this.remainingCapacity = init_capacity;
         this.fuel = init_fuel;
-        this.currentLocation = homeBase;
+        this.currentLocation = currentLocation;
         this.homeBase = homeBase;
         this.sales = 0;
     }
@@ -270,7 +270,7 @@ public class Drone implements Comparable<Drone> {
         if (serviceLocation.getSpacesLeft() == 0) {
             Display.displayMessage("ERROR","not_enough_space_to_create_new_drone");
         } else {
-            Drone newDrone = new Drone(tag, capacity, fuel, serviceLocation);
+            Drone newDrone = new Drone(tag, capacity, fuel, serviceLocation, serviceLocation);
             newService.getDrones().put(tag, newDrone);
             serviceLocation.decrementSpacesLeft();
             Display.displayMessage("OK","change_completed");

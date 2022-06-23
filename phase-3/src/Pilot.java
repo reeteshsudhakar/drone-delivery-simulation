@@ -38,4 +38,8 @@ public class Pilot extends Worker {
     public TreeMap<Integer, Drone> getPilotedDrones() {
         return pilotedDrones;
     }
+
+    public String getLicense() {
+        return license;
+    }
 }
