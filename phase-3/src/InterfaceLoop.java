@@ -113,11 +113,11 @@ public class InterfaceLoop {
             } else if (temp instanceof Worker) {
                 Worker hiredWorker = (Worker) temp;
                 hiredWorker.addEmployer(employer);
-                Display.displayMessage("OK", "change_completed");
+                Display.displayMessage("OK", "new_employee_has_been_hired");
             } else {
                 Worker hiredWorker = new Worker(temp, employer);
                 people.put(user_name, hiredWorker);
-                Display.displayMessage("OK", "change_completed");
+                Display.displayMessage("OK", "new_employee_has_been_hired");
             }
         } else {
             Display.displayMessage("ERROR", "invalid_username_or_service_name");
@@ -148,7 +148,7 @@ public class InterfaceLoop {
                                 firedPerson.getDate(), firedPerson.getAddress());
                         people.put(user_name, newPerson);
                     }
-                    Display.displayMessage("OK", "change_completed");
+                    Display.displayMessage("OK", "employee_has_been_fired");
                 }
             } else {
                 Display.displayMessage("ERROR", "username_not_found");
@@ -173,11 +173,12 @@ public class InterfaceLoop {
                 Worker tempWorker = (Worker) tempPerson;
                 if (tempWorker.getEmployers().contains(employer)) {
                     if (tempWorker.getEmployers().size() > 1) {
-                        Display.displayMessage("ERROR", "worker_has_multiple_employers_cannot_be_appointed");
+                        Display.displayMessage("ERROR", "employee_is_working_at_other_companies");
                     } else {
                         Manager newManager = new Manager(tempWorker, employer);
                         people.put(user_name, newManager);
-                        Display.displayMessage("OK", "change_completed");
+                        employer.setManager(newManager);
+                        Display.displayMessage("OK", "employee_has_been_appointed_manager");
                     }
                 } else {
                     Display.displayMessage("ERROR", "worker_does_not_work_for_this_delivery_service");
@@ -193,7 +194,7 @@ public class InterfaceLoop {
             Person tempPerson = people.get(user_name);
             DeliveryService employer = services.get(service_name);
             if (tempPerson instanceof Manager) {
-                Display.displayMessage("ERROR", "manager_cannot_train_to_be_pilot");
+                Display.displayMessage("ERROR", "employee_is_too_busy_managing");
             } else if (tempPerson instanceof Pilot) {
                 Display.displayMessage("ERROR", "pilot_already_trained");
             } else if (tempPerson instanceof Worker) {
@@ -244,11 +245,6 @@ public class InterfaceLoop {
         }
     }
 
-    /*
-     * TODO: execute IFF the drone, individual or leader of swarm, has a pilot with valid license
-     * TODO: do not fly drone if one drone in the swarm cannot make it to destination or back to base
-     */
-
     /**
      * Method to fly a drone from one location to another.
      * @param serviceName the name of the service the drone is assigned to
@@ -275,13 +271,10 @@ public class InterfaceLoop {
         } else {
             if (locations.containsKey(destination)) {
                 destinationLocation = locations.get(destination);
+            } else {
+                Display.displayMessage("ERROR","flight_destination_does_not_exist");
+                return;
             }
-        }
-
-        // if the destination location does not exist in the system, display an error message
-        if (destinationLocation == null) {
-           Display.displayMessage("ERROR","flight_destination_does_not_exist");
-            return;
         }
 
         if (movedDrone instanceof FollowerDrone) {
@@ -290,17 +283,17 @@ public class InterfaceLoop {
             LeaderDrone leadDrone = (LeaderDrone) movedDrone;
             if (leadDrone.getPilot() == null) {
                 Display.displayMessage("ERROR", "drone_has_no_pilot");
+                return;
             } else if (leadDrone.getPilot().getLicense() == null) {
                 Display.displayMessage("ERROR", "pilot_has_no_license");
+                return;
             }
             int distance = movedDrone.getCurrentLocation().calculateDistance(destinationLocation);
             int returnDistance = destinationLocation.calculateDistance(movedDrone.getHomeBase());
             if (distance > leadDrone.getFuel()) {
                 Display.displayMessage("ERROR", "lead_drone_does_not_have_enough_fuel_to_reach_destination");
-                return;
             } else if (distance + returnDistance > leadDrone.getFuel()) {
                 Display.displayMessage("ERROR", "lead_drone_does_not_have_enough_fuel_to_return_to_home_base_from_destination");
-                return;
             } else {
                 for (Drone drone : leadDrone.getSwarm().values()) {
                     if (distance > drone.getFuel()) {
@@ -314,7 +307,6 @@ public class InterfaceLoop {
 
                 if (destinationLocation.getSpacesLeft() == 0 || destinationLocation.getSpacesLeft() < leadDrone.getSwarm().size() + 1) {
                     Display.displayMessage("ERROR", "destination_location_does_not_have_space_for_swarm");
-                    return;
                 } else {
                     leadDrone.flyToDestination(destinationLocation);
                     for (Drone drone : leadDrone.getSwarm().values()) {
