@@ -257,6 +257,7 @@ public class InterfaceLoop {
      * @param destination the name of the location the drone is flying to
      */
     void flyDrone(String serviceName, Integer tag, String destination) {
+        //TODO: update successful trips after completion, is it by just one or by number of drones in swarm
         // checking if the drone exists in the system
         Drone movedDrone = null;
         Location destinationLocation;
