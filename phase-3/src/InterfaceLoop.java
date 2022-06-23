@@ -259,14 +259,16 @@ public class InterfaceLoop {
     void flyDrone(String serviceName, Integer tag, String destination) {
         // checking if the drone exists in the system
         Drone movedDrone = null;
-        Location destinationLocation = null;
+        Location destinationLocation;
 
         // TODO Move flight eligibility checks into separate method
-        if (services.containsKey(serviceName)) {
+        if (checkServiceName(serviceName)) {
             DeliveryService service = services.get(serviceName);
             if (service.getDrones().containsKey(tag)) {
                 movedDrone = service.getDrones().get(tag);
             }
+        } else {
+            return;
         }
 
         // if the drone does not exist in the system, display an error message
@@ -310,7 +312,7 @@ public class InterfaceLoop {
                     }
                 }
 
-                if (destinationLocation.getSpacesLeft() == 0 || destinationLocation.getSpacesLeft() < leadDrone.getSwarm().size() + 1) {
+                if (destinationLocation.getSpacesLeft() < leadDrone.getSwarm().size() + 1) {
                     Display.displayMessage("ERROR", "destination_location_does_not_have_space_for_swarm");
                 } else {
                     leadDrone.flyToDestination(destinationLocation);
@@ -326,8 +328,7 @@ public class InterfaceLoop {
     }
 
     void joinSwarm(String service_name, Integer lead_drone_tag, Integer swarm_drone_tag) {
-        if (!services.containsKey(service_name)) {
-            Display.displayMessage("ERROR","service_does_not_exist");
+        if (!checkServiceName(service_name)) {
             return;
         }
 
@@ -339,10 +340,9 @@ public class InterfaceLoop {
         } else if (swarmDrone == null) {
             Display.displayMessage("ERROR","swarm_drone_does_not_exist");
             return;
-        }
-
-        if (leadDrone.getCurrentLocation() != swarmDrone.getCurrentLocation()) {
+        } else if (leadDrone.getCurrentLocation() != swarmDrone.getCurrentLocation()) {
             Display.displayMessage("ERROR", "lead_and_swarm_drone_must_be_at_same_location");
+            return;
         }
 
         if (swarmDrone instanceof LeaderDrone) {
@@ -383,8 +383,7 @@ public class InterfaceLoop {
     }
 
     void leaveSwarm(String service_name, Integer swarm_drone_tag) {
-        if (!services.containsKey(service_name)) {
-            Display.displayMessage("ERROR","service_does_not_exist");
+        if (!checkServiceName(service_name)) {
             return;
         }
         Drone swarmDrone = services.get(service_name).getDrones().get(swarm_drone_tag);
