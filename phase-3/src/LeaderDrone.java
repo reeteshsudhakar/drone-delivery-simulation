@@ -39,4 +39,16 @@ public class LeaderDrone extends Drone {
     public void setPilot(Pilot pilot) {
         this.pilot = pilot;
     }
+
+    @Override
+    public String toString() {
+        String pilotString = String.format("\n &> pilot:%s", pilot.getUsername());
+        StringBuilder swarmString  = new StringBuilder("\ndrone is directing this swarm: [ drone tags ");
+        for (Drone drone : swarm.values()) {
+            swarmString.append(String.format("| %s ", drone.getTag()));
+        }
+        swarmString.append("]");
+        return super.toString() + pilotString + swarmString;
+
+    }
 }

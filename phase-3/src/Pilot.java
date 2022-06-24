@@ -32,7 +32,13 @@ public class Pilot extends Worker {
      * @return The display string for this Pilot
      */
     public String toString() {
-        return super.toString() + String.format("\nuser has a pilot's license (%s) with %d successful flight(s)", this.license, this.experience);
+        StringBuilder droneString  = new StringBuilder("\nemployee is flying these drones: [ drone tags ");
+        for (Drone drone : pilotedDrones.values()) {
+            droneString.append(String.format("| %s ", drone.getTag()));
+        }
+        return super.toString()
+                + String.format("\nuser has a pilot's license (%s) with %d successful flight(s)", this.license, this.experience)
+                + droneString;
     }
 
     public TreeMap<Integer, Drone> getPilotedDrones() {
