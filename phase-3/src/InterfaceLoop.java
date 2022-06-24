@@ -115,12 +115,11 @@ public class InterfaceLoop {
                 hiredWorker.addEmployer(employer);
                 Display.displayMessage("OK", "new_employee_has_been_hired");
             } else {
+                // Object retrieved from TreeMap is a person, so a Worker object needs to be deep copied
                 Worker hiredWorker = new Worker(temp, employer);
                 people.put(user_name, hiredWorker);
                 Display.displayMessage("OK", "new_employee_has_been_hired");
             }
-        } else {
-            Display.displayMessage("ERROR", "invalid_username_or_service_name");
         }
     }
 
@@ -150,8 +149,6 @@ public class InterfaceLoop {
                     }
                     Display.displayMessage("OK", "employee_has_been_fired");
                 }
-            } else {
-                Display.displayMessage("ERROR", "username_not_found");
             }
         }
     }
@@ -262,14 +259,14 @@ public class InterfaceLoop {
         Drone movedDrone = null;
         Location destinationLocation;
 
-        // TODO Move flight eligibility checks into separate method
-        if (checkServiceName(serviceName)) {
-            DeliveryService service = services.get(serviceName);
-            if (service.getDrones().containsKey(tag)) {
-                movedDrone = service.getDrones().get(tag);
-            }
-        } else {
+        // TODO: Move flight eligibility checks into separate method?
+        if (!checkServiceName(serviceName)) {
             return;
+        }
+
+        DeliveryService service = services.get(serviceName);
+        if (service.getDrones().containsKey(tag)) {
+            movedDrone = service.getDrones().get(tag);
         }
 
         // if the drone does not exist in the system, display an error message
@@ -591,13 +588,11 @@ public class InterfaceLoop {
 
     void collectRevenue(String service_name) {
         // checking if the service exists in the system
-        DeliveryService service = null;
-        if (services.containsKey(service_name)) {
-            service = services.get(service_name);
-        }
+        DeliveryService service;
 
-        if (service == null) {
-            Display.displayMessage("ERROR","service_does_not_exist");
+        if (checkServiceName(service_name)) {
+            service = services.get(service_name);
+        } else {
             return;
         }
 
