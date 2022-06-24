@@ -170,5 +170,4 @@ public class Location implements Comparable<Location> {
         int distance = departureLocation.calculateDistance(arrivalLocation);
         Display.displayMessage("OK", String.format("distance = %d", distance));
     }
-
 }

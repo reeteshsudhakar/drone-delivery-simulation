@@ -140,7 +140,7 @@ OK:employee_has_been_appointed_pilot
 
 > appoint_pilot,fast_flavors,djohnson10,2
 OK:employee_has_been_appointed_pilot
-
+//drone is directing this swarm
 > display_persons
 userID: djohnson10, name: Denise Johnson, birth date: 1962-11-12, address: 1600_Penn_Avenue_Washington_DC
 employee is working at: 

@@ -169,7 +169,7 @@ public class Drone implements Comparable<Drone> {
         if (this instanceof LeaderDrone) {
             System.out.printf("&> pilot:%s%n", ((LeaderDrone) this).getPilot().getUsername());
             if (((LeaderDrone) this).getSwarm().size() > 0) {
-                // need to display the list of drones that the leader drone is leading
+                //TODO: need to display the list of drones that the leader drone is leading
             }
         }
         this.getPayload().forEach((key,value) ->
@@ -197,6 +197,7 @@ public class Drone implements Comparable<Drone> {
 
         if (!ingredientInPayload) {
             this.getPayload().put(loadIngredient, new Package(quantity, unitPrice));
+            //TODO: is remaining capacity only decremented if it is not already in the payload?
             decrementRemainingCapacity(quantity);
         }
     }

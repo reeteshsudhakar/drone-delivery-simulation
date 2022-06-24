@@ -14,12 +14,22 @@ public class FollowerDrone extends Drone {
         super(init_tag, init_capacity, init_fuel, homeBase, currentLocation);
     }
 
+    /**
+     * Constructor used when a normal drone becomes a follower drone
+     * @param drone drone to be converted into a follower drone
+     * @param leaderDrone leader drone for this drone
+     */
     public FollowerDrone(Drone drone, LeaderDrone leaderDrone) {
         this(drone.getTag(), drone.getCapacity(), drone.getFuel(), drone.getHomeBase(), drone.getCurrentLocation());
         this.leaderDrone = leaderDrone;
         leaderDrone.getSwarm().put(drone.getTag(), this);
     }
 
+    /**
+     * Constructor used when a leader drone becomes a follower drone
+     * @param drone drone to be converted to a follower drone
+     * @param leader leader drone for this drone
+     */
     public FollowerDrone(LeaderDrone drone, LeaderDrone leader) {
         this(drone.getTag(), drone.getCapacity(), drone.getFuel(), drone.getHomeBase(), drone.getCurrentLocation());
         this.leaderDrone = leader;
