@@ -208,7 +208,7 @@ public class InterfaceLoop {
                         Display.displayMessage("ERROR", "delivery_service_does_not_have_a_manager");
                     }
                 } else {
-                    Display.displayMessage("ERROR", "worker_does_not_work_for_delivery_service");
+                    Display.displayMessage("ERROR", "employee_does_not_work_for_delivery_service");
                 }
             }
         }
@@ -226,15 +226,20 @@ public class InterfaceLoop {
                         Display.displayMessage("ERROR", "drone_does_not_exist");
                     } else if (drone instanceof LeaderDrone) {
                         ((LeaderDrone) drone).setPilot(appointedPilot);
+                        employer.getDrones().put(drone_tag, drone);
+                        appointedPilot.getPilotedDrones().put(drone_tag, drone);
+                        Display.displayMessage("OK", "employee_has_been_appointed_pilot");
                     } else if (drone instanceof FollowerDrone) {
                         ((FollowerDrone) drone).getLeaderDrone().getSwarm().remove(drone_tag);
                         drone = new LeaderDrone((FollowerDrone) drone, appointedPilot);
                         employer.getDrones().put(drone_tag, drone);
-                        Display.displayMessage("OK", "change_completed");
+                        appointedPilot.getPilotedDrones().put(drone_tag, drone);
+                        Display.displayMessage("OK", "employee_has_been_appointed_pilot");
                     } else {
                         drone = new LeaderDrone(drone, appointedPilot);
                         employer.getDrones().put(drone_tag, drone);
-                        Display.displayMessage("OK", "change_completed");
+                        appointedPilot.getPilotedDrones().put(drone_tag, drone);
+                        Display.displayMessage("OK", "employee_has_been_appointed_pilot");
                     }
                 } else {
                     Display.displayMessage("ERROR", "pilot_does_not_work_for_delivery_service");

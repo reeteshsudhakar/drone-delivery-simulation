@@ -93,7 +93,7 @@ public class Person implements Comparable<Person> {
             Person newPerson = new Person(init_username, init_fname, init_lname, init_year,
                     init_month, init_date, init_address);
             people.put(init_username, newPerson);
-            Display.displayMessage("OK", "change_completed");
+            Display.displayMessage("OK", "person_created");
         }
     }
 

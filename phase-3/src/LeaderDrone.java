@@ -15,6 +15,7 @@ public class LeaderDrone extends Drone {
      */
     public LeaderDrone(Integer init_tag, Integer init_capacity, Integer init_fuel, Location homeBase, Location currentLocation) {
         super(init_tag, init_capacity, init_fuel, homeBase, currentLocation);
+        this.swarm = new TreeMap<>();
     }
 
     public LeaderDrone(FollowerDrone followerDrone, Pilot pilot) {
@@ -26,6 +27,7 @@ public class LeaderDrone extends Drone {
     public LeaderDrone(Drone drone, Pilot pilot) {
         this(drone.getTag(), drone.getCapacity(), drone.getFuel(), drone.getHomeBase(), drone.getCurrentLocation());
         this.pilot = pilot;
+        this.swarm = new TreeMap<>();
     }
 
     public TreeMap<Integer, Drone> getSwarm() {

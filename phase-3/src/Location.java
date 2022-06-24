@@ -144,7 +144,7 @@ public class Location implements Comparable<Location> {
         // creating the location and adding it to the collection
         Location location = new Location(name, x_coordinate, y_coordinate, spaceLimit);
         locations.put(name, location);
-        Display.displayMessage("OK","change_completed");
+        Display.displayMessage("OK","location_created");
     }
 
     public static void checkDistance(String departurePoint, String arrivalPoint, TreeMap<String, Location> locations) {

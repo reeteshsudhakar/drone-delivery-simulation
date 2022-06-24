@@ -90,7 +90,7 @@ public class Restaurant implements Comparable<Restaurant> {
         if (locations.containsKey(locatedAt)) {
             Restaurant restaurant = new Restaurant(name, locations.get(locatedAt));
             restaurants.put(name, restaurant);
-            Display.displayMessage("OK","change_completed");
+            Display.displayMessage("OK","restaurant_created");
         } else {
             Display.displayMessage("ERROR", "location_identifier_does_not_exist");
         }

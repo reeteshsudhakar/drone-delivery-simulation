@@ -166,7 +166,12 @@ public class Drone implements Comparable<Drone> {
                         "Location: %s%n",
                 this.getTag(), this.getCapacity(), this.getRemainingCapacity(), this.getFuel(),
                 this.getSales(), this.getCurrentLocation().getName());
-
+        if (this instanceof LeaderDrone) {
+            System.out.printf("&> pilot:%s%n", ((LeaderDrone) this).getPilot().getUsername());
+            if (((LeaderDrone) this).getSwarm().size() > 0) {
+                // need to display the list of drones that the leader drone is leading
+            }
+        }
         this.getPayload().forEach((key,value) ->
                 System.out.printf("&> Barcode: %s, Item Name: %s, Total Quantity: %d, Unit Cost: %d, " +
                                 "Total Weight: %d%n", key.getBarcode(), key.getName(), value.getQuantity(),
@@ -273,7 +278,7 @@ public class Drone implements Comparable<Drone> {
             Drone newDrone = new Drone(tag, capacity, fuel, serviceLocation, serviceLocation);
             newService.getDrones().put(tag, newDrone);
             serviceLocation.decrementSpacesLeft();
-            Display.displayMessage("OK","change_completed");
+            Display.displayMessage("OK","drone_created");
         }
     }
 }

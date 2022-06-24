@@ -85,6 +85,6 @@ public class Ingredient implements Comparable<Ingredient> {
 
         // creating the ingredient and adding it to the collection
         ingredients.put(barcode, new Ingredient(barcode, name, weight));
-        Display.displayMessage("OK","change_completed");
+        Display.displayMessage("OK","ingredient_created");
     }
 }
