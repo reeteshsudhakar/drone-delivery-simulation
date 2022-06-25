@@ -178,7 +178,7 @@ public class InterfaceLoop {
                         Display.displayMessage("OK", "employee_has_been_appointed_manager");
                     }
                 } else {
-                    Display.displayMessage("ERROR", "worker_does_not_work_for_this_delivery_service");
+                    Display.displayMessage("ERROR", "employee_does_not_work_for_this_delivery_service");
                 }
             }
         }
@@ -200,7 +200,7 @@ public class InterfaceLoop {
                     if (employer.getManager() != null) {
                         Pilot newPilot = new Pilot(tempWorker, employer, init_license, init_experience);
                         people.put(user_name, newPilot);
-                        Display.displayMessage("OK", "change_completed");
+                        Display.displayMessage("OK", "pilot_has_been_trained");
                     } else {
                         Display.displayMessage("ERROR", "delivery_service_does_not_have_a_manager");
                     }
@@ -211,6 +211,7 @@ public class InterfaceLoop {
         }
     }
 
+    // TODO: remove drone from pilot's list of drones if it is reassigned
     void appointPilot(String service_name, String user_name, Integer drone_tag) {
         if (checkServiceName(service_name) && checkUserName(user_name)) {
             Person tempPerson = people.get(user_name);
@@ -254,7 +255,7 @@ public class InterfaceLoop {
      * @param destination the name of the location the drone is flying to
      */
     void flyDrone(String serviceName, Integer tag, String destination) {
-        //TODO: update successful trips after completion, is it by just one or by number of drones in swarm
+        // TODO: update successful trips after completion, is it by just one or by number of drones in swarm
         // checking if the drone exists in the system
         Drone movedDrone = null;
         Location destinationLocation;

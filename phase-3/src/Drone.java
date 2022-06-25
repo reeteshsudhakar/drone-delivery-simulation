@@ -282,4 +282,31 @@ public class Drone implements Comparable<Drone> {
             Display.displayMessage("OK","drone_created");
         }
     }
+
+    // TODO: need to fix so that it doesn't conflict with the LeaderDrone's toString method
+    @Override
+    public String toString() {
+        StringBuilder droneInfo = new StringBuilder();
+        droneInfo.append(String.format("Tag: %d, Capacity: %d, Remaining Capacity: %d, Fuel: %d, Sales: $%d, " +
+                        "Location: %s%n",
+                this.getTag(), this.getCapacity(), this.getRemainingCapacity(), this.getFuel(),
+                this.getSales(), this.getCurrentLocation().getName()));
+        if (this instanceof LeaderDrone) {
+            droneInfo.append(String.format("&> pilot:%s%n", ((LeaderDrone) this).getPilot().getUsername()));
+            if (((LeaderDrone) this).getSwarm().size() > 0) {
+                droneInfo.append("drone is directing this swarm: [ drone tags ");
+                for (Drone drone : ((LeaderDrone) this).getSwarm().values()) {
+                    droneInfo.append(String.format("| %d ", drone.getTag()));
+                }
+                droneInfo.append("]\n");
+            }
+        }
+
+        this.getPayload().forEach((key,value) ->
+                droneInfo.append(String.format("&> Barcode: %s, Item Name: %s, Total Quantity: %d, Unit Cost: %d, " +
+                                "Total Weight: %d%n", key.getBarcode(), key.getName(), value.getQuantity(),
+                        value.getUnitPrice(), key.getWeight() * value.getQuantity())));
+
+        return droneInfo.toString();
+    }
 }

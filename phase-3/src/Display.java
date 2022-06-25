@@ -18,7 +18,7 @@ public class Display {
         for (DeliveryService service : services) {
             System.out.printf("Service name [%s] drones:%n", service.getName());
             for (Drone drone : service.getDrones().values()) {
-                drone.displayDroneInfo();
+                System.out.print(drone.toString());
             }
         }
 
@@ -42,7 +42,7 @@ public class Display {
         // displaying the drones in the system attached to the specified service
         if (services.containsKey(serviceName)) {
             DeliveryService service = services.get(serviceName);
-            service.getDrones().forEach((k, v) -> v.displayDroneInfo());
+            service.getDrones().forEach((k, v) -> System.out.print(v.toString()));
             displayMessage("OK","display_completed");
         } else {
             displayMessage("ERROR","service_does_not_exist");
