@@ -159,26 +159,6 @@ public class Drone implements Comparable<Drone> {
     }
 
     /**
-     * Method to display information about a drone based on its attributes
-     */
-    public void displayDroneInfo() {
-        System.out.printf("Tag: %d, Capacity: %d, Remaining Capacity: %d, Fuel: %d, Sales: $%d, " +
-                        "Location: %s%n",
-                this.getTag(), this.getCapacity(), this.getRemainingCapacity(), this.getFuel(),
-                this.getSales(), this.getCurrentLocation().getName());
-        if (this instanceof LeaderDrone) {
-            System.out.printf("&> pilot:%s%n", ((LeaderDrone) this).getPilot().getUsername());
-            if (((LeaderDrone) this).getSwarm().size() > 0) {
-                //TODO: need to display the list of drones that the leader drone is leading
-            }
-        }
-        this.getPayload().forEach((key,value) ->
-                System.out.printf("&> Barcode: %s, Item Name: %s, Total Quantity: %d, Unit Cost: %d, " +
-                                "Total Weight: %d%n", key.getBarcode(), key.getName(), value.getQuantity(),
-                        value.getUnitPrice(), key.getWeight() * value.getQuantity()));
-    }
-
-    /**
      * Method to load a package to a drone.
      * @param loadIngredient the ingredient to be loaded to the drone
      * @param barcode the barcode of the ingredient to be loaded to the drone
@@ -197,9 +177,11 @@ public class Drone implements Comparable<Drone> {
 
         if (!ingredientInPayload) {
             this.getPayload().put(loadIngredient, new Package(quantity, unitPrice));
-            //TODO: is remaining capacity only decremented if it is not already in the payload?
-            decrementRemainingCapacity(quantity);
         }
+
+        // TODO: is remaining capacity only decremented if it is not already in the payload?
+        // resolved - this was def a mistake, it should be decremented regardless
+        decrementRemainingCapacity(quantity);
     }
 
     /**
@@ -283,7 +265,6 @@ public class Drone implements Comparable<Drone> {
         }
     }
 
-    // TODO: need to fix so that it doesn't conflict with the LeaderDrone's toString method
     @Override
     public String toString() {
         StringBuilder droneInfo = new StringBuilder();

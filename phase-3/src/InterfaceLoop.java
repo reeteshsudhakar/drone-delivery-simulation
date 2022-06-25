@@ -137,7 +137,7 @@ public class InterfaceLoop {
             } else if (firedPerson instanceof Worker) { //If person is a Worker, removes employer from ArrayList of employers if they exist
                 Worker firedWorker = (Worker) firedPerson;
                 DeliveryService employer = services.get(service_name);
-                if (!firedWorker.getEmployers().contains(employer)) {
+                if (!firedWorker.getEmployers().containsValue(employer)) {
                     Display.displayMessage("ERROR", "worker_does_not_work_for_service");
                 } else {
                     firedWorker.removeEmployer(employer);
@@ -168,7 +168,7 @@ public class InterfaceLoop {
                 Display.displayMessage("ERROR", "manager_does_not_work_for_this_delivery_service");
             } else if (tempPerson instanceof Worker) {
                 Worker tempWorker = (Worker) tempPerson;
-                if (tempWorker.getEmployers().contains(employer)) {
+                if (tempWorker.getEmployers().containsValue(employer)) {
                     if (tempWorker.getEmployers().size() > 1) {
                         Display.displayMessage("ERROR", "employee_is_working_at_other_companies");
                     } else {
@@ -196,7 +196,7 @@ public class InterfaceLoop {
                 Display.displayMessage("ERROR", "pilot_already_trained");
             } else if (tempPerson instanceof Worker) {
                 Worker tempWorker = (Worker) tempPerson;
-                if (tempWorker.getEmployers().contains(employer)) {
+                if (tempWorker.getEmployers().containsValue(employer)) {
                     if (employer.getManager() != null) {
                         Pilot newPilot = new Pilot(tempWorker, employer, init_license, init_experience);
                         people.put(user_name, newPilot);
@@ -211,18 +211,18 @@ public class InterfaceLoop {
         }
     }
 
-    // TODO: remove drone from pilot's list of drones if it is reassigned
     void appointPilot(String service_name, String user_name, Integer drone_tag) {
         if (checkServiceName(service_name) && checkUserName(user_name)) {
             Person tempPerson = people.get(user_name);
             DeliveryService employer = services.get(service_name);
             if (tempPerson instanceof Pilot) {
                 Pilot appointedPilot = (Pilot) tempPerson;
-                if (appointedPilot.getEmployers().contains(employer)) {
+                if (appointedPilot.getEmployers().containsValue(employer)) {
                     Drone drone = services.get(service_name).getDrones().get(drone_tag);
                     if (drone == null) {
                         Display.displayMessage("ERROR", "drone_does_not_exist");
                     } else if (drone instanceof LeaderDrone) {
+                        ((LeaderDrone) drone).getPilot().getPilotedDrones().remove(drone.getTag());
                         ((LeaderDrone) drone).setPilot(appointedPilot);
                         employer.getDrones().put(drone_tag, drone);
                         appointedPilot.getPilotedDrones().put(drone_tag, drone);
@@ -255,7 +255,6 @@ public class InterfaceLoop {
      * @param destination the name of the location the drone is flying to
      */
     void flyDrone(String serviceName, Integer tag, String destination) {
-        // TODO: update successful trips after completion, is it by just one or by number of drones in swarm
         // checking if the drone exists in the system
         Drone movedDrone = null;
         Location destinationLocation;
@@ -318,6 +317,8 @@ public class InterfaceLoop {
                     for (Drone drone : leadDrone.getSwarm().values()) {
                         drone.flyToDestination(destinationLocation);
                     }
+                    // TODO: check if successful trips are based on number of drones or just by number of trips?
+                    leadDrone.getPilot().addSuccessfulTrip();
                     Display.displayMessage("OK", "change_completed");
                 }
             }

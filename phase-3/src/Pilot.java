@@ -52,4 +52,8 @@ public class Pilot extends Worker {
     public String getLicense() {
         return license;
     }
+
+    public void addSuccessfulTrip() {
+        this.experience += 1;
+    }
 }

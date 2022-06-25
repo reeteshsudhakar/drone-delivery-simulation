@@ -1,4 +1,4 @@
-import java.util.ArrayList;
+import java.util.TreeMap;
 
 /**
  * Worker class to represent workers for delivery services.
@@ -8,7 +8,7 @@ import java.util.ArrayList;
  */
 public class Worker extends Person {
 
-    private ArrayList<DeliveryService> employers = new ArrayList<>();
+    private TreeMap<String, DeliveryService> employers = new TreeMap<>();
 
     public Worker(String init_username, String init_fname, String init_lname, Integer init_year, Integer init_month,
                   Integer init_date, String init_address, DeliveryService init_employer) {
@@ -24,12 +24,12 @@ public class Worker extends Person {
 
     public void addEmployer(DeliveryService init_employer) {
         if (this instanceof Manager) {
-            this.employers = new ArrayList<DeliveryService>();
+            this.employers = new TreeMap<>();
         }
-        this.employers.add(init_employer);
+        this.employers.put(init_employer.getName(), init_employer);
     }
 
-    public ArrayList<DeliveryService> getEmployers() {
+    public TreeMap<String, DeliveryService> getEmployers() {
         return employers;
     }
 
@@ -41,7 +41,7 @@ public class Worker extends Person {
     public String toString() {
         if (!(this instanceof Manager)) {
             StringBuilder works_at = new StringBuilder("\nemployee is working at:");
-            for (DeliveryService service : employers) {
+            for (DeliveryService service : employers.values()) {
                 works_at.append(String.format("\n&> %s", service.getName()));
             }
             return super.toString() + works_at;
