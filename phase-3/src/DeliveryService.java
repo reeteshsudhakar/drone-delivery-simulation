@@ -114,7 +114,7 @@ public class DeliveryService implements Comparable <DeliveryService> {
     }
 
     public Manager getManager() {
-        return manager;
+        return this.manager;
     }
 
     public void setManager(Manager manager) {

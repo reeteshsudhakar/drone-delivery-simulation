@@ -325,6 +325,7 @@ public class InterfaceLoop {
 
             if (destinationLocation.getSpacesLeft() < leadDrone.getSwarm().size() + 1) {
                 Display.displayMessage("ERROR", "not_enough_space_to_maneuver_the_swarm_to_that_location");
+                return;
             }
 
             int distance = movedDrone.getCurrentLocation().calculateDistance(destinationLocation);

@@ -282,7 +282,6 @@ public class Drone implements Comparable<Drone> {
 
     @Override
     public String toString() {
-
-        return getDroneInfo() + getPayloadInfo();
+        return this.getDroneInfo() + this.getPayloadInfo();
     }
 }

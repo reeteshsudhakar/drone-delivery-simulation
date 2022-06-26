@@ -31,11 +31,11 @@ public class LeaderDrone extends Drone {
     }
 
     public TreeMap<Integer, Drone> getSwarm() {
-        return swarm;
+        return this.swarm;
     }
 
     public Pilot getPilot() {
-        return pilot;
+        return this.pilot;
     }
 
     public void setPilot(Pilot pilot) {
@@ -53,6 +53,6 @@ public class LeaderDrone extends Drone {
             }
             swarmString.append("]\n");
         }
-        return getDroneInfo() + swarmString + getPayloadInfo();
+        return this.getDroneInfo() + swarmString + this.getPayloadInfo();
     }
 }
