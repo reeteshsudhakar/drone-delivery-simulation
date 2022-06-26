@@ -18,7 +18,7 @@ public class Manager extends Worker {
 
     @Override
     public String toString() {
-        String manages = String.format("\nemployee is managing: %s", this.getEmployers().get(0).getName());
+        String manages = String.format("\nemployee is managing: %s", this.getEmployers().firstEntry().getValue().getName());
         return super.toString() + manages;
     }
 }

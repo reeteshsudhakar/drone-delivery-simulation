@@ -25,14 +25,15 @@ public class Drone implements Comparable<Drone> {
      * @param init_fuel drone fuel
      * @param homeBase home base currentLocation
      */
-    public Drone(Integer init_tag, Integer init_capacity, Integer init_fuel, Location homeBase, Location currentLocation) {
+    public Drone(Integer init_tag, Integer init_capacity, Integer init_fuel, Location homeBase, Location currentLocation, Integer sales, TreeMap<Ingredient, Package> payload) {
         this.tag = init_tag;
         this.capacity = init_capacity;
         this.remainingCapacity = init_capacity;
         this.fuel = init_fuel;
         this.currentLocation = currentLocation;
         this.homeBase = homeBase;
-        this.sales = 0;
+        this.sales = sales;
+        this.payload = payload;
     }
 
     /**
@@ -179,8 +180,6 @@ public class Drone implements Comparable<Drone> {
             this.getPayload().put(loadIngredient, new Package(quantity, unitPrice));
         }
 
-        // TODO: is remaining capacity only decremented if it is not already in the payload?
-        // resolved - this was def a mistake, it should be decremented regardless
         decrementRemainingCapacity(quantity);
     }
 
@@ -258,7 +257,7 @@ public class Drone implements Comparable<Drone> {
         if (serviceLocation.getSpacesLeft() == 0) {
             Display.displayMessage("ERROR","not_enough_space_to_create_new_drone");
         } else {
-            Drone newDrone = new Drone(tag, capacity, fuel, serviceLocation, serviceLocation);
+            Drone newDrone = new Drone(tag, capacity, fuel, serviceLocation, serviceLocation, 0, new TreeMap<>());
             newService.getDrones().put(tag, newDrone);
             serviceLocation.decrementSpacesLeft();
             Display.displayMessage("OK","drone_created");

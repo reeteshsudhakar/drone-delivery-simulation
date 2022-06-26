@@ -107,11 +107,15 @@ public class InterfaceLoop {
 
             //Replaces Person object in TreeMap iff they are not a Manager or Pilot
             if (temp instanceof Manager) {
-                Display.displayMessage("ERROR", "pilot_cannot_be_assigned_as_worker");
+                Display.displayMessage("ERROR", "employee_is_managing_a_service");
             } else if (temp instanceof Pilot) {
-                Display.displayMessage("ERROR", "manager_cannot_be_assigned_as_worker");
+                Display.displayMessage("ERROR", "employee_is_piloting_for_a_service");
             } else if (temp instanceof Worker) {
                 Worker hiredWorker = (Worker) temp;
+                if (hiredWorker.getEmployers().containsKey(service_name)) {
+                    Display.displayMessage("ERROR", "employee_already_works_for_service");
+                    return;
+                }
                 hiredWorker.addEmployer(employer);
                 Display.displayMessage("OK", "new_employee_has_been_hired");
             } else {
@@ -134,11 +138,13 @@ public class InterfaceLoop {
 
             if (firedPerson instanceof Manager) {
                 Display.displayMessage("ERROR", "employee_is_managing_a_service");
-            } else if (firedPerson instanceof Worker) { //If person is a Worker, removes employer from ArrayList of employers if they exist
+            } else if (firedPerson instanceof Pilot) { // TODO: implement so pilots can be fired if they're flying no drones for that service
+                Display.displayMessage("ERROR","employee_is_pilot_for_service");
+            } else if (firedPerson instanceof Worker) { //If person is a Worker, removes employer from list of employers if they exist
                 Worker firedWorker = (Worker) firedPerson;
                 DeliveryService employer = services.get(service_name);
                 if (!firedWorker.getEmployers().containsValue(employer)) {
-                    Display.displayMessage("ERROR", "worker_does_not_work_for_service");
+                    Display.displayMessage("ERROR", "employee_does_not_work_for_service");
                 } else {
                     firedWorker.removeEmployer(employer);
                     if (firedWorker.getEmployers().isEmpty()) {
@@ -149,6 +155,8 @@ public class InterfaceLoop {
                     }
                     Display.displayMessage("OK", "employee_has_been_fired");
                 }
+            } else {
+                Display.displayMessage("ERROR","person_is_currently_unemployed");
             }
         }
     }
@@ -164,8 +172,10 @@ public class InterfaceLoop {
             DeliveryService employer = services.get(service_name);
             if (tempPerson instanceof Pilot) {
                 Display.displayMessage("ERROR", "pilot_cannot_become_manager");
+            } else if (tempPerson instanceof Manager && ((Manager) tempPerson).getEmployers().firstKey().equals(service_name)) {
+                Display.displayMessage("ERROR","employee_is_already_managing_service");
             } else if (tempPerson instanceof Manager) {
-                Display.displayMessage("ERROR", "manager_does_not_work_for_this_delivery_service");
+                Display.displayMessage("ERROR", "employee_is_managing_another_service");
             } else if (tempPerson instanceof Worker) {
                 Worker tempWorker = (Worker) tempPerson;
                 if (tempWorker.getEmployers().containsValue(employer)) {
@@ -192,8 +202,15 @@ public class InterfaceLoop {
             DeliveryService employer = services.get(service_name);
             if (tempPerson instanceof Manager) {
                 Display.displayMessage("ERROR", "employee_is_too_busy_managing");
+            } else if (tempPerson instanceof Pilot && ((Pilot) tempPerson).getEmployers().containsKey(service_name)) {
+                // TODO: ask whether a pilot's license and experience can change
+                ((Pilot) tempPerson).setLicense(init_license);
+                ((Pilot) tempPerson).setExperience(init_experience);
+                Display.displayMessage("OK","pilot_has_been_trained");
+                // Display.displayMessage("ERROR", "pilot_already_trained_for_this_service");
             } else if (tempPerson instanceof Pilot) {
-                Display.displayMessage("ERROR", "pilot_already_trained");
+                ((Pilot) tempPerson).getEmployers().put(service_name, employer);
+                Display.displayMessage("OK", "pilot_has_been_trained");
             } else if (tempPerson instanceof Worker) {
                 Worker tempWorker = (Worker) tempPerson;
                 if (tempWorker.getEmployers().containsValue(employer)) {
@@ -211,6 +228,7 @@ public class InterfaceLoop {
         }
     }
 
+    // TODO: fix so that if you have two drones with the same tag under different services they can be added (ArrayList)
     void appointPilot(String service_name, String user_name, Integer drone_tag) {
         if (checkServiceName(service_name) && checkUserName(user_name)) {
             Person tempPerson = people.get(user_name);
@@ -222,6 +240,10 @@ public class InterfaceLoop {
                     if (drone == null) {
                         Display.displayMessage("ERROR", "drone_does_not_exist");
                     } else if (drone instanceof LeaderDrone) {
+                        if (((LeaderDrone) drone).getPilot().getUsername().equals(user_name)) {
+                            Display.displayMessage("ERROR","employee_has_already_been_appointed_pilot_for_this_drone");
+                            return;
+                        }
                         ((LeaderDrone) drone).getPilot().getPilotedDrones().remove(drone.getTag());
                         ((LeaderDrone) drone).setPilot(appointedPilot);
                         employer.getDrones().put(drone_tag, drone);
@@ -293,34 +315,35 @@ public class InterfaceLoop {
                 Display.displayMessage("ERROR", "pilot_has_no_license");
                 return;
             }
+
+            if (destinationLocation.getSpacesLeft() < leadDrone.getSwarm().size() + 1) {
+                Display.displayMessage("ERROR", "not_enough_space_to_maneuver_the_swarm_to_that_location");
+            }
+
             int distance = movedDrone.getCurrentLocation().calculateDistance(destinationLocation);
             int returnDistance = destinationLocation.calculateDistance(movedDrone.getHomeBase());
             if (distance > leadDrone.getFuel()) {
-                Display.displayMessage("ERROR", "lead_drone_does_not_have_enough_fuel_to_reach_destination");
+                Display.displayMessage("ERROR", "not_enough_fuel_to_reach_the_destination");
             } else if (distance + returnDistance > leadDrone.getFuel()) {
-                Display.displayMessage("ERROR", "lead_drone_does_not_have_enough_fuel_to_return_to_home_base_from_destination");
+                Display.displayMessage("ERROR", "not_enough_fuel_to_reach_the_destination");
             } else {
                 for (Drone drone : leadDrone.getSwarm().values()) {
                     if (distance > drone.getFuel()) {
-                        Display.displayMessage("ERROR", "drone_in_swarm_does_not_have_enough_fuel_to_reach_destination");
+                        Display.displayMessage("ERROR", "not_enough_fuel_to_reach_the_destination");
                         return;
                     } else if (distance + returnDistance > drone.getFuel()) {
-                        Display.displayMessage("ERROR", "drone_in_swarm_does_not_have_enough_fuel_to_return_to_home_base_from_destination");
+                        Display.displayMessage("ERROR", "not_enough_fuel_to_reach_the_destination");
                         return;
                     }
                 }
 
-                if (destinationLocation.getSpacesLeft() < leadDrone.getSwarm().size() + 1) {
-                    Display.displayMessage("ERROR", "destination_location_does_not_have_space_for_swarm");
-                } else {
-                    leadDrone.flyToDestination(destinationLocation);
-                    for (Drone drone : leadDrone.getSwarm().values()) {
-                        drone.flyToDestination(destinationLocation);
-                    }
-                    // TODO: check if successful trips are based on number of drones or just by number of trips?
-                    leadDrone.getPilot().addSuccessfulTrip();
-                    Display.displayMessage("OK", "change_completed");
+                leadDrone.flyToDestination(destinationLocation);
+                for (Drone drone : leadDrone.getSwarm().values()) {
+                    drone.flyToDestination(destinationLocation);
                 }
+
+                leadDrone.getPilot().addSuccessfulTrip();
+                Display.displayMessage("OK", "change_completed");
             }
         } else {
             Display.displayMessage("ERROR", "drone_does_not_have_a_pilot");
@@ -347,7 +370,7 @@ public class InterfaceLoop {
 
         if (swarmDrone instanceof LeaderDrone) {
             if (!((LeaderDrone) swarmDrone).getSwarm().isEmpty()) {
-                Display.displayMessage("ERROR", "swarm_drone_already_has_a_swarm");
+                Display.displayMessage("ERROR", "swarm_drone_is_leading_a_swarm");
             } else {
                 if (leadDrone instanceof LeaderDrone) {
                     ((LeaderDrone) swarmDrone).getPilot().getPilotedDrones().remove(swarm_drone_tag);
@@ -363,6 +386,10 @@ public class InterfaceLoop {
         } else if (swarmDrone instanceof FollowerDrone) {
             if (leadDrone instanceof LeaderDrone) {
                 if (((FollowerDrone) swarmDrone).getLeaderDrone() != null) {
+                    if (((FollowerDrone) swarmDrone).getLeaderDrone().getTag().equals(lead_drone_tag)) {
+                        Display.displayMessage("ERROR","swarm_drone_already_following_lead_drone");
+                        return;
+                    }
                     ((FollowerDrone) swarmDrone).getLeaderDrone().getSwarm().remove(swarm_drone_tag);
                 }
                 ((LeaderDrone) leadDrone).getSwarm().put(swarm_drone_tag, swarmDrone);
@@ -376,6 +403,7 @@ public class InterfaceLoop {
             if (leadDrone instanceof LeaderDrone) {
                 swarmDrone = new FollowerDrone(swarmDrone, (LeaderDrone) leadDrone);
                 services.get(service_name).getDrones().put(swarm_drone_tag, swarmDrone);
+                Display.displayMessage("OK","change_completed");
             } else { // the lead drone is also just a normal drone and doesn't have a pilot
                 Display.displayMessage("ERROR", "lead_drone_does_not_have_pilot_to_lead_swarm");
             }
@@ -391,13 +419,14 @@ public class InterfaceLoop {
         if (swarmDrone == null) {
             Display.displayMessage("ERROR", "swarm_drone_does_not_exist");
         } else if (swarmDrone instanceof LeaderDrone) {
-            Display.displayMessage("ERROR", "drone_is_not_a_follower_drone");
+            Display.displayMessage("ERROR", "drone_is_not_following_in_a_swarm");
         } else if (swarmDrone instanceof FollowerDrone) {
             ((FollowerDrone) swarmDrone).getLeaderDrone().getSwarm().remove(swarm_drone_tag);
-            ((FollowerDrone) swarmDrone).setLeaderDrone(null);
+            Drone newDrone = new Drone(swarmDrone.getTag(), swarmDrone.getCapacity(), swarmDrone.getFuel(), swarmDrone.getHomeBase(), swarmDrone.getCurrentLocation(), swarmDrone.getSales(), swarmDrone.getPayload());
+            services.get(service_name).getDrones().put(newDrone.getTag(), newDrone);
             Display.displayMessage("OK", "change_completed");
         } else {
-            Display.displayMessage("ERROR", "drone_is_not_a_follower_drone");
+            Display.displayMessage("ERROR", "drone_is_not_following_in_a_swarm");
         }
     }
 

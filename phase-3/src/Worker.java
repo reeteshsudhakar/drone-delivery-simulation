@@ -34,7 +34,7 @@ public class Worker extends Person {
     }
 
     public void removeEmployer(DeliveryService employer) {
-        employers.remove(employer);
+        employers.remove(employer.getName());
     }
 
     @Override
