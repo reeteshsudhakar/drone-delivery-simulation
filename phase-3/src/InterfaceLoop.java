@@ -162,7 +162,7 @@ public class InterfaceLoop {
     }
 
     /**
-     * Method to appoint a new manager to a one service
+     * Method to appoint a new manager to a service
      * @param service_name the name of the service
      * @param user_name the name of the manager to be hired
      */
@@ -194,6 +194,13 @@ public class InterfaceLoop {
         }
     }
 
+    /**
+     * Method to convert a user to a pilot
+     * @param service_name The name of the Delivery Service the pilot will work for
+     * @param user_name The username of the person who will become a pilot
+     * @param init_license A valid pilot's license
+     * @param init_experience The amount of flying experience the pilot has
+     */
     void trainPilot(String service_name, String user_name, String init_license, Integer init_experience) {
         if (init_experience == null || init_license == null || init_license.equals("")) {
             Display.displayMessage("ERROR", "invalid_arguments_entered");
@@ -350,6 +357,12 @@ public class InterfaceLoop {
         }
     }
 
+    /**
+     * Have a drone join a swarm
+     * @param service_name The Delivery Service that owes both drones
+     * @param lead_drone_tag The tag of the drone that is leading the swarm to be joined
+     * @param swarm_drone_tag The tag of the drone that is joining the swarm
+     */
     void joinSwarm(String service_name, Integer lead_drone_tag, Integer swarm_drone_tag) {
         if (!checkServiceName(service_name)) {
             return;
@@ -409,6 +422,12 @@ public class InterfaceLoop {
             }
         }
     }
+
+    /**
+     * This method is used to have a drone leave its swarm
+     * @param service_name The name of the service that owns the drone leaving the swarm
+     * @param swarm_drone_tag The tag of the drone leaving the swarm
+     */
 
     void leaveSwarm(String service_name, Integer swarm_drone_tag) {
         if (!checkServiceName(service_name)) {
@@ -617,6 +636,10 @@ public class InterfaceLoop {
         Display.displayMessage("OK","change_completed");
     }
 
+    /**
+     * This method collects all the revenue made by a delivery service
+     * @param service_name The name of the delivery service
+     */
     void collectRevenue(String service_name) {
         // checking if the service exists in the system
         DeliveryService service;
@@ -685,9 +708,6 @@ public class InterfaceLoop {
                 } else if (tokens[0].equals("purchase_ingredient")) {
                     purchaseIngredient(tokens[1], tokens[2], Integer.parseInt(tokens[3]), tokens[4],
                             Integer.parseInt(tokens[5]));
-                } else if (tokens[0].equals("stop")) {
-                    System.out.println("stop acknowledged");
-                    break;
                 } else if (tokens[0].equals("make_person")) {
                     makePerson(tokens[1], tokens[2], tokens[3], Integer.parseInt(tokens[4]),
                             Integer.parseInt(tokens[5]), Integer.parseInt(tokens[6]), tokens[7]);
@@ -709,6 +729,9 @@ public class InterfaceLoop {
                     leaveSwarm(tokens[1], Integer.parseInt(tokens[2]));
                 } else if (tokens[0].equals("collect_revenue")) {
                     collectRevenue(tokens[1]);
+                } else if (tokens[0].equals("stop")) {
+                    System.out.println("stop acknowledged");
+                    break;
                 } else {
                     System.out.println("command " + tokens[0] + " NOT acknowledged");
                 }

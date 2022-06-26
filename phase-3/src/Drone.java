@@ -264,29 +264,25 @@ public class Drone implements Comparable<Drone> {
         }
     }
 
-    @Override
-    public String toString() {
-        StringBuilder droneInfo = new StringBuilder();
-        droneInfo.append(String.format("Tag: %d, Capacity: %d, Remaining Capacity: %d, Fuel: %d, Sales: $%d, " +
-                        "Location: %s%n",
-                this.getTag(), this.getCapacity(), this.getRemainingCapacity(), this.getFuel(),
-                this.getSales(), this.getCurrentLocation().getName()));
-        if (this instanceof LeaderDrone) {
-            droneInfo.append(String.format("&> pilot:%s%n", ((LeaderDrone) this).getPilot().getUsername()));
-            if (((LeaderDrone) this).getSwarm().size() > 0) {
-                droneInfo.append("drone is directing this swarm: [ drone tags ");
-                for (Drone drone : ((LeaderDrone) this).getSwarm().values()) {
-                    droneInfo.append(String.format("| %d ", drone.getTag()));
-                }
-                droneInfo.append("]\n");
-            }
-        }
-
+    protected String getPayloadInfo() {
+        StringBuilder payloadInfo = new StringBuilder();
         this.getPayload().forEach((key,value) ->
-                droneInfo.append(String.format("&> Barcode: %s, Item Name: %s, Total Quantity: %d, Unit Cost: %d, " +
+                payloadInfo.append(String.format("&> Barcode: %s, Item Name: %s, Total Quantity: %d, Unit Cost: %d, " +
                                 "Total Weight: %d%n", key.getBarcode(), key.getName(), value.getQuantity(),
                         value.getUnitPrice(), key.getWeight() * value.getQuantity())));
+        return payloadInfo.toString();
+    }
 
-        return droneInfo.toString();
+    protected String getDroneInfo() {
+        return String.format("Tag: %d, Capacity: %d, Remaining Capacity: %d, Fuel: %d, Sales: $%d, " +
+                        "Location: %s%n",
+                this.getTag(), this.getCapacity(), this.getRemainingCapacity(), this.getFuel(),
+                this.getSales(), this.getCurrentLocation().getName());
+    }
+
+    @Override
+    public String toString() {
+
+        return getDroneInfo() + getPayloadInfo();
     }
 }
