@@ -15,7 +15,7 @@ public class Drone implements Comparable<Drone> {
     private Location homeBase;
     private Location currentLocation;
     private Integer sales;
-    private TreeMap<Ingredient, Package> payload = new TreeMap<>();
+    private TreeMap<Ingredient, Package> payload;
 
     /**
      * Constructor for Drone class.
@@ -167,6 +167,7 @@ public class Drone implements Comparable<Drone> {
      * @param unitPrice the unit price of the ingredient to be loaded to the drone
      */
     public void addToPayload(Ingredient loadIngredient, String barcode, Integer quantity, Integer unitPrice) {
+        //If ingredient already exists in the payload, quantity is added, otherwise, ingredient is added to payload
         boolean ingredientInPayload = false;
         for (Ingredient ingredient : this.getPayload().keySet()) {
             if (ingredient.getBarcode().equals(barcode)) {
@@ -200,6 +201,7 @@ public class Drone implements Comparable<Drone> {
      * @param quantity the quantity of the ingredient to be purchased from the drone
      */
     public void completePurchase(Ingredient ingredient, Integer quantity) {
+        //If the ingredient is completely sold, it is removed from the payload, else the quantity is decremented
         this.addSales(quantity * this.getPayload().get(ingredient).getUnitPrice());
 
         if (this.getPayload().get(ingredient).getQuantity().equals(quantity)) {

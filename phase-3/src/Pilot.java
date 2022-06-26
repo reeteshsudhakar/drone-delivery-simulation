@@ -53,15 +53,9 @@ public class Pilot extends Worker {
         return license;
     }
 
-    public void setLicense(String license) {
-        this.license = license;
-    }
+    public void setLicense(String license) { this.license = license; }
 
-    public void setExperience(int experience) {
-        this.experience = experience;
-    }
+    public void setExperience(int experience) { this.experience = experience; }
 
-    public void addSuccessfulTrip() {
-        this.experience += 1;
-    }
+    public void addSuccessfulTrip() { this.experience += 1; }
 }

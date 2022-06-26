@@ -23,6 +23,7 @@ public class Worker extends Person {
     }
 
     public void addEmployer(DeliveryService init_employer) {
+        // If this is a Manager, all employers are erased, and the current one is added
         if (this instanceof Manager) {
             this.employers = new TreeMap<>();
         }
