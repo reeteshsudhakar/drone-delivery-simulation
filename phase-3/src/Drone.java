@@ -318,7 +318,7 @@ public class Drone {
             if (this.pilot.getPilotedDrones().size() > 1) {
                 swarmString.append("drone is directing this swarm: [ drone tags ");
                 for (Drone drone : this.pilot.getPilotedDrones().values()) {
-                    if (drone.getTag() != this.getTag()) {
+                    if (!drone.getTag().equals(this.getTag())){
                         swarmString.append(String.format("| %d ", drone.getTag()));
                     }
                 }
