@@ -6,7 +6,7 @@ import java.util.TreeMap;
  * @author Reetesh Sudhakar, Sebastian Jaskowski, Yash Gupta, Kunal Daga
  * @version 2.0
  */
-public class Drone implements Comparable<Drone> {
+public class Drone {
     // Object attributes
     private Integer tag;
     private Integer capacity;
@@ -16,6 +16,9 @@ public class Drone implements Comparable<Drone> {
     private Location currentLocation;
     private Integer sales;
     private TreeMap<Ingredient, Package> payload;
+    private Pilot pilot;
+    private Drone leader;
+    private TreeMap<Integer, Drone> followers;
 
     /**
      * Constructor for Drone class.
@@ -34,6 +37,9 @@ public class Drone implements Comparable<Drone> {
         this.homeBase = homeBase;
         this.sales = sales;
         this.payload = payload;
+        this.pilot = null;
+        this.leader = null;
+        this.followers = new TreeMap<>();
     }
 
     /**
@@ -42,6 +48,32 @@ public class Drone implements Comparable<Drone> {
      */
     public Integer getTag() {
         return this.tag;
+    }
+
+    public boolean hasPilot() {
+        return pilot != null;
+    }
+
+    public boolean hasLeader() {
+        return leader != null;
+    }
+
+    public Pilot getPilot() {
+        return pilot;
+    }
+
+    public Drone getLeader() {
+        return leader;
+    }
+
+    public void assignPilot(Pilot pilot) {
+        this.leader = null;
+        this.pilot = pilot;
+    }
+
+    public void assignLeader(Drone drone) {
+        this.pilot = null;
+        this.leader = drone;
     }
 
     /**
@@ -99,6 +131,10 @@ public class Drone implements Comparable<Drone> {
      */
     public TreeMap<Ingredient, Package> getPayload() {
         return this.payload;
+    }
+
+    public TreeMap<Integer, Drone> getFollowers() {
+        return this.followers;
     }
 
     /**
@@ -213,16 +249,6 @@ public class Drone implements Comparable<Drone> {
         this.incrementRemainingCapacity(quantity);
     }
 
-    /**
-     * Override of the compareTo method to compare two drones based on their tag to sort them.
-     * @param drone the drone to be compared to the current drone
-     * @return an integer representing the comparison of the two drones
-     */
-    @Override
-    public int compareTo(Drone drone) {
-        return this.getTag().compareTo(drone.getTag());
-    }
-
     public static void makeDrone(String serviceName, Integer tag, Integer capacity, Integer fuel,
                                  TreeMap<String, DeliveryService> services) {
         // checking if the service for the drone exists
@@ -284,6 +310,22 @@ public class Drone implements Comparable<Drone> {
 
     @Override
     public String toString() {
+        if (this.hasLeader()) {
+            return this.getDroneInfo() + this.getPayloadInfo();
+        } else if (this.hasPilot()) {
+            StringBuilder swarmString = new StringBuilder();
+            swarmString.append(String.format("&> pilot:%s%n", this.getPilot().getUsername()));
+            if (this.followers.size() > 0) {
+                swarmString.append("drone is directing this swarm: [ drone tags ");
+                for (Drone drone : this.followers.values()) {
+                    if (!drone.getTag().equals(this.getTag())){
+                        swarmString.append(String.format("| %d ", drone.getTag()));
+                    }
+                }
+                swarmString.append("]\n");
+            }
+            return this.getDroneInfo() + swarmString + this.getPayloadInfo();
+        }
         return this.getDroneInfo() + this.getPayloadInfo();
     }
 }
