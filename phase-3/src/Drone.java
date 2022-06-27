@@ -6,7 +6,7 @@ import java.util.TreeMap;
  * @author Reetesh Sudhakar, Sebastian Jaskowski, Yash Gupta, Kunal Daga
  * @version 2.0
  */
-public class Drone implements Comparable<Drone> {
+public class Drone<T> implements Comparable<Drone> {
     // Object attributes
     private Integer tag;
     private Integer capacity;
@@ -16,6 +16,8 @@ public class Drone implements Comparable<Drone> {
     private Location currentLocation;
     private Integer sales;
     private TreeMap<Ingredient, Package> payload;
+    private T controller;
+    private TreeMap<Integer, Drone> followers;
 
     /**
      * Constructor for Drone class.
@@ -34,6 +36,8 @@ public class Drone implements Comparable<Drone> {
         this.homeBase = homeBase;
         this.sales = sales;
         this.payload = payload;
+        this.controller = null;
+        this.followers = new TreeMap<>();
     }
 
     /**
@@ -99,6 +103,18 @@ public class Drone implements Comparable<Drone> {
      */
     public TreeMap<Ingredient, Package> getPayload() {
         return this.payload;
+    }
+
+    public T getController() {
+        return this.controller;
+    }
+
+    public TreeMap<Integer, Drone<T>> getFollowers() {
+        return this.followers;
+    }
+
+    public T setController(T controller) {
+        return this.controller = controller;
     }
 
     /**
