@@ -8,17 +8,17 @@ import java.util.TreeMap;
  */
 public class Drone {
     // Object attributes
-    private Integer tag;
-    private Integer capacity;
+    private final Integer tag;
+    private final Integer capacity;
     private Integer remainingCapacity;
     private Integer fuel;
-    private Location homeBase;
+    private final Location homeBase;
     private Location currentLocation;
     private Integer sales;
-    private TreeMap<Ingredient, Package> payload;
+    private final TreeMap<Ingredient, Package> payload;
     private Pilot pilot;
     private Drone leader;
-    private TreeMap<Integer, Drone> followers;
+    private final TreeMap<Integer, Drone> followers;
 
     /**
      * Constructor for Drone class.

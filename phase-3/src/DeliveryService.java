@@ -281,6 +281,7 @@ public class DeliveryService implements Comparable <DeliveryService> {
         }
         DeliveryService service = services.get(service_name);
         service.collectDroneSales();
+        Display.displayMessage("OK", "change_completed");
     }
 
     public Manager getManager() {
