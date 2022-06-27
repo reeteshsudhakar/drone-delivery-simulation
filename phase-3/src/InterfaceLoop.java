@@ -104,7 +104,7 @@ public class InterfaceLoop {
         if (checkUserName(user_name) && checkServiceName(service_name)) {
             DeliveryService employer = services.get(service_name);
             Person tempPerson = people.get(user_name);
-            DeliveryService.hireWorker(user_name, service_name, tempPerson, employer, services, people);
+            DeliveryService.hireWorker(user_name, service_name, tempPerson, employer, people);
         }
     }
 

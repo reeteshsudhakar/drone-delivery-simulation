@@ -1,5 +1,3 @@
-import com.sun.source.tree.Tree;
-
 import java.util.TreeMap;
 
 /**
@@ -115,7 +113,7 @@ public class DeliveryService implements Comparable <DeliveryService> {
 
     }
 
-    public static void hireWorker(String user_name, String service_name, Person tempPerson, DeliveryService employer, TreeMap<String, DeliveryService> services, TreeMap<String, Person> people) {
+    public static void hireWorker(String user_name, String service_name, Person tempPerson, DeliveryService employer, TreeMap<String, Person> people) {
         // Replaces Person object in TreeMap iff they are not a Manager or Pilot
         if (tempPerson instanceof Manager) {
             Display.displayMessage("ERROR", "employee_is_managing_a_service");
