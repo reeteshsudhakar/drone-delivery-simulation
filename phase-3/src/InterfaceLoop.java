@@ -252,65 +252,7 @@ public class InterfaceLoop {
 
         Drone leadDrone = services.get(service_name).getDrones().get(lead_drone_tag);
         Drone swarmDrone = services.get(service_name).getDrones().get(swarm_drone_tag);
-        //Checks if lead drone and swarm drone are valid, and if they are in the same location
-        if (leadDrone == null) {
-            Display.displayMessage("ERROR","lead_drone_does_not_exist");
-            return;
-        } else if (swarmDrone == null) {
-            Display.displayMessage("ERROR","swarm_drone_does_not_exist");
-            return;
-        } else if (leadDrone.getCurrentLocation() != swarmDrone.getCurrentLocation()) {
-            Display.displayMessage("ERROR", "lead_and_swarm_drone_must_be_at_same_location");
-            return;
-        }
-
-        if (leadDrone.equals(swarmDrone)) {
-            Display.displayMessage("ERROR", "drone_cannot_join_its_own_swarm");
-            return;
-        }
-
-        // If swarmDrone is a LeaderDrone, cast it as a FollowerDrone iff leadDrone is a LeaderDrone and has a valid pilot
-        // IF swarmDrone is a FollowerDrone, add it to leadDrone's swarm iff it isn't already in the swarm, and leadDrone is a valid LeaderDrone
-        if (swarmDrone.hasPilot()) {
-            if (!swarmDrone.getFollowers().isEmpty()) {
-                Display.displayMessage("ERROR", "swarm_drone_is_leading_a_swarm");
-            } else {
-                if (leadDrone.hasPilot()) {
-                    swarmDrone.getPilot().getPilotedDrones().remove(swarm_drone_tag);
-                    swarmDrone.assignLeader(leadDrone);
-                    leadDrone.getFollowers().put(swarm_drone_tag, swarmDrone);
-                    Display.displayMessage("OK", "change_completed");
-                } else if (leadDrone.hasLeader()) {
-                    Display.displayMessage("ERROR", "lead_drone_is_following_another_swarm");
-                } else { // the passed in lead drone tag is just a normal drone, so it doesn't have a pilot
-                    Display.displayMessage("ERROR", "lead_drone_does_not_have_pilot_to_lead_swarm");
-                }
-            }
-        } else if (swarmDrone.hasLeader()) {
-            if (leadDrone.hasPilot()) {
-                if (swarmDrone.getLeader().getTag().equals(lead_drone_tag)) {
-                    Display.displayMessage("ERROR","swarm_drone_already_following_lead_drone");
-                    return;
-                }
-                // remove the drone from the old lead drone's swarm and add it to the new one
-                swarmDrone.getLeader().getFollowers().remove(swarm_drone_tag);
-                swarmDrone.assignLeader(leadDrone);
-                leadDrone.getFollowers().put(swarm_drone_tag, swarmDrone);
-                Display.displayMessage("OK", "change_completed");
-            } else if (leadDrone.hasLeader()) {
-                Display.displayMessage("ERROR", "lead_drone_is_following_another_swarm");
-            } else { // the passed in lead drone tag is just a normal drone, so it doesn't have a pilot
-                Display.displayMessage("ERROR", "lead_drone_does_not_have_pilot_to_lead_swarm");
-            }
-        } else { // the passed in swarm drone tag is just a normal drone, so it doesn't have a pilot or a lead drone
-            if (leadDrone.hasPilot()) {
-                swarmDrone.assignLeader(leadDrone);
-                leadDrone.getFollowers().put(swarm_drone_tag, swarmDrone);
-                Display.displayMessage("OK","change_completed");
-            } else { // the lead drone is also just a normal drone and doesn't have a pilot
-                Display.displayMessage("ERROR", "lead_drone_does_not_have_pilot_to_lead_swarm");
-            }
-        }
+        Drone.joinSwarm(leadDrone, swarmDrone, lead_drone_tag, swarm_drone_tag);
     }
 
     /**
@@ -325,19 +267,7 @@ public class InterfaceLoop {
         }
         Drone swarmDrone = services.get(service_name).getDrones().get(swarm_drone_tag);
 
-        // Remove swarmDrone from swarm iff it is in a swarm (ensuring it is not a leader)
-        if (swarmDrone == null) {
-            Display.displayMessage("ERROR", "swarm_drone_does_not_exist");
-        } else if (swarmDrone.hasPilot()) {
-            Display.displayMessage("ERROR", "drone_is_not_following_in_a_swarm");
-        } else if (swarmDrone.hasLeader()) {
-            Pilot pilot = swarmDrone.getLeader().getPilot();
-            swarmDrone.getLeader().getFollowers().remove(swarm_drone_tag);
-            swarmDrone.assignPilot(pilot);
-            Display.displayMessage("OK", "change_completed");
-        } else {
-            Display.displayMessage("ERROR", "drone_is_not_following_in_a_swarm");
-        }
+        Drone.leaveSwarm(swarmDrone, swarm_drone_tag);
     }
 
     /**
@@ -416,6 +346,7 @@ public class InterfaceLoop {
     private void loadFuel(String serviceName, Integer tag, Integer petrol) {
         // checking if the drone exists in the system
         Drone loadFuelDrone;
+
         if (services.containsKey(serviceName)) {
             DeliveryService service = services.get(serviceName);
             if (service.getDrones().containsKey(tag)) {
