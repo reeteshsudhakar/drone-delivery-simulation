@@ -7,13 +7,13 @@ import java.util.TreeMap;
  * @version 2.0
  */
 public class Person implements Comparable<Person> {
-    private String username;
-    private String fname;
-    private String lname;
-    private int year;
-    private int month;
-    private int date;
-    private String address;
+    private final String username;
+    private final String fname;
+    private final String lname;
+    private final int year;
+    private final int month;
+    private final int date;
+    private final String address;
 
     public Person(String init_username, String init_fname, String init_lname,
                   Integer init_year, Integer init_month, Integer init_date, String init_address) {

@@ -8,10 +8,10 @@ import java.util.TreeMap;
  */
 public class Location implements Comparable<Location> {
     // Object attributes
-    private String name;
-    private Integer x_coordinate;
-    private Integer y_coordinate;
-    private Integer spaceLimit;
+    private final String name;
+    private final Integer x_coordinate;
+    private final Integer y_coordinate;
+    private final Integer spaceLimit;
     private Integer spacesLeft;
 
     /**

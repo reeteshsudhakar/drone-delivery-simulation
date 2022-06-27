@@ -350,27 +350,27 @@ public class InterfaceLoop {
      */
     private void loadIngredient(String serviceName, Integer tag, String barcode, Integer quantity, Integer unitPrice) {
         // checking if the drone exists in the system
-        Drone loadDrone = null;
-        Ingredient loadIngredient = null;
+        Drone loadDrone;
+        Ingredient loadIngredient;
         if (services.containsKey(serviceName)) {
             DeliveryService service = services.get(serviceName);
             if (service.getDrones().containsKey(tag)) {
                 loadDrone = service.getDrones().get(tag);
+            } else {
+                // if the drone does not exist in the system, display an error message
+                Display.displayMessage("ERROR", "drone_does_not_exist");
+                return;
             }
-        }
-
-        // if the drone does not exist in the system, display an error message
-        if (loadDrone == null) {
-            Display.displayMessage("ERROR", "drone_does_not_exist");
+        } else {
+            // if the service does not exist in the system, display an error message
+            Display.displayMessage("ERROR", "service_does_not_exist");
             return;
-        } else { // if the drone exists in the system, check if the ingredient exists in the system
-            if (ingredients.containsKey(barcode)) {
-                loadIngredient = ingredients.get(barcode);
-            }
         }
 
-        // if the ingredient does not exist in the system, display an error message
-        if (loadIngredient == null) {
+        // if the drone exists in the system, check if the ingredient exists in the system
+        if (ingredients.containsKey(barcode)) {
+            loadIngredient = ingredients.get(barcode);
+        } else {
             Display.displayMessage("ERROR","ingredient_identifier_does_not_exist");
             return;
         }
@@ -381,6 +381,7 @@ public class InterfaceLoop {
             return;
         }
 
+        //if there are no workers present to load the ingredient, display an error message
         if (noWorkersExist()) {
             Display.displayMessage("ERROR","no_worker_present_to_load_ingredient");
             return;
@@ -414,19 +415,24 @@ public class InterfaceLoop {
      */
     private void loadFuel(String serviceName, Integer tag, Integer petrol) {
         // checking if the drone exists in the system
-        Drone loadFuelDrone = null;
+        Drone loadFuelDrone;
         if (services.containsKey(serviceName)) {
             DeliveryService service = services.get(serviceName);
             if (service.getDrones().containsKey(tag)) {
                 loadFuelDrone = service.getDrones().get(tag);
+            } else {
+                //If the drone does not exist in the service, display an error message
+                Display.displayMessage("ERROR", "drone_does_not_exist");
+                return;
             }
+        } else {
+            // if the service does not exist in the system, display an error message
+            Display.displayMessage("ERROR", "service_does_not_exist");
+            return;
         }
 
-        // if the drone does not exist or the petrol to fill the drone is not valid, display an error message
-        if (loadFuelDrone == null) {
-            Display.displayMessage("ERROR", "drone_does_not_exist");
-            return;
-        } else if (petrol <= 0) {
+        // if the petrol to fill the drone is not valid, display an error message
+        if (petrol <= 0) {
             Display.displayMessage("ERROR", "petrol_must_be_greater_than_zero");
             return;
         }
@@ -457,29 +463,29 @@ public class InterfaceLoop {
     private void purchaseIngredient(String restaurantName, String serviceName, Integer tag,
                             String barcode, Integer quantity) {
         // checking if the restaurant exists in the system
-        Restaurant buyerRestaurant = null;
+        Restaurant buyerRestaurant;
         if (restaurants.containsKey(restaurantName)) {
             buyerRestaurant = restaurants.get(restaurantName);
-        }
-
-        // if the restaurant does not exist in the system, display an error message
-        if (buyerRestaurant == null) {
+        } else {
+            // if the restaurant does not exist in the system, display an error message
             Display.displayMessage("ERROR", "restaurant_identifier_does_not_exist");
             return;
         }
 
         // checking if the drone exists in the system
-        Drone buyerDrone = null;
+        Drone buyerDrone;
         if (services.containsKey(serviceName)) {
             DeliveryService service = services.get(serviceName);
             if (service.getDrones().containsKey(tag)) {
                 buyerDrone = service.getDrones().get(tag);
+            } else {
+                // if the drone does not exist in the system, display an error message
+                Display.displayMessage("ERROR","drone_does_not_exist");
+                return;
             }
-        }
-
-        // if the drone does not exist in the system, display an error message
-        if (buyerDrone == null) {
-            Display.displayMessage("ERROR","drone_does_not_exist");
+        } else {
+            // if the service does not exist in the system, display an error message
+            Display.displayMessage("ERROR", "service_does_not_exist");
             return;
         }
 

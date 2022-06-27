@@ -8,9 +8,9 @@ import java.util.TreeMap;
  */
 public class Ingredient implements Comparable<Ingredient> {
     // Object attributes
-    private String barcode;
-    private String name;
-    private Integer weight;
+    private final String barcode;
+    private final String name;
+    private final Integer weight;
 
     /**
      * Constructor for Ingredient class.

@@ -8,8 +8,8 @@ import java.util.TreeMap;
  */
 public class Restaurant implements Comparable<Restaurant> {
     // Object attributes
-    private String name;
-    private Location locatedAt;
+    private final String name;
+    private final Location locatedAt;
     private Integer spending;
 
     /**
