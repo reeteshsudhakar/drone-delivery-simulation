@@ -8,10 +8,10 @@ import java.util.TreeMap;
  */
 public class DeliveryService implements Comparable <DeliveryService> {
     // Object attributes
-    private String name;
+    private final String name;
     private Integer revenue;
-    private Location locatedAt;
-    private TreeMap<Integer, Drone> drones;
+    private final Location locatedAt;
+    private final TreeMap<Integer, Drone> drones;
     private Manager manager = null;
 
     /**
