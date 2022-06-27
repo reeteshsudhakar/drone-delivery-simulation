@@ -26,7 +26,7 @@ public class InterfaceLoop {
      * @param name the name of the ingredient
      * @param weight the unit weight of the ingredient
      */
-    void makeIngredient(String barcode, String name, Integer weight) {
+    private void makeIngredient(String barcode, String name, Integer weight) {
         Ingredient.makeIngredient(barcode, name, weight, ingredients);
     }
 
@@ -37,7 +37,7 @@ public class InterfaceLoop {
      * @param y_coordinate the y-coordinate of the location
      * @param spaceLimit the capacity of drones at the location
      */
-    void makeLocation(String name, Integer x_coordinate, Integer y_coordinate, Integer spaceLimit) {
+    private void makeLocation(String name, Integer x_coordinate, Integer y_coordinate, Integer spaceLimit) {
         Location.makeLocation(name, x_coordinate, y_coordinate, spaceLimit, locations);
     }
 
@@ -46,7 +46,7 @@ public class InterfaceLoop {
      * @param departurePoint the name of the departure location
      * @param arrivalPoint the name of the arrival location
      */
-    void checkDistance(String departurePoint, String arrivalPoint) {
+    private void checkDistance(String departurePoint, String arrivalPoint) {
         Location.checkDistance(departurePoint, arrivalPoint, locations);
     }
 
@@ -56,7 +56,7 @@ public class InterfaceLoop {
      * @param revenue the revenue of the service
      * @param locatedAt the name of the location the service is located at
      */
-    void makeDeliveryService(String name, Integer revenue, String locatedAt) {
+    private void makeDeliveryService(String name, Integer revenue, String locatedAt) {
         DeliveryService.makeDeliveryService(name, revenue, locatedAt, locations, services);
     }
 
@@ -65,7 +65,7 @@ public class InterfaceLoop {
      * @param name the name of the restaurant
      * @param locatedAt the name of the location the restaurant is located at
      */
-    void makeRestaurant(String name, String locatedAt) {
+    private void makeRestaurant(String name, String locatedAt) {
         Restaurant.makeRestaurant(name, locatedAt, restaurants, locations);
     }
 
@@ -76,7 +76,7 @@ public class InterfaceLoop {
      * @param capacity the number of units of ingredients the drone can carry
      * @param fuel the fuel of the drone
      */
-    void makeDrone(String serviceName, Integer tag, Integer capacity, Integer fuel) {
+    private void makeDrone(String serviceName, Integer tag, Integer capacity, Integer fuel) {
         Drone.makeDrone(serviceName, tag, capacity, fuel, services);
     }
 
@@ -90,7 +90,7 @@ public class InterfaceLoop {
      * @param init_date the date of birth of the person
      * @param init_address the address of the person
      */
-    void makePerson(String init_username, String init_fname, String init_lname,
+    private void makePerson(String init_username, String init_fname, String init_lname,
                     Integer init_year, Integer init_month, Integer init_date, String init_address) {
         Person.makePerson(init_username, init_fname, init_lname,
                 init_year, init_month, init_date, init_address, people);
@@ -101,37 +101,39 @@ public class InterfaceLoop {
      * @param service_name the name of the service
      * @param user_name the username of the person to be hired as a worker
      */
-    void hireWorker(String service_name, String user_name) {
+    private void hireWorker(String service_name, String user_name) {
         if (checkUserName(user_name) && checkServiceName(service_name)) {
             DeliveryService employer = services.get(service_name);
             Person temp = people.get(user_name);
 
-            //Replaces Person object in TreeMap iff they are not a Manager or Pilot
+            // Replaces Person object in TreeMap iff they are not a Manager or Pilot
             if (temp instanceof Manager) {
                 Display.displayMessage("ERROR", "employee_is_managing_a_service");
-                return;
-            }
-            if (temp instanceof Pilot && ((Pilot) temp).pilotedDrones.size() > 0) {
-                Display.displayMessage("ERROR", "employee_is_piloting_drones_for_a_service");
-                return;
             } else if (temp instanceof Pilot) {
-                ((Pilot) temp).addEmployer(employer);
-                Display.displayMessage("OK","new_employee_has_been_hired");
-            }
-            Worker hiredWorker;
-            if (temp instanceof Worker) {
-                hiredWorker = (Worker) temp;
-                if (hiredWorker.getEmployers().containsKey(service_name)) {
-                    Display.displayMessage("ERROR", "employee_already_works_for_service");
-                    return;
+                Pilot tempPilot = (Pilot) temp;
+                if (tempPilot.pilotedDrones.size() > 0) {
+                    Display.displayMessage("ERROR", "employee_is_piloting_drones_for_a_service");
+                } else {
+                    tempPilot.getEmployers().clear();
+                    tempPilot.addEmployer(employer);
+                    Display.displayMessage("OK","new_employee_has_been_hired");
                 }
-                hiredWorker.addEmployer(employer);
             } else {
-                // Object retrieved from TreeMap is a person, so a Worker object needs to be deep copied
-                hiredWorker = new Worker(temp, employer);
-                people.put(user_name, hiredWorker);
+                Worker hiredWorker;
+                if (temp instanceof Worker) {
+                    hiredWorker = (Worker) temp;
+                    if (hiredWorker.getEmployers().containsKey(service_name)) {
+                        Display.displayMessage("ERROR", "employee_already_works_for_service");
+                        return;
+                    }
+                    hiredWorker.addEmployer(employer);
+                } else {
+                    // Object retrieved from TreeMap is a person, so a Worker object needs to be deep copied
+                    hiredWorker = new Worker(temp, employer);
+                    people.put(user_name, hiredWorker);
+                }
+                Display.displayMessage("OK", "new_employee_has_been_hired");
             }
-            Display.displayMessage("OK", "new_employee_has_been_hired");
         }
     }
 
@@ -140,7 +142,7 @@ public class InterfaceLoop {
      * @param service_name the name of the service
      * @param user_name the username of the worker to be fired
      */
-    void fireWorker(String service_name, String user_name) {
+    private void fireWorker(String service_name, String user_name) {
         if (checkUserName(user_name) && checkServiceName(service_name)) {
             Person firedPerson = people.get(user_name);
 
@@ -178,7 +180,7 @@ public class InterfaceLoop {
      * @param service_name the name of the service
      * @param user_name the name of the manager to be hired
      */
-    void appointManager(String service_name, String user_name) {
+    private void appointManager(String service_name, String user_name) {
         if (checkUserName(user_name) && checkServiceName(service_name)) {
             Person tempPerson = people.get(user_name);
             DeliveryService employer = services.get(service_name);
@@ -222,8 +224,7 @@ public class InterfaceLoop {
      * @param init_license A valid pilot's license
      * @param init_experience The amount of flying experience the pilot has
      */
-    // TODO: implement to make sure that pilot cannot fly drones for multiple services
-    void trainPilot(String service_name, String user_name, String init_license, Integer init_experience) {
+    private void trainPilot(String service_name, String user_name, String init_license, Integer init_experience) {
         if (init_experience == null || init_license == null || init_license.equals("")) {
             Display.displayMessage("ERROR", "invalid_arguments_entered");
             return;
@@ -233,18 +234,16 @@ public class InterfaceLoop {
             Person tempPerson = people.get(user_name);
             DeliveryService employer = services.get(service_name);
 
-            //TODO: comment once method is done
             if (tempPerson instanceof Manager) {
                 Display.displayMessage("ERROR", "employee_is_too_busy_managing");
-                return;
-            }
-            if (tempPerson instanceof Pilot && ((Pilot) tempPerson).getEmployers().containsKey(service_name)) {
-                ((Pilot) tempPerson).setLicense(init_license);
-                ((Pilot) tempPerson).setExperience(init_experience);
-                Display.displayMessage("OK","pilot_has_been_trained");
             } else if (tempPerson instanceof Pilot) {
-                ((Pilot) tempPerson).getEmployers().put(service_name, employer);
-                Display.displayMessage("OK", "pilot_has_been_trained");
+                Pilot tempPilot = (Pilot) tempPerson;
+                if (!tempPilot.getEmployers().isEmpty() && !tempPilot.getEmployers().firstKey().equals(service_name) && !((Pilot) tempPerson).getPilotedDrones().isEmpty()) {
+                    Display.displayMessage("ERROR", "employee_is_already_piloting_drones_for_another_service");
+                } else {
+                    tempPilot.changeEmployer(service_name, employer, init_license, init_experience);
+                    Display.displayMessage("OK","pilot_has_been_trained");
+                }
             } else if (tempPerson instanceof Worker) {
                 Worker tempWorker = (Worker) tempPerson;
                 if (tempWorker.getEmployers().containsValue(employer)) {
@@ -258,11 +257,13 @@ public class InterfaceLoop {
                 } else {
                     Display.displayMessage("ERROR", "employee_does_not_work_for_delivery_service");
                 }
+            } else {
+                Display.displayMessage("ERROR","person_is_currently_unemployed");
             }
         }
     }
 
-    void appointPilot(String service_name, String user_name, Integer drone_tag) {
+    private void appointPilot(String service_name, String user_name, Integer drone_tag) {
         if (checkServiceName(service_name) && checkUserName(user_name)) {
             Person tempPerson = people.get(user_name);
             DeliveryService employer = services.get(service_name);
@@ -308,7 +309,7 @@ public class InterfaceLoop {
      * @param tag the tag of the drone
      * @param destination the name of the location the drone is flying to
      */
-    void flyDrone(String serviceName, Integer tag, String destination) {
+    private void flyDrone(String serviceName, Integer tag, String destination) {
         // checking if the drone exists in the system
         Drone movedDrone = null;
         Location destinationLocation;
@@ -385,7 +386,7 @@ public class InterfaceLoop {
      * @param lead_drone_tag The tag of the drone that is leading the swarm to be joined
      * @param swarm_drone_tag The tag of the drone that is joining the swarm
      */
-    void joinSwarm(String service_name, Integer lead_drone_tag, Integer swarm_drone_tag) {
+    private void joinSwarm(String service_name, Integer lead_drone_tag, Integer swarm_drone_tag) {
         if (!checkServiceName(service_name)) {
             return;
         }
@@ -401,6 +402,11 @@ public class InterfaceLoop {
             return;
         } else if (leadDrone.getCurrentLocation() != swarmDrone.getCurrentLocation()) {
             Display.displayMessage("ERROR", "lead_and_swarm_drone_must_be_at_same_location");
+            return;
+        }
+
+        if (leadDrone.equals(swarmDrone)) {
+            Display.displayMessage("ERROR", "drone_cannot_join_its_own_swarm");
             return;
         }
 
@@ -454,12 +460,11 @@ public class InterfaceLoop {
      * @param swarm_drone_tag The tag of the drone leaving the swarm
      */
 
-    void leaveSwarm(String service_name, Integer swarm_drone_tag) {
+    private void leaveSwarm(String service_name, Integer swarm_drone_tag) {
         if (!checkServiceName(service_name)) {
             return;
         }
         Drone swarmDrone = services.get(service_name).getDrones().get(swarm_drone_tag);
-        Pilot pilot = swarmDrone.getLeader().getPilot();
 
         // Remove swarmDrone from swarm iff it is in a swarm (ensuring it is not a leader)
         if (swarmDrone == null) {
@@ -467,8 +472,8 @@ public class InterfaceLoop {
         } else if (swarmDrone.hasPilot()) {
             Display.displayMessage("ERROR", "drone_is_not_following_in_a_swarm");
         } else if (swarmDrone.hasLeader()) {
+            Pilot pilot = swarmDrone.getLeader().getPilot();
             swarmDrone.getLeader().getFollowers().remove(swarm_drone_tag);
-            swarmDrone.assignLeader(null);
             swarmDrone.assignPilot(pilot);
             Display.displayMessage("OK", "change_completed");
         } else {
@@ -484,7 +489,7 @@ public class InterfaceLoop {
      * @param quantity the quantity of the ingredient to be loaded
      * @param unitPrice the price of the ingredient
      */
-    void loadIngredient(String serviceName, Integer tag, String barcode, Integer quantity, Integer unitPrice) {
+    private void loadIngredient(String serviceName, Integer tag, String barcode, Integer quantity, Integer unitPrice) {
         // checking if the drone exists in the system
         Drone loadDrone = null;
         Ingredient loadIngredient = null;
@@ -548,7 +553,7 @@ public class InterfaceLoop {
      * @param tag the tag of the drone
      * @param petrol the quantity of petrol to be loaded
      */
-    void loadFuel(String serviceName, Integer tag, Integer petrol) {
+    private void loadFuel(String serviceName, Integer tag, Integer petrol) {
         // checking if the drone exists in the system
         Drone loadFuelDrone = null;
         if (services.containsKey(serviceName)) {
@@ -590,7 +595,7 @@ public class InterfaceLoop {
      * @param barcode the barcode of the ingredient requested for purchase
      * @param quantity the quantity of the ingredient requested for purchase
      */
-    void purchaseIngredient(String restaurantName, String serviceName, Integer tag,
+    private void purchaseIngredient(String restaurantName, String serviceName, Integer tag,
                             String barcode, Integer quantity) {
         // checking if the restaurant exists in the system
         Restaurant buyerRestaurant = null;
@@ -667,7 +672,7 @@ public class InterfaceLoop {
      * This method collects all the revenue made by a delivery service
      * @param service_name The name of the delivery service
      */
-    void collectRevenue(String service_name) {
+    private void collectRevenue(String service_name) {
         // checking if the service exists in the system
         DeliveryService service;
 

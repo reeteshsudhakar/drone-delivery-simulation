@@ -73,6 +73,7 @@ public class Drone {
 
     public void assignLeader(Drone drone) {
         this.pilot = null;
+        this.followers.clear();
         this.leader = drone;
     }
 
@@ -327,5 +328,15 @@ public class Drone {
             return this.getDroneInfo() + swarmString + this.getPayloadInfo();
         }
         return this.getDroneInfo() + this.getPayloadInfo();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof Drone)) {
+            return false;
+        } else {
+            Drone drone = (Drone) obj;
+            return this.getTag().equals(drone.getTag());
+        }
     }
 }

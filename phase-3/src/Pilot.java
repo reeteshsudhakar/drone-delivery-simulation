@@ -58,4 +58,11 @@ public class Pilot extends Worker {
     public void setExperience(int experience) { this.experience = experience; }
 
     public void addSuccessfulTrip() { this.experience += 1; }
+
+    public void changeEmployer(String service_name, DeliveryService employer, String init_license, int init_experience) {
+        this.getEmployers().clear();
+        this.getEmployers().put(service_name, employer);
+        this.setLicense(init_license);
+        this.setExperience(init_experience);
+    }
 }
