@@ -272,6 +272,19 @@ public class DeliveryService implements Comparable <DeliveryService> {
         }
     }
 
+    /**
+     * This method collects all the revenue in a delivery service
+     * @param service_name A valid service name
+     * @param services The map of service names to delivery service objects
+     */
+    public static void collectRevenue(String service_name, TreeMap<String, DeliveryService> services) {
+        if (service_name == null || services == null) {
+            return;
+        }
+        DeliveryService service = services.get(service_name);
+        service.collectDroneSales();
+    }
+
     public Manager getManager() {
         return this.manager;
     }

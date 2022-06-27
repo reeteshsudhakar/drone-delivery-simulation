@@ -470,15 +470,9 @@ public class InterfaceLoop {
      */
     private void collectRevenue(String service_name) {
         // checking if the service exists in the system
-        DeliveryService service;
-
         if (checkServiceName(service_name)) {
-            service = services.get(service_name);
-        } else {
-            return;
+            DeliveryService.collectRevenue(service_name, services);
         }
-
-        service.collectDroneSales();
     }
 
     /**
