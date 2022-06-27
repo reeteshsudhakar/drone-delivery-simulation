@@ -310,6 +310,22 @@ public class Drone {
 
     @Override
     public String toString() {
+        if (hasLeader()) {
+            return this.getDroneInfo() + this.getPayloadInfo();
+        } else if (hasPilot()) {
+            StringBuilder swarmString = new StringBuilder();
+            swarmString.append(String.format("&> pilot:%s%n", this.getPilot().getUsername()));
+            if (this.pilot.getPilotedDrones().size() > 1) {
+                swarmString.append("drone is directing this swarm: [ drone tags ");
+                for (Drone drone : this.pilot.getPilotedDrones().values()) {
+                    if (drone.getTag() != this.getTag()) {
+                        swarmString.append(String.format("| %d ", drone.getTag()));
+                    }
+                }
+                swarmString.append("]\n");
+            }
+            return this.getDroneInfo() + swarmString + this.getPayloadInfo();
+        }
         return this.getDroneInfo() + this.getPayloadInfo();
     }
 }
