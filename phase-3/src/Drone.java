@@ -371,23 +371,6 @@ public class Drone {
         }
     }
 
-    public static void loadFuel(Drone loadFuelDrone, int petrol) {
-        // if the petrol to fill the drone is not valid, display an error message
-        if (petrol <= 0) {
-            Display.displayMessage("ERROR", "petrol_must_be_greater_than_zero");
-            return;
-        }
-
-        // if the drone is at the service's home base, fill the drone with fuel
-        if (!loadFuelDrone.getCurrentLocation().equals(loadFuelDrone.getHomeBase())) {
-            Display.displayMessage("ERROR", "drone_not_located_at_home_base");
-            return;
-        }
-
-        loadFuelDrone.loadDroneFuel(petrol);
-        Display.displayMessage("OK", "change_completed");
-    }
-
     protected String getPayloadInfo() {
         StringBuilder payloadInfo = new StringBuilder();
         this.getPayload().forEach((key,value) ->

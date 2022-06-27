@@ -8,7 +8,6 @@ import java.util.TreeMap;
  * @author Reetesh Sudhakar, Sebastian Jaskowski, Yash Gupta, Kunal Daga
  * @version 2.0
  */
-// TODO: code cleanup
 public class InterfaceLoop {
 
     // collections of objects for the interface loop
@@ -375,7 +374,7 @@ public class InterfaceLoop {
         }
 
         if (noWorkersExist()) {
-            Display.displayMessage("ERROR", "no_worker_present_to_load_fuel");
+            Display.displayMessage("ERROR", "delivery_service_does_not_have_regular_workers");
             return;
         }
 
