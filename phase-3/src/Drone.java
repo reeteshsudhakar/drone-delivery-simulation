@@ -6,7 +6,7 @@ import java.util.TreeMap;
  * @author Reetesh Sudhakar, Sebastian Jaskowski, Yash Gupta, Kunal Daga
  * @version 2.0
  */
-public class Drone<T> implements Comparable<Drone> {
+public class Drone {
     // Object attributes
     private Integer tag;
     private Integer capacity;
@@ -16,7 +16,8 @@ public class Drone<T> implements Comparable<Drone> {
     private Location currentLocation;
     private Integer sales;
     private TreeMap<Ingredient, Package> payload;
-    private T controller;
+    private Pilot pilot;
+    private Drone leader;
     private TreeMap<Integer, Drone> followers;
 
     /**
@@ -36,7 +37,8 @@ public class Drone<T> implements Comparable<Drone> {
         this.homeBase = homeBase;
         this.sales = sales;
         this.payload = payload;
-        this.controller = null;
+        this.pilot = null;
+        this.leader = null;
         this.followers = new TreeMap<>();
     }
 
@@ -46,6 +48,32 @@ public class Drone<T> implements Comparable<Drone> {
      */
     public Integer getTag() {
         return this.tag;
+    }
+
+    public boolean hasPilot() {
+        return pilot != null;
+    }
+
+    public boolean hasLeader() {
+        return leader != null;
+    }
+
+    public Pilot getPilot() {
+        return pilot;
+    }
+
+    public Drone getLeader() {
+        return leader;
+    }
+
+    public void assignPilot(Pilot pilot) {
+        this.leader = null;
+        this.pilot = pilot;
+    }
+
+    public void assignLeader(Drone drone) {
+        this.pilot = null;
+        this.leader = drone;
     }
 
     /**
@@ -105,16 +133,8 @@ public class Drone<T> implements Comparable<Drone> {
         return this.payload;
     }
 
-    public T getController() {
-        return this.controller;
-    }
-
-    public TreeMap<Integer, Drone<T>> getFollowers() {
+    public TreeMap<Integer, Drone> getFollowers() {
         return this.followers;
-    }
-
-    public T setController(T controller) {
-        return this.controller = controller;
     }
 
     /**
@@ -227,16 +247,6 @@ public class Drone<T> implements Comparable<Drone> {
         }
 
         this.incrementRemainingCapacity(quantity);
-    }
-
-    /**
-     * Override of the compareTo method to compare two drones based on their tag to sort them.
-     * @param drone the drone to be compared to the current drone
-     * @return an integer representing the comparison of the two drones
-     */
-    @Override
-    public int compareTo(Drone drone) {
-        return this.getTag().compareTo(drone.getTag());
     }
 
     public static void makeDrone(String serviceName, Integer tag, Integer capacity, Integer fuel,
