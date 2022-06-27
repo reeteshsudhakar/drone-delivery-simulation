@@ -1,3 +1,5 @@
+import com.sun.source.tree.Tree;
+
 import java.util.TreeMap;
 
 /**
@@ -111,6 +113,163 @@ public class DeliveryService implements Comparable <DeliveryService> {
             Display.displayMessage("ERROR", "location_identifier_does_not_exist");
         }
 
+    }
+
+    public static void hireWorker(String user_name, String service_name, Person tempPerson, DeliveryService employer, TreeMap<String, DeliveryService> services, TreeMap<String, Person> people) {
+        // Replaces Person object in TreeMap iff they are not a Manager or Pilot
+        if (tempPerson instanceof Manager) {
+            Display.displayMessage("ERROR", "employee_is_managing_a_service");
+        } else if (tempPerson instanceof Pilot) {
+            Pilot tempPilot = (Pilot) tempPerson;
+            if (tempPilot.pilotedDrones.size() > 0) {
+                Display.displayMessage("ERROR", "employee_is_piloting_drones_for_a_service");
+            } else {
+                tempPilot.getEmployers().clear();
+                tempPilot.addEmployer(employer);
+                Display.displayMessage("OK","new_employee_has_been_hired");
+            }
+        } else {
+            Worker hiredWorker;
+            if (tempPerson instanceof Worker) {
+                hiredWorker = (Worker) tempPerson;
+                if (hiredWorker.getEmployers().containsKey(service_name)) {
+                    Display.displayMessage("ERROR", "employee_already_works_for_service");
+                    return;
+                }
+                hiredWorker.addEmployer(employer);
+            } else {
+                // Object retrieved from TreeMap is a person, so a Worker object needs to be deep copied
+                hiredWorker = new Worker(tempPerson, employer);
+                people.put(user_name, hiredWorker);
+            }
+            Display.displayMessage("OK", "new_employee_has_been_hired");
+        }
+    }
+
+    public static void fireWorker(String user_name, String service_name, TreeMap<String, DeliveryService> services, TreeMap<String, Person> people, Person firedPerson) {
+        // Fires a worker iff they are a worker and if they work for the delivery service provided
+        if (firedPerson instanceof Manager) {
+            Display.displayMessage("ERROR", "employee_is_managing_a_service");
+        } else if (firedPerson instanceof Pilot && !((Pilot) firedPerson).getPilotedDrones().isEmpty()) {
+            Display.displayMessage("ERROR","employee_is_piloting_drones_for_service");
+        } else if (firedPerson instanceof Pilot) {
+            ((Pilot) firedPerson).getEmployers().remove(service_name);
+            Display.displayMessage("OK", "employee_has_been_fired");
+        } else if (firedPerson instanceof Worker) { //If person is a Worker, removes employer from list of employers if they exist
+            Worker firedWorker = (Worker) firedPerson;
+            DeliveryService employer = services.get(service_name);
+            if (!firedWorker.getEmployers().containsValue(employer)) {
+                Display.displayMessage("ERROR", "employee_does_not_work_for_service");
+                return;
+            }
+            firedWorker.removeEmployer(employer);
+            if (firedWorker.getEmployers().isEmpty()) {
+                Person newPerson = new Person(firedPerson.getUsername(), firedPerson.getFname(),
+                        firedPerson.getLname(), firedPerson.getYear(), firedPerson.getMonth(),
+                        firedPerson.getDate(), firedPerson.getAddress());
+                people.put(user_name, newPerson);
+            }
+            Display.displayMessage("OK", "employee_has_been_fired");
+        } else {
+            Display.displayMessage("ERROR","person_is_currently_unemployed");
+        }
+    }
+
+    public static void appointManager(String user_name, String service_name, Person tempPerson, DeliveryService employer, TreeMap<String, Person> people) {
+        //Appoints a manager iff they are a worker at the delivery service
+        if (tempPerson instanceof Pilot) {
+            Display.displayMessage("ERROR", "pilot_cannot_become_manager");
+            return;
+        }
+        if (tempPerson instanceof Manager && ((Manager) tempPerson).getEmployers().firstKey().equals(service_name)) {
+            Display.displayMessage("ERROR","employee_is_already_managing_service");
+            return;
+        }
+        if (tempPerson instanceof Manager) {
+            Display.displayMessage("ERROR", "employee_is_managing_another_service");
+            return;
+        }
+        if (tempPerson instanceof Worker) {
+            Worker tempWorker = (Worker) tempPerson;
+            if (tempWorker.getEmployers().containsValue(employer)) {
+                // Worker can only work at one delivery service if they are to become a manager
+                if (tempWorker.getEmployers().size() > 1) {
+                    Display.displayMessage("ERROR", "employee_is_working_at_other_companies");
+                    return;
+                }
+                Manager newManager = new Manager(tempWorker, employer);
+                people.put(user_name, newManager);
+                employer.setManager(newManager);
+                Display.displayMessage("OK", "employee_has_been_appointed_manager");
+            } else {
+                Display.displayMessage("ERROR", "employee_does_not_work_for_this_delivery_service");
+            }
+        }
+    }
+
+    public static void trainPilot(String user_name, String service_name, Person tempPerson, DeliveryService employer, TreeMap<String, Person> people, String init_license, int init_experience) {
+        if (tempPerson instanceof Manager) {
+            Display.displayMessage("ERROR", "employee_is_too_busy_managing");
+        } else if (tempPerson instanceof Pilot) {
+            Pilot tempPilot = (Pilot) tempPerson;
+            if (!tempPilot.getEmployers().isEmpty() && !tempPilot.getEmployers().firstKey().equals(service_name) && !((Pilot) tempPerson).getPilotedDrones().isEmpty()) {
+                Display.displayMessage("ERROR", "employee_is_already_piloting_drones_for_another_service");
+            } else {
+                tempPilot.changeEmployer(service_name, employer, init_license, init_experience);
+                Display.displayMessage("OK","pilot_has_been_trained");
+            }
+        } else if (tempPerson instanceof Worker) {
+            Worker tempWorker = (Worker) tempPerson;
+            if (tempWorker.getEmployers().containsValue(employer)) {
+                if (employer.getManager() != null) {
+                    Pilot newPilot = new Pilot(tempWorker, employer, init_license, init_experience);
+                    people.put(user_name, newPilot);
+                    Display.displayMessage("OK", "pilot_has_been_trained");
+                } else {
+                    Display.displayMessage("ERROR", "delivery_service_does_not_have_a_manager");
+                }
+            } else {
+                Display.displayMessage("ERROR", "employee_does_not_work_for_delivery_service");
+            }
+        } else {
+            Display.displayMessage("ERROR","person_is_currently_unemployed");
+        }
+    }
+
+    public static void appointPilot(String user_name, String service_name, Person tempPerson, DeliveryService employer, int drone_tag, TreeMap<String, DeliveryService> services) {
+        if (tempPerson instanceof Pilot) {
+            Pilot appointedPilot = (Pilot) tempPerson;
+            if (appointedPilot.getEmployers().containsValue(employer)) {
+                Drone drone = services.get(service_name).getDrones().get(drone_tag);
+                if (drone == null) {
+                    Display.displayMessage("ERROR", "drone_does_not_exist");
+                } else if (drone.hasPilot()) {
+                    if (drone.getPilot().getUsername().equals(user_name)) {
+                        Display.displayMessage("ERROR","employee_has_already_been_appointed_pilot_for_this_drone");
+                        return;
+                    }
+                    drone.getPilot().getPilotedDrones().remove(drone.getTag());
+                    drone.assignPilot(appointedPilot);
+                    employer.getDrones().put(drone_tag, drone);
+                    appointedPilot.getPilotedDrones().put(drone_tag, drone);
+                    Display.displayMessage("OK", "employee_has_been_appointed_pilot");
+                } else if (drone.hasLeader()) {
+                    drone.getLeader().getFollowers().remove(drone.getTag());
+                    drone.assignPilot(appointedPilot);
+                    appointedPilot.getPilotedDrones().put(drone_tag, drone);
+                    Display.displayMessage("OK", "employee_has_been_appointed_pilot");
+                } else {
+                    drone.assignPilot(appointedPilot);
+                    employer.getDrones().put(drone_tag, drone);
+                    appointedPilot.getPilotedDrones().put(drone_tag, drone);
+                    Display.displayMessage("OK", "employee_has_been_appointed_pilot");
+                }
+            } else {
+                Display.displayMessage("ERROR", "pilot_does_not_work_for_delivery_service");
+            }
+        } else {
+            Display.displayMessage("ERROR", "person_is_not_a_pilot");
+        }
     }
 
     public Manager getManager() {
