@@ -111,9 +111,12 @@ public class InterfaceLoop {
                 Display.displayMessage("ERROR", "employee_is_managing_a_service");
                 return;
             }
-            if (temp instanceof Pilot) {
-                Display.displayMessage("ERROR", "employee_is_piloting_for_a_service");
+            if (temp instanceof Pilot && ((Pilot) temp).pilotedDrones.size() > 0) {
+                Display.displayMessage("ERROR", "employee_is_piloting_drones_for_a_service");
                 return;
+            } else if (temp instanceof Pilot) {
+                ((Pilot) temp).addEmployer(employer);
+                Display.displayMessage("OK","new_employee_has_been_hired");
             }
             Worker hiredWorker;
             if (temp instanceof Worker) {
@@ -144,14 +147,12 @@ public class InterfaceLoop {
             // Fires a worker iff they are a worker and if they work for the delivery service provided
             if (firedPerson instanceof Manager) {
                 Display.displayMessage("ERROR", "employee_is_managing_a_service");
-                return;
-            }
-            if (firedPerson instanceof Pilot) {
-                // TODO: implement so pilots can be fired if they're flying no drones for that service
-                Display.displayMessage("ERROR","employee_is_pilot_for_service");
-                return;
-            }
-            if (firedPerson instanceof Worker) { //If person is a Worker, removes employer from list of employers if they exist
+            } else if (firedPerson instanceof Pilot && !((Pilot) firedPerson).getPilotedDrones().isEmpty()) {
+                Display.displayMessage("ERROR","employee_is_piloting_drones_for_service");
+            } else if (firedPerson instanceof Pilot) {
+                ((Pilot) firedPerson).getEmployers().remove(service_name);
+                Display.displayMessage("OK", "employee_has_been_fired");
+            } else if (firedPerson instanceof Worker) { //If person is a Worker, removes employer from list of employers if they exist
                 Worker firedWorker = (Worker) firedPerson;
                 DeliveryService employer = services.get(service_name);
                 if (!firedWorker.getEmployers().containsValue(employer)) {
@@ -182,7 +183,7 @@ public class InterfaceLoop {
             Person tempPerson = people.get(user_name);
             DeliveryService employer = services.get(service_name);
 
-            //Appoints a manager iff they are a worker at the delivery servie
+            //Appoints a manager iff they are a worker at the delivery service
             if (tempPerson instanceof Pilot) {
                 Display.displayMessage("ERROR", "pilot_cannot_become_manager");
                 return;
@@ -238,11 +239,9 @@ public class InterfaceLoop {
                 return;
             }
             if (tempPerson instanceof Pilot && ((Pilot) tempPerson).getEmployers().containsKey(service_name)) {
-                // TODO: ask whether a pilot's license and experience can change
                 ((Pilot) tempPerson).setLicense(init_license);
                 ((Pilot) tempPerson).setExperience(init_experience);
                 Display.displayMessage("OK","pilot_has_been_trained");
-                // Display.displayMessage("ERROR", "pilot_already_trained_for_this_service");
             } else if (tempPerson instanceof Pilot) {
                 ((Pilot) tempPerson).getEmployers().put(service_name, employer);
                 Display.displayMessage("OK", "pilot_has_been_trained");
@@ -263,7 +262,6 @@ public class InterfaceLoop {
         }
     }
 
-    // TODO: fix so that if you have two drones with the same tag under different services they can be added (ArrayList)
     void appointPilot(String service_name, String user_name, Integer drone_tag) {
         if (checkServiceName(service_name) && checkUserName(user_name)) {
             Person tempPerson = people.get(user_name);
