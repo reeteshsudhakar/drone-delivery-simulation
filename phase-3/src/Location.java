@@ -37,7 +37,7 @@ public class Location implements Comparable<Location> {
      * @param destination Location to calculate distance to
      * @return Distance between two locations
      */
-    static Integer calculateDistance(Location start, Location destination) {
+    public static Integer calculateDistance(Location start, Location destination) {
         if (start.equals(destination)) {
             return 0;
         } else {

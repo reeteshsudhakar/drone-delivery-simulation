@@ -9,7 +9,7 @@ public class Display {
     /**
      * Method to display all of the drones in the system.
      */
-    static void displayAllDrones() {
+    public static void displayAllDrones() {
         // displaying all the drones in the system by iterating through the collection
         for (DeliveryService service : DeliveryService.services.values()) {
             System.out.printf("service name [%s] drones:%n", service.getName());
@@ -24,7 +24,7 @@ public class Display {
     /**
      * Method to display the delivery services in the system.
      */
-    static void displayServices() {
+    public static void displayServices() {
         // displaying all the delivery services in the system by iterating through the collection
         for (DeliveryService service : DeliveryService.services.values()) {
             System.out.println(service.toString());
@@ -36,7 +36,7 @@ public class Display {
      * Method to display the drones in the system attached to a specified service.
      * @param serviceName the name of the service the drone is assigned to
      */
-    static void displayDrones(String serviceName) {
+    public static void displayDrones(String serviceName) {
         // displaying the drones in the system attached to the specified service
         if (DeliveryService.services.containsKey(serviceName)) {
             DeliveryService service = DeliveryService.services.get(serviceName);
@@ -50,7 +50,7 @@ public class Display {
     /**
      * Method to display the ingredients in the system.
      */
-    static void displayIngredients() {
+    public static void displayIngredients() {
         // displaying all the ingredients in the system by iterating through the collection
         for (Ingredient ingredient : Ingredient.ingredients.values()) {
             System.out.println(ingredient.toString());
@@ -61,7 +61,7 @@ public class Display {
     /**
      * Method to display the restaurants in the system.
      */
-    static void displayRestaurants() {
+    public static void displayRestaurants() {
         // displaying all the restaurants in the system by iterating through the collection
         for (Restaurant restaurant : Restaurant.restaurants.values()) {
             System.out.println(restaurant.toString());
@@ -72,7 +72,7 @@ public class Display {
     /**
      * Method to display the locations in the system.
      */
-    static void displayLocations() {
+    public static void displayLocations() {
         // displaying all the locations in the system by iterating through the collection
         for (Location location : Location.locations.values()) {
             System.out.println(location.toString());
@@ -85,14 +85,14 @@ public class Display {
      * @param status the status of the message
      * @param output the text to be displayed
      */
-    static void displayMessage(String status, String output) {
+    public static void displayMessage(String status, String output) {
         System.out.println(status.toUpperCase() + ":" + output.toLowerCase());
     }
 
     /**
      * Method to display the people in our service
      */
-    static void displayPersons() {
+    public static void displayPersons() {
         for (Person person : Person.people.values()) {
             System.out.println(person.toString());
         }

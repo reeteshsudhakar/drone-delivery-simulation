@@ -71,7 +71,7 @@ public class Person implements Comparable<Person> {
      * @param username the username to check
      * @return true if the username exists, false otherwise
      */
-    static boolean checkUserName(String username) {
+    public static boolean checkUserName(String username) {
         if (people.containsKey(username)) {
             return true;
         } else {

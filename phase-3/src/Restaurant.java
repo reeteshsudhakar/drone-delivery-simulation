@@ -54,7 +54,7 @@ public class Restaurant implements Comparable<Restaurant> {
         }
     }
 
-    protected void purchaseIngredient(Integer tag, String barcode, int quantity, String serviceName) {
+    public void purchaseIngredient(Integer tag, String barcode, int quantity, String serviceName) {
         // checking if the drone exists in the system
         Drone buyerDrone;
         if (DeliveryService.checkServiceName(serviceName)) {

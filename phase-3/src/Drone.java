@@ -360,7 +360,7 @@ public class Drone {
         }
     }
 
-    private String getPayloadInfo() {
+    public String getPayloadInfo() {
         StringBuilder payloadInfo = new StringBuilder();
         this.getPayload().forEach((key,value) ->
                 payloadInfo.append(String.format("&> barcode: %s, item_name: %s, total_quantity: %d, unit_cost: %d, " +
@@ -369,7 +369,7 @@ public class Drone {
         return payloadInfo.toString();
     }
 
-    private String getDroneInfo() {
+    public String getDroneInfo() {
         return String.format("tag: %d, capacity: %d, remaining_cap: %d, fuel: %d, sales: $%d, " +
                         "location: %s%n",
                 this.getTag(), this.getCapacity(), this.getRemainingCapacity(), this.getFuel(),
