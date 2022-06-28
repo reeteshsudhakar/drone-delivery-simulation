@@ -103,7 +103,7 @@ public class DeliveryService implements Comparable <DeliveryService> {
         } else if (firedPerson instanceof Pilot) {
             ((Pilot) firedPerson).getEmployers().remove(this.getName());
             Display.displayMessage("OK", "employee_has_been_fired");
-        } else if (firedPerson instanceof Worker) { //If person is a Worker, removes employer from list of employers if they exist
+        } else if (firedPerson instanceof Worker) { // If person is a Worker, removes employer from list of employers
             Worker firedWorker = (Worker) firedPerson;
             if (!firedWorker.getEmployers().containsValue(this)) {
                 Display.displayMessage("ERROR", "employee_does_not_work_for_service");
@@ -160,7 +160,8 @@ public class DeliveryService implements Comparable <DeliveryService> {
         } else if (tempPerson instanceof Pilot) {
             Pilot tempPilot = (Pilot) tempPerson;
             if (tempPilot.pilotingForAnotherService(this)) {
-                Display.displayMessage("ERROR", "employee_is_already_piloting_drones_for_another_service");
+                Display.displayMessage("ERROR", "employee_is_already_piloting_drones_" +
+                        "for_another_service");
             } else {
                 tempPilot.changeEmployer(this.getName(), this, license, experience);
                 Display.displayMessage("OK","pilot_has_been_trained");
@@ -192,7 +193,8 @@ public class DeliveryService implements Comparable <DeliveryService> {
                     Display.displayMessage("ERROR", "drone_does_not_exist");
                 } else if (drone.hasPilot()) {
                     if (drone.getPilot().getUsername().equals(username)) {
-                        Display.displayMessage("ERROR","employee_has_already_been_appointed_pilot_for_this_drone");
+                        Display.displayMessage("ERROR","employee_has_already_been_appointed_" +
+                                "pilot_for_this_drone");
                         return;
                     }
                     drone.switchPilot(appointedPilot);
@@ -258,7 +260,8 @@ public class DeliveryService implements Comparable <DeliveryService> {
      */
     @Override
     public String toString() {
-        return String.format("name: %s, revenue: $%d, location: %s", this.name, this.revenue, this.locatedAt.getName());
+        return String.format("name: %s, revenue: $%d, location: %s", this.name, this.revenue,
+                this.locatedAt.getName());
     }
 
     /**

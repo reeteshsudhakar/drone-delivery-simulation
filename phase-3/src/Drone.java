@@ -256,7 +256,8 @@ public class Drone {
             }
 
             if (destinationLocation.notEnoughSpace(this)) {
-                Display.displayMessage("ERROR", "not_enough_space_to_maneuver_the_swarm_to_that_location");
+                Display.displayMessage("ERROR", "not_enough_space_to_maneuver_the_" +
+                        "swarm_to_that_location");
                 return;
             }
             // Fly iff there is enough fuel to drop ingredients off and return back to home base
