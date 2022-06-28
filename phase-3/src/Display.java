@@ -1,6 +1,3 @@
-import java.util.Collection;
-import java.util.TreeMap;
-
 /**
  * This class is used to display the messages from the program.
  *
@@ -12,9 +9,9 @@ public class Display {
     /**
      * Method to display all of the drones in the system.
      */
-    static void displayAllDrones(Collection<DeliveryService> services) {
+    static void displayAllDrones() {
         // displaying all the drones in the system by iterating through the collection
-        for (DeliveryService service : services) {
+        for (DeliveryService service : DeliveryService.services.values()) {
             System.out.printf("Service name [%s] drones:%n", service.getName());
             for (Drone drone : service.getDrones().values()) {
                 System.out.print(drone.toString());
@@ -27,9 +24,11 @@ public class Display {
     /**
      * Method to display the delivery services in the system.
      */
-    static void displayServices(Collection<DeliveryService> services) {
+    static void displayServices() {
         // displaying all the delivery services in the system by iterating through the collection
-        services.forEach(item -> System.out.println(item.toString()));
+        for (DeliveryService service : DeliveryService.services.values()) {
+            System.out.println(service.toString());
+        }
         Display.displayMessage("OK","display_completed");
     }
 
@@ -37,10 +36,10 @@ public class Display {
      * Method to display the drones in the system attached to a specified service.
      * @param serviceName the name of the service the drone is assigned to
      */
-    static void displayDrones(String serviceName, TreeMap<String, DeliveryService> services) {
+    static void displayDrones(String serviceName) {
         // displaying the drones in the system attached to the specified service
-        if (services.containsKey(serviceName)) {
-            DeliveryService service = services.get(serviceName);
+        if (DeliveryService.services.containsKey(serviceName)) {
+            DeliveryService service = DeliveryService.services.get(serviceName);
             service.getDrones().forEach((k, v) -> System.out.print(v.toString()));
             displayMessage("OK","display_completed");
         } else {
@@ -51,27 +50,33 @@ public class Display {
     /**
      * Method to display the ingredients in the system.
      */
-    static void displayIngredients(Collection<Ingredient> ingredients) {
+    static void displayIngredients() {
         // displaying all the ingredients in the system by iterating through the collection
-        ingredients.forEach(item -> System.out.println(item.toString()));
+        for (Ingredient ingredient : Ingredient.ingredients.values()) {
+            System.out.println(ingredient.toString());
+        }
         Display.displayMessage("OK","display_completed");
     }
 
     /**
      * Method to display the restaurants in the system.
      */
-    static void displayRestaurants(Collection<Restaurant> restaurants) {
+    static void displayRestaurants() {
         // displaying all the restaurants in the system by iterating through the collection
-        restaurants.forEach(item -> System.out.println(item.toString()));
+        for (Restaurant restaurant : Restaurant.restaurants.values()) {
+            System.out.println(restaurant.toString());
+        }
         displayMessage("OK","display_completed");
     }
 
     /**
      * Method to display the locations in the system.
      */
-    static void displayLocations(Collection<Location> locations) {
+    static void displayLocations() {
         // displaying all the locations in the system by iterating through the collection
-        locations.forEach(item -> System.out.println(item.toString()));
+        for (Location location : Location.locations.values()) {
+            System.out.println(location.toString());
+        }
         Display.displayMessage("OK","display_completed");
     }
 
@@ -87,8 +92,10 @@ public class Display {
     /**
      * Method to display the people in our service
      */
-    static void displayPersons(Collection<Person> people) {
-        people.forEach(item -> System.out.println(item.toString()));
+    static void displayPersons() {
+        for (Person person : Person.people.values()) {
+            System.out.println(person.toString());
+        }
         Display.displayMessage("OK","display_completed");
     }
 }

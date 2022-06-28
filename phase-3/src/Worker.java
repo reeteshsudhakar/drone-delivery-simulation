@@ -30,14 +30,6 @@ public class Worker extends Person {
         this.employers.put(init_employer.getName(), init_employer);
     }
 
-    public TreeMap<String, DeliveryService> getEmployers() {
-        return employers;
-    }
-
-    public void removeEmployer(DeliveryService employer) {
-        employers.remove(employer.getName());
-    }
-
     @Override
     public String toString() {
         if (!(this instanceof Manager)) {
@@ -49,5 +41,13 @@ public class Worker extends Person {
         } else {
             return super.toString();
         }
+    }
+
+    public TreeMap<String, DeliveryService> getEmployers() {
+        return employers;
+    }
+
+    public void removeEmployer(DeliveryService employer) {
+        employers.remove(employer.getName());
     }
 }

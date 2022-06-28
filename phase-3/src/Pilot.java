@@ -11,20 +11,19 @@ public class Pilot extends Worker {
     int experience;
     TreeMap<Integer, Drone> pilotedDrones;
 
-    public Pilot(String init_username, String init_fname, String init_lname, Integer init_year, Integer init_month,
-                  Integer init_date, String init_address, DeliveryService init_employer, String init_license, int init_experience) {
-        super(init_username, init_fname, init_lname, init_year, init_month, init_date, init_address, init_employer);
-        this.license = init_license;
-        this.experience = init_experience;
-        this.pilotedDrones = new TreeMap<>();
-    }
-
     public Pilot(Worker worker, DeliveryService init_employer, String init_license, int init_experience) {
         super(worker.getUsername(), worker.getFname(), worker.getLname(), worker.getYear(), worker.getMonth(),
                 worker.getDate(), worker.getAddress(), init_employer);
         this.license = init_license;
         this.experience = init_experience;
         this.pilotedDrones = new TreeMap<>();
+    }
+
+    public void changeEmployer(String service_name, DeliveryService employer, String init_license, int init_experience) {
+        this.getEmployers().clear();
+        this.getEmployers().put(service_name, employer);
+        this.setLicense(init_license);
+        this.setExperience(init_experience);
     }
 
     /**
@@ -58,11 +57,4 @@ public class Pilot extends Worker {
     public void setExperience(int experience) { this.experience = experience; }
 
     public void addSuccessfulTrip() { this.experience += 1; }
-
-    public void changeEmployer(String service_name, DeliveryService employer, String init_license, int init_experience) {
-        this.getEmployers().clear();
-        this.getEmployers().put(service_name, employer);
-        this.setLicense(init_license);
-        this.setExperience(init_experience);
-    }
 }

@@ -7,6 +7,9 @@ import java.util.TreeMap;
  * @version 2.0
  */
 public class Ingredient implements Comparable<Ingredient> {
+    // collection of ingredients
+    static TreeMap<String, Ingredient> ingredients = new TreeMap<>();
+
     // Object attributes
     private final String barcode;
     private final String name;
@@ -24,51 +27,7 @@ public class Ingredient implements Comparable<Ingredient> {
         this.weight = weight;
     }
 
-    /**
-     * Getter for barcode.
-     * @return Barcode of ingredient
-     */
-    public String getBarcode() {
-        return this.barcode;
-    }
-
-    /**
-     * Getter for name.
-     * @return Name of ingredient
-     */
-    public Integer getWeight() {
-        return this.weight;
-    }
-
-    /**
-     * Getter for name.
-     * @return Name of ingredient
-     */
-    public String getName() {
-        return this.name;
-    }
-
-    /**
-     * Override of the toString method to display the ingredient's information.
-     * @return String representation of ingredient
-     */
-    @Override
-    public String toString() {
-        return "Barcode: " + this.barcode + ", Name: " + this.name + ", Unit Weight: " + this.weight;
-    }
-
-    /**
-     * Override of the compareTo method to compare ingredients by barcode to sort them.
-     * @param other Ingredient to compare to
-     * @return Integer representing the comparison
-     */
-    @Override
-    public int compareTo(Ingredient other) {
-        return this.getBarcode().compareTo(other.getBarcode());
-    }
-
-    public static void makeIngredient(String barcode, String name, Integer weight,
-                                      TreeMap<String, Ingredient> ingredients) {
+    public static void makeIngredient(String barcode, String name, Integer weight) {
         // checking if the ingredient already exists
         if (ingredients.containsKey(barcode)) {
             Display.displayMessage("ERROR","ingredient_already_exists");
@@ -87,4 +46,41 @@ public class Ingredient implements Comparable<Ingredient> {
         ingredients.put(barcode, new Ingredient(barcode, name, weight));
         Display.displayMessage("OK","ingredient_created");
     }
+
+    /**
+     * Override of the compareTo method to compare ingredients by barcode to sort them.
+     * @param other Ingredient to compare to
+     * @return Integer representing the comparison
+     */
+    @Override
+    public int compareTo(Ingredient other) {
+        return this.getBarcode().compareTo(other.getBarcode());
+    }
+
+    /**
+     * Override of the toString method to display the ingredient's information.
+     * @return String representation of ingredient
+     */
+    @Override
+    public String toString() {
+        return "Barcode: " + this.barcode + ", Name: " + this.name + ", Unit Weight: " + this.weight;
+    }
+
+    /**
+     * Getter for barcode.
+     * @return Barcode of ingredient
+     */
+    public String getBarcode() { return this.barcode; }
+
+    /**
+     * Getter for name.
+     * @return Name of ingredient
+     */
+    public Integer getWeight() { return this.weight; }
+
+    /**
+     * Getter for name.
+     * @return Name of ingredient
+     */
+    public String getName() { return this.name; }
 }

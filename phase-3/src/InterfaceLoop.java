@@ -1,5 +1,4 @@
 import java.util.Scanner;
-import java.util.TreeMap;
 
 /**
  * Ingredient delivery service system for restaurants
@@ -10,13 +9,6 @@ import java.util.TreeMap;
  */
 public class InterfaceLoop {
 
-    // collections of objects for the interface loop
-    TreeMap<String, Location> locations = new TreeMap<>();
-    TreeMap<String, Ingredient> ingredients = new TreeMap<>();
-    TreeMap<String, DeliveryService> services = new TreeMap<>();
-    TreeMap<String, Restaurant> restaurants = new TreeMap<>();
-    TreeMap<String, Person> people = new TreeMap<>();
-
     InterfaceLoop() { }
 
     /**
@@ -26,7 +18,7 @@ public class InterfaceLoop {
      * @param weight the unit weight of the ingredient
      */
     private void makeIngredient(String barcode, String name, Integer weight) {
-        Ingredient.makeIngredient(barcode, name, weight, ingredients);
+        Ingredient.makeIngredient(barcode, name, weight);
     }
 
     /**
@@ -37,7 +29,7 @@ public class InterfaceLoop {
      * @param spaceLimit the capacity of drones at the location
      */
     private void makeLocation(String name, Integer x_coordinate, Integer y_coordinate, Integer spaceLimit) {
-        Location.makeLocation(name, x_coordinate, y_coordinate, spaceLimit, locations);
+        Location.makeLocation(name, x_coordinate, y_coordinate, spaceLimit);
     }
 
     /**
@@ -46,7 +38,7 @@ public class InterfaceLoop {
      * @param arrivalPoint the name of the arrival location
      */
     private void checkDistance(String departurePoint, String arrivalPoint) {
-        Location.checkDistance(departurePoint, arrivalPoint, locations);
+        Location.checkDistance(departurePoint, arrivalPoint);
     }
 
     /**
@@ -56,7 +48,7 @@ public class InterfaceLoop {
      * @param locatedAt the name of the location the service is located at
      */
     private void makeDeliveryService(String name, Integer revenue, String locatedAt) {
-        DeliveryService.makeDeliveryService(name, revenue, locatedAt, locations, services);
+        DeliveryService.makeDeliveryService(name, revenue, locatedAt);
     }
 
     /**
@@ -65,7 +57,7 @@ public class InterfaceLoop {
      * @param locatedAt the name of the location the restaurant is located at
      */
     private void makeRestaurant(String name, String locatedAt) {
-        Restaurant.makeRestaurant(name, locatedAt, restaurants, locations);
+        Restaurant.makeRestaurant(name, locatedAt);
     }
 
     /**
@@ -76,7 +68,7 @@ public class InterfaceLoop {
      * @param fuel the fuel of the drone
      */
     private void makeDrone(String serviceName, Integer tag, Integer capacity, Integer fuel) {
-        Drone.makeDrone(serviceName, tag, capacity, fuel, services);
+        Drone.makeDrone(serviceName, tag, capacity, fuel);
     }
 
     /**
@@ -92,7 +84,7 @@ public class InterfaceLoop {
     private void makePerson(String init_username, String init_fname, String init_lname,
                     Integer init_year, Integer init_month, Integer init_date, String init_address) {
         Person.makePerson(init_username, init_fname, init_lname,
-                init_year, init_month, init_date, init_address, people);
+                init_year, init_month, init_date, init_address);
     }
 
     /**
@@ -101,10 +93,9 @@ public class InterfaceLoop {
      * @param user_name the username of the person to be hired as a worker
      */
     private void hireWorker(String service_name, String user_name) {
-        if (checkUserName(user_name) && checkServiceName(service_name)) {
-            DeliveryService employer = services.get(service_name);
-            Person tempPerson = people.get(user_name);
-            DeliveryService.hireWorker(user_name, service_name, tempPerson, employer, people);
+        if (Person.checkUserName(user_name) && DeliveryService.checkServiceName(service_name)) {
+            DeliveryService employer = DeliveryService.services.get(service_name);
+            employer.hireWorker(user_name);
         }
     }
 
@@ -114,9 +105,9 @@ public class InterfaceLoop {
      * @param user_name the username of the worker to be fired
      */
     private void fireWorker(String service_name, String user_name) {
-        if (checkUserName(user_name) && checkServiceName(service_name)) {
-            Person firedPerson = people.get(user_name);
-            DeliveryService.fireWorker(user_name, service_name, services, people, firedPerson);
+        if (Person.checkUserName(user_name) && DeliveryService.checkServiceName(service_name)) {
+            DeliveryService employer = DeliveryService.services.get(service_name);
+            employer.fireWorker(user_name);
         }
     }
 
@@ -126,10 +117,10 @@ public class InterfaceLoop {
      * @param user_name the name of the manager to be hired
      */
     private void appointManager(String service_name, String user_name) {
-        if (checkUserName(user_name) && checkServiceName(service_name)) {
-            Person tempPerson = people.get(user_name);
-            DeliveryService employer = services.get(service_name);
-            DeliveryService.appointManager(user_name, service_name, tempPerson, employer, people);
+        if (Person.checkUserName(user_name) && DeliveryService.checkServiceName(service_name)) {
+            Person tempPerson = Person.people.get(user_name);
+            DeliveryService employer = DeliveryService.services.get(service_name);
+            employer.appointManager(user_name, tempPerson);
         }
     }
 
@@ -146,18 +137,18 @@ public class InterfaceLoop {
             return;
         }
 
-        if (checkServiceName(service_name) && checkUserName(user_name)) {
-            Person tempPerson = people.get(user_name);
-            DeliveryService employer = services.get(service_name);
-            DeliveryService.trainPilot(user_name, service_name, tempPerson, employer, people, init_license, init_experience);
+        if (DeliveryService.checkServiceName(service_name) && Person.checkUserName(user_name)) {
+            Person tempPerson = Person.people.get(user_name);
+            DeliveryService employer = DeliveryService.services.get(service_name);
+            employer.trainPilot(user_name, tempPerson, init_license, init_experience);
         }
     }
 
     private void appointPilot(String service_name, String user_name, Integer drone_tag) {
-        if (checkServiceName(service_name) && checkUserName(user_name)) {
-            Person tempPerson = people.get(user_name);
-            DeliveryService employer = services.get(service_name);
-            DeliveryService.appointPilot(user_name, service_name, tempPerson, employer, drone_tag, services);
+        if (DeliveryService.checkServiceName(service_name) && Person.checkUserName(user_name)) {
+            Person tempPerson = Person.people.get(user_name);
+            DeliveryService employer = DeliveryService.services.get(service_name);
+            employer.appointPilot(user_name, service_name, tempPerson, drone_tag);
         }
     }
 
@@ -169,72 +160,20 @@ public class InterfaceLoop {
      */
     private void flyDrone(String serviceName, Integer tag, String destination) {
         // checking if the drone exists in the system
-        Drone movedDrone = null;
-        Location destinationLocation;
+        Drone movedDrone;
 
-        if (!checkServiceName(serviceName)) {
+        if (!DeliveryService.checkServiceName(serviceName)) {
             return;
         }
 
-        DeliveryService service = services.get(serviceName);
-        if (service.getDrones().containsKey(tag)) {
-            movedDrone = service.getDrones().get(tag);
-        }
+        DeliveryService service = DeliveryService.services.get(serviceName);
 
-        // if the drone does not exist in the system, display an error message
-        if (movedDrone == null) {
+        if (service.hasDrone(tag)) {
+            movedDrone = service.getDrone(tag);
+            movedDrone.flyDrone(destination);
+        } else {
+            // if the drone does not exist in the system, display an error message
             Display.displayMessage("ERROR", "drone_does_not_exist");
-            return;
-        } else {
-            if (locations.containsKey(destination)) {
-                destinationLocation = locations.get(destination);
-            } else {
-                Display.displayMessage("ERROR","flight_destination_does_not_exist");
-                return;
-            }
-        }
-
-        // Drone can be made a LeaderDrone iff it is already a LeaderDrone & pilot is valid
-        if (movedDrone.hasLeader()) {
-            Display.displayMessage("ERROR", "drone_is_not_a_leader");
-        } else if (movedDrone.hasPilot()) {
-            if (movedDrone.getPilot().getLicense() == null) {
-                Display.displayMessage("ERROR", "pilot_has_no_license");
-                return;
-            }
-
-            if (destinationLocation.getSpacesLeft() < movedDrone.getFollowers().size() + 1) {
-                Display.displayMessage("ERROR", "not_enough_space_to_maneuver_the_swarm_to_that_location");
-                return;
-            }
-            // Fly iff there is enough fuel to drop ingredients off and return back to home base
-            int distance = movedDrone.getCurrentLocation().calculateDistance(destinationLocation);
-            int returnDistance = destinationLocation.calculateDistance(movedDrone.getHomeBase());
-            if (distance > movedDrone.getFuel()) {
-                Display.displayMessage("ERROR", "not_enough_fuel_to_reach_the_destination");
-            } else if (distance + returnDistance > movedDrone.getFuel()) {
-                Display.displayMessage("ERROR", "not_enough_fuel_to_reach_the_destination");
-            } else {
-                for (Drone drone : movedDrone.getFollowers().values()) {
-                    if (distance > drone.getFuel()) {
-                        Display.displayMessage("ERROR", "not_enough_fuel_to_reach_the_destination");
-                        return;
-                    } else if (distance + returnDistance > drone.getFuel()) {
-                        Display.displayMessage("ERROR", "not_enough_fuel_to_reach_the_destination");
-                        return;
-                    }
-                }
-
-                movedDrone.flyToDestination(destinationLocation);
-                for (Drone drone : movedDrone.getFollowers().values()) {
-                    drone.flyToDestination(destinationLocation);
-                }
-
-                movedDrone.getPilot().addSuccessfulTrip();
-                Display.displayMessage("OK", "change_completed");
-            }
-        } else {
-            Display.displayMessage("ERROR", "drone_does_not_have_a_pilot");
         }
     }
 
@@ -245,13 +184,17 @@ public class InterfaceLoop {
      * @param swarm_drone_tag The tag of the drone that is joining the swarm
      */
     private void joinSwarm(String service_name, Integer lead_drone_tag, Integer swarm_drone_tag) {
-        if (!checkServiceName(service_name)) {
+        if (!DeliveryService.checkServiceName(service_name)) {
             return;
         }
 
-        Drone leadDrone = services.get(service_name).getDrones().get(lead_drone_tag);
-        Drone swarmDrone = services.get(service_name).getDrones().get(swarm_drone_tag);
-        Drone.joinSwarm(leadDrone, swarmDrone, lead_drone_tag, swarm_drone_tag);
+        Drone leadDrone = DeliveryService.findDrone(service_name, lead_drone_tag);
+        Drone swarmDrone = DeliveryService.findDrone(service_name, swarm_drone_tag);
+        if (swarmDrone == null) {
+            Display.displayMessage("ERROR", "swarm_drone_does_not_exist");
+            return;
+        }
+        swarmDrone.joinSwarm(leadDrone);
     }
 
     /**
@@ -261,12 +204,15 @@ public class InterfaceLoop {
      */
 
     private void leaveSwarm(String service_name, Integer swarm_drone_tag) {
-        if (!checkServiceName(service_name)) {
+        if (!DeliveryService.checkServiceName(service_name)) {
             return;
         }
-        Drone swarmDrone = services.get(service_name).getDrones().get(swarm_drone_tag);
-
-        Drone.leaveSwarm(swarmDrone, swarm_drone_tag);
+        Drone swarmDrone = DeliveryService.findDrone(service_name, swarm_drone_tag);
+        if (swarmDrone == null) {
+            Display.displayMessage("ERROR", "swarm_drone_does_not_exist");
+            return;
+        }
+        swarmDrone.leaveSwarm();
     }
 
     /**
@@ -280,11 +226,11 @@ public class InterfaceLoop {
     private void loadIngredient(String serviceName, Integer tag, String barcode, Integer quantity, Integer unitPrice) {
         // checking if the drone exists in the system
         Drone loadDrone;
-        Ingredient loadIngredient;
-        if (services.containsKey(serviceName)) {
-            DeliveryService service = services.get(serviceName);
-            if (service.getDrones().containsKey(tag)) {
-                loadDrone = service.getDrones().get(tag);
+        DeliveryService service;
+        if (DeliveryService.services.containsKey(serviceName)) {
+            service = DeliveryService.services.get(serviceName);
+            if (service.hasDrone(tag)) {
+                loadDrone = service.getDrone(tag);
             } else {
                 // if the drone does not exist in the system, display an error message
                 Display.displayMessage("ERROR", "drone_does_not_exist");
@@ -296,32 +242,8 @@ public class InterfaceLoop {
             return;
         }
 
-        // if the drone exists in the system, check if the ingredient exists in the system
-        if (ingredients.containsKey(barcode)) {
-            loadIngredient = ingredients.get(barcode);
-        } else {
-            Display.displayMessage("ERROR","ingredient_identifier_does_not_exist");
-            return;
-        }
-
-        // checking if the drone is at the service's home base
-        if (!loadDrone.getCurrentLocation().equals(loadDrone.getHomeBase())) {
-            Display.displayMessage("ERROR","drone_not_located_at_home_base");
-            return;
-        }
-
-        //if there are no workers present to load the ingredient, display an error message
-        if (noWorkersExist()) {
-            Display.displayMessage("ERROR","no_worker_present_to_load_ingredient");
-            return;
-        }
-
-        // checking if the quantity and price of the ingredient are valid
-        if (quantity <= 0) {
-            Display.displayMessage("ERROR","quantity_must_be_greater_than_zero");
-            return;
-        } else if (unitPrice <= 0) {
-            Display.displayMessage("ERROR","unit_price_must_be_greater_than_zero");
+        if (service.noWorkersExist()) {
+            Display.displayMessage("ERROR", "delivery_service_does_not_have_regular_workers");
             return;
         }
 
@@ -331,7 +253,7 @@ public class InterfaceLoop {
         } else if (loadDrone.getRemainingCapacity() < quantity) {
             Display.displayMessage("ERROR","not_enough_capacity_to_hold_new_packages");
         } else {
-            loadDrone.addToPayload(loadIngredient, barcode, quantity, unitPrice);
+            loadDrone.addToPayload(barcode, quantity, unitPrice);
             Display.displayMessage("OK","change_completed");
         }
     }
@@ -346,40 +268,20 @@ public class InterfaceLoop {
         // checking if the drone exists in the system
         Drone loadFuelDrone;
 
-        if (services.containsKey(serviceName)) {
-            DeliveryService service = services.get(serviceName);
-            if (service.getDrones().containsKey(tag)) {
-                loadFuelDrone = service.getDrones().get(tag);
-            } else {
-                //If the drone does not exist in the service, display an error message
-                Display.displayMessage("ERROR", "drone_does_not_exist");
+        if (DeliveryService.checkServiceName(serviceName)) {
+            DeliveryService service = DeliveryService.services.get(serviceName);
+            if (service.noWorkersExist()) {
+                Display.displayMessage("ERROR", "delivery_service_does_not_have_regular_workers");
                 return;
             }
-        } else {
-            // if the service does not exist in the system, display an error message
-            Display.displayMessage("ERROR", "service_does_not_exist");
-            return;
+            if (service.hasDrone(tag)) {
+                loadFuelDrone = service.getDrone(tag);
+                loadFuelDrone.loadFuel(petrol, service);
+            } else {
+                // If the drone does not exist in the service, display an error message
+                Display.displayMessage("ERROR", "drone_does_not_exist");
+            }
         }
-
-        // if the petrol to fill the drone is not valid, display an error message
-        if (petrol <= 0) {
-            Display.displayMessage("ERROR", "petrol_must_be_greater_than_zero");
-            return;
-        }
-
-        // if the drone is at the service's home base, fill the drone with fuel
-        if (!loadFuelDrone.getCurrentLocation().equals(loadFuelDrone.getHomeBase())) {
-            Display.displayMessage("ERROR", "drone_not_located_at_home_base");
-            return;
-        }
-
-        if (noWorkersExist()) {
-            Display.displayMessage("ERROR", "delivery_service_does_not_have_regular_workers");
-            return;
-        }
-
-        loadFuelDrone.loadDroneFuel(petrol);
-        Display.displayMessage("OK", "change_completed");
     }
 
     /**
@@ -394,73 +296,13 @@ public class InterfaceLoop {
                             String barcode, Integer quantity) {
         // checking if the restaurant exists in the system
         Restaurant buyerRestaurant;
-        if (restaurants.containsKey(restaurantName)) {
-            buyerRestaurant = restaurants.get(restaurantName);
+        if (Restaurant.restaurants.containsKey(restaurantName)) {
+            buyerRestaurant = Restaurant.restaurants.get(restaurantName);
+            buyerRestaurant.purchaseIngredient(tag, barcode, quantity, serviceName);
         } else {
             // if the restaurant does not exist in the system, display an error message
             Display.displayMessage("ERROR", "restaurant_identifier_does_not_exist");
-            return;
         }
-
-        // checking if the drone exists in the system
-        Drone buyerDrone;
-        if (services.containsKey(serviceName)) {
-            DeliveryService service = services.get(serviceName);
-            if (service.getDrones().containsKey(tag)) {
-                buyerDrone = service.getDrones().get(tag);
-            } else {
-                // if the drone does not exist in the system, display an error message
-                Display.displayMessage("ERROR","drone_does_not_exist");
-                return;
-            }
-        } else {
-            // if the service does not exist in the system, display an error message
-            Display.displayMessage("ERROR", "service_does_not_exist");
-            return;
-        }
-
-        // checking if the ingredient exists in the system
-        boolean ingredientExists = ingredients.containsKey(barcode);
-
-        // if the ingredient does not exist in the system, display an error message
-        if (!ingredientExists) {
-            Display.displayMessage("ERROR","ingredient_identifier_does_not_exist");
-            return;
-        }
-
-        // if the drone is not at the restaurant's location, display an error message
-        if (!buyerDrone.getCurrentLocation().equals(buyerRestaurant.getLocation())) {
-            Display.displayMessage("ERROR","drone_not_located_at_restaurant");
-            return;
-        }
-
-        // finding the ingredient in the drone's payload
-        Ingredient buyerIngredient = null;
-        for (Ingredient ingredient : buyerDrone.getPayload().keySet()) {
-            if (ingredient.getBarcode().equals(barcode)) {
-                buyerIngredient = ingredient;
-                break;
-            }
-        }
-
-        // if the ingredient is not found in the drone's payload, display an error message
-        if (buyerIngredient == null) {
-            Display.displayMessage("ERROR","ingredient_not_found_in_payload");
-            return;
-        } else if (quantity <= 0) {
-            Display.displayMessage("ERROR","quantity_requested_must_be_greater_than_zero");
-            return;
-        }
-
-        // completing the purchase if the drone has enough of the ingredient requested for purchase
-        if (buyerDrone.getPayload().get(buyerIngredient).getQuantity().compareTo(quantity) < 0) {
-            Display.displayMessage("ERROR","drone_does_not_have_enough_of_ingredient_requested");
-            return;
-        } else {
-            buyerRestaurant.makePurchase(buyerDrone, buyerIngredient, quantity);
-            buyerDrone.completePurchase(buyerIngredient, quantity);
-        }
-        Display.displayMessage("OK","change_completed");
     }
 
     /**
@@ -469,8 +311,9 @@ public class InterfaceLoop {
      */
     private void collectRevenue(String service_name) {
         // checking if the service exists in the system
-        if (checkServiceName(service_name)) {
-            DeliveryService.collectRevenue(service_name, services);
+        if (DeliveryService.checkServiceName(service_name)) {
+            DeliveryService employer = DeliveryService.services.get(service_name);
+            employer.collectRevenue(service_name);
         }
     }
 
@@ -496,29 +339,29 @@ public class InterfaceLoop {
                 } else if (tokens[0].equals("make_ingredient")) {
                     makeIngredient(tokens[1], tokens[2], Integer.parseInt(tokens[3]));
                 } else if (tokens[0].equals("display_ingredients")) {
-                    Display.displayIngredients(ingredients.values());
+                    Display.displayIngredients();
                 } else if (tokens[0].equals("make_location")) {
                     makeLocation(tokens[1], Integer.parseInt(tokens[2]), Integer.parseInt(tokens[3]),
                             Integer.parseInt(tokens[4]));
                 } else if (tokens[0].equals("display_locations")) {
-                    Display.displayLocations(locations.values());
+                    Display.displayLocations();
                 } else if (tokens[0].equals("check_distance")) {
                     checkDistance(tokens[1], tokens[2]);
                 } else if (tokens[0].equals("make_service")) {
                     makeDeliveryService(tokens[1], Integer.parseInt(tokens[2]), tokens[3]);
                 } else if (tokens[0].equals("display_services")) {
-                    Display.displayServices(services.values());
+                    Display.displayServices();
                 } else if (tokens[0].equals("make_restaurant")) {
                     makeRestaurant(tokens[1], tokens[2]);
                 } else if (tokens[0].equals("display_restaurants")) {
-                    Display.displayRestaurants(restaurants.values());
+                    Display.displayRestaurants();
                 } else if (tokens[0].equals("make_drone")) {
                     makeDrone(tokens[1], Integer.parseInt(tokens[2]), Integer.parseInt(tokens[3]),
                             Integer.parseInt(tokens[4]));
                 } else if (tokens[0].equals("display_drones")) {
-                    Display.displayDrones(tokens[1], services);
+                    Display.displayDrones(tokens[1]);
                 } else if (tokens[0].equals("display_all_drones")) {
-                    Display.displayAllDrones(services.values());
+                    Display.displayAllDrones();
                 } else if (tokens[0].equals("fly_drone")) {
                     flyDrone(tokens[1], Integer.parseInt(tokens[2]), tokens[3]);
                 } else if (tokens[0].equals("load_ingredient")) {
@@ -533,7 +376,7 @@ public class InterfaceLoop {
                     makePerson(tokens[1], tokens[2], tokens[3], Integer.parseInt(tokens[4]),
                             Integer.parseInt(tokens[5]), Integer.parseInt(tokens[6]), tokens[7]);
                 } else if (tokens[0].equals("display_persons")) {
-                    Display.displayPersons(people.values());
+                    Display.displayPersons();
                 } else if (tokens[0].equals("hire_worker")) {
                     hireWorker(tokens[1], tokens[2]);
                 } else if (tokens[0].equals("fire_worker")) {
@@ -563,40 +406,5 @@ public class InterfaceLoop {
         }
         System.out.println("simulation terminated");
         commandLineInput.close();
-    }
-
-    /**
-     * Method to check if the username exists
-     * @param user_name the username to check
-     * @return true if the username exists, false otherwise
-     */
-    boolean checkUserName(String user_name) {
-        if (people.containsKey(user_name)) {
-            return true;
-        } else {
-            Display.displayMessage("ERROR", "username_does_not_exist");
-            return false;
-        }
-    }
-
-    /**
-     * Method to check if the service exists
-     * @param service_name the service to check
-     * @return true if the service exists, false otherwise
-     */
-    boolean checkServiceName(String service_name) {
-        if (services.containsKey(service_name)) {
-            return true;
-        } else {
-            Display.displayMessage("ERROR", "service_does_not_exist");
-            return false;
-        }
-    }
-
-    /**
-     * @return A boolean that is true if there are no workers at home base, and false otherwise
-     */
-    boolean noWorkersExist() {
-        return people.values().stream().findAny().filter((item) -> (item instanceof Worker)).isEmpty();
     }
 }
