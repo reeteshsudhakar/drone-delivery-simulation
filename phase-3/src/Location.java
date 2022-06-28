@@ -12,22 +12,22 @@ public class Location implements Comparable<Location> {
 
     // Object attributes
     private final String name;
-    private final Integer x_coordinate;
-    private final Integer y_coordinate;
+    private final Integer xCoordinate;
+    private final Integer yCoordinate;
     private final Integer spaceLimit;
     private Integer spacesLeft;
 
     /**
      * Constructor for Location class.
      * @param name Name of location
-     * @param x_coordinate X coordinate of location
-     * @param y_coordinate Y coordinate of location
+     * @param xCoordinate X coordinate of location
+     * @param yCoordinate Y coordinate of location
      * @param spaceLimit Space limit for drones of the location
      */
-    public Location(String name, Integer x_coordinate, Integer y_coordinate, Integer spaceLimit) {
+    public Location(String name, Integer xCoordinate, Integer yCoordinate, Integer spaceLimit) {
         this.name = name;
-        this.x_coordinate = x_coordinate;
-        this.y_coordinate = y_coordinate;
+        this.xCoordinate = xCoordinate;
+        this.yCoordinate = yCoordinate;
         this.spaceLimit = spaceLimit;
         this.spacesLeft = spaceLimit;
     }
@@ -119,7 +119,7 @@ public class Location implements Comparable<Location> {
     @Override
     public String toString() {
         return String.format("name: %s, (x,y): (%d, %d), space: [%d / %d] remaining",
-                this.name, this.x_coordinate, this.y_coordinate, this.spacesLeft, this.spaceLimit);
+                this.name, this.xCoordinate, this.yCoordinate, this.spacesLeft, this.spaceLimit);
     }
 
     /**
@@ -145,7 +145,7 @@ public class Location implements Comparable<Location> {
      * @return X coordinate of location
      */
     public Integer getX_coordinate() {
-        return this.x_coordinate;
+        return this.xCoordinate;
     }
 
     /**
@@ -153,7 +153,7 @@ public class Location implements Comparable<Location> {
      * @return Y coordinate of location
      */
     public Integer getY_coordinate() {
-        return this.y_coordinate;
+        return this.yCoordinate;
     }
 
     /**

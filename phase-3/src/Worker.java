@@ -10,24 +10,24 @@ public class Worker extends Person {
 
     private TreeMap<String, DeliveryService> employers = new TreeMap<>();
 
-    public Worker(String init_username, String init_fname, String init_lname, Integer init_year, Integer init_month,
-                  Integer init_date, String init_address, DeliveryService init_employer) {
-       super(init_username, init_fname, init_lname, init_year, init_month, init_date, init_address);
-       addEmployer(init_employer);
+    public Worker(String username, String firstName, String lastName, Integer year, Integer month,
+                  Integer date, String address, DeliveryService employer) {
+       super(username, firstName, lastName, year, month, date, address);
+       addEmployer(employer);
     }
 
     public Worker(Person person, DeliveryService init_employer) {
-        super(person.getUsername(), person.getFname(), person.getLname(), person.getYear(), person.getMonth(),
+        super(person.getUsername(), person.getFirstName(), person.getLastName(), person.getYear(), person.getMonth(),
                 person.getDate(), person.getAddress());
         addEmployer(init_employer);
     }
 
-    public void addEmployer(DeliveryService init_employer) {
+    public void addEmployer(DeliveryService employer) {
         // If this is a Manager, all employers are erased, and the current one is added
         if (this instanceof Manager) {
             this.employers = new TreeMap<>();
         }
-        this.employers.put(init_employer.getName(), init_employer);
+        this.employers.put(employer.getName(), employer);
     }
 
     @Override

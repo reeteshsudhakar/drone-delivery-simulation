@@ -1,0 +1,217 @@
+Welcome to the Restaurant Supply Express System!
+
+> // TEST CASE 3
+
+> // make location
+
+> make_location,airport,3,4,6
+OK:location_created
+
+> make_location,plaza,10,5,4
+OK:location_created
+
+> display_locations
+name: airport, (x,y): (3, 4), space: [6 / 6] remaining
+name: plaza, (x,y): (10, 5), space: [4 / 4] remaining
+OK:display_completed
+
+> // make service
+
+> make_service,speedy_spices,100,plaza
+OK:delivery_service_created
+
+> make_service,fast_flavors,300,airport
+OK:delivery_service_created
+
+> display_services
+name: fast_flavors, revenue: $300, location: airport
+name: speedy_spices, revenue: $100, location: plaza
+OK:display_completed
+
+> // make drone
+
+> make_drone,fast_flavors,1,4,100
+OK:drone_created
+
+> make_drone,speedy_spices,4,7,80
+OK:drone_created
+
+> make_drone,fast_flavors,2,4,100
+OK:drone_created
+
+> display_all_drones
+service name [fast_flavors] drones:
+tag: 1, capacity: 4, remaining_cap: 4, fuel: 100, sales: $0, location: airport
+tag: 2, capacity: 4, remaining_cap: 4, fuel: 100, sales: $0, location: airport
+service name [speedy_spices] drones:
+tag: 4, capacity: 7, remaining_cap: 7, fuel: 80, sales: $0, location: plaza
+OK:display_completed
+
+> // make people
+
+> make_person,esmith5,Eric,Smith,1963,11,12,101_Queens_Way_Washington_DC
+OK:person_created
+
+> make_person,jben,Jen,Ben,1902,07,09,10_Apr_Ave_Atlanta
+OK:person_created
+
+> make_person,amahajan1,Anubha,Mahajan,1972,09,09,10_May_Ave_DC
+OK:person_created
+
+> make_person,asim,Anubha,Sim,1992,09,04,1012_May_Ave_DC
+OK:person_created
+
+> display_persons
+userID: amahajan1, name: Anubha Mahajan, birth date: 1972-9-9, address: 10_May_Ave_DC
+userID: asim, name: Anubha Sim, birth date: 1992-9-4, address: 1012_May_Ave_DC
+userID: esmith5, name: Eric Smith, birth date: 1963-11-12, address: 101_Queens_Way_Washington_DC
+userID: jben, name: Jen Ben, birth date: 1902-7-9, address: 10_Apr_Ave_Atlanta
+OK:display_completed
+
+> // hiring
+
+> hire_worker,fast_flavors,esmith5
+OK:new_employee_has_been_hired
+
+> hire_worker,fast_flavors,jben
+OK:new_employee_has_been_hired
+
+> hire_worker,fast_flavors,amahajan1
+OK:new_employee_has_been_hired
+
+> hire_worker,speedy_spices,asim
+OK:new_employee_has_been_hired
+
+> appoint_manager,fast_flavors,esmith5 
+OK:employee_has_been_appointed_manager
+
+> train_pilot,fast_flavors,jben,ncidq,10
+OK:pilot_has_been_trained
+
+> display_persons
+userID: amahajan1, name: Anubha Mahajan, birth date: 1972-9-9, address: 10_May_Ave_DC
+employee is working at: 
+&> fast_flavors
+userID: asim, name: Anubha Sim, birth date: 1992-9-4, address: 1012_May_Ave_DC
+employee is working at: 
+&> speedy_spices
+userID: esmith5, name: Eric Smith, birth date: 1963-11-12, address: 101_Queens_Way_Washington_DC
+employee is managing: fast_flavors
+userID: jben, name: Jen Ben, birth date: 1902-7-9, address: 10_Apr_Ave_Atlanta
+employee is working at: 
+&> fast_flavors
+user has a pilot's license (ncidq) with 10 successful flight(s)
+OK:display_completed
+
+> // firing
+
+> fire_worker,fast_flavors,jben
+OK:employee_has_been_fired
+
+> // fire pilot who hasn’t been appointed
+
+> display_persons
+userID: amahajan1, name: Anubha Mahajan, birth date: 1972-9-9, address: 10_May_Ave_DC
+employee is working at: 
+&> fast_flavors
+userID: asim, name: Anubha Sim, birth date: 1992-9-4, address: 1012_May_Ave_DC
+employee is working at: 
+&> speedy_spices
+userID: esmith5, name: Eric Smith, birth date: 1963-11-12, address: 101_Queens_Way_Washington_DC
+employee is managing: fast_flavors
+userID: jben, name: Jen Ben, birth date: 1902-7-9, address: 10_Apr_Ave_Atlanta
+user has a pilot's license (ncidq) with 10 successful flight(s)
+OK:display_completed
+
+> // hiring
+
+> hire_worker,speedy_spices,jben
+OK:new_employee_has_been_hired
+
+> // hire worker with pilot license
+
+> hire_worker,fast_flavors,jben
+OK:new_employee_has_been_hired
+
+> appoint_pilot,speedy_spices,jben,4
+ERROR:employee_is_working_at_other_companies
+
+> // appoint worker who is hired at two services
+
+> fire_worker,fast_flavors,jben
+OK:employee_has_been_fired
+
+> appoint_pilot,speedy_spices,jben,1
+ERROR:drone_does_not_exist
+
+> appoint_manager,speedy_spices,jben
+OK:employee_has_been_appointed_manager
+
+> // appoint manager who is a pilot
+
+> hire_worker,fast_flavors,jben
+ERROR:employee_is_managing_a_service
+
+> // hire pilot to another service
+
+> appoint_manager,speedy_spices,amahajan1
+ERROR:employee_does_not_work_for_this_service
+
+> // appoint manager who is hired at two services
+
+> // training
+
+> train_pilot,fast_flavors,esmith5,nci78dq,10
+ERROR:employee_is_too_busy_managing
+
+> // train manager to be a pilot
+
+> train_pilot,fast_flavors,asim,nci08dq,10
+ERROR:employee_does_not_work_for_this_service
+
+> // train pilot who is not hired
+
+> train_pilot,fast_flavors,asim,””,10
+ERROR:employee_does_not_work_for_this_service
+
+> // train pilot with invalid license
+
+> train_pilot,fast_flavors,asim,ncq,10
+ERROR:employee_does_not_work_for_this_service
+
+> fire_worker,fast_flavors,asim
+OK:employee_does_not_work_for_this_service
+
+> // fire worker with pilot license
+
+> hire_worker,fast_flavors,asim 
+OK:new_employee_has_been_hired
+
+> appoint_pilot,fast_flavors,asim,1
+ERROR:employee_does_not_have_a_drone_license
+
+> // appoint pilot who has license from another service
+
+> appoint_pilot,speedy_spices,asim,1
+ERROR:drone_does_not_exist
+
+> // appoint different pilot to same drone
+
+> display_persons
+userID: amahajan1, name: Anubha Mahajan, birth date: 1972-9-9, address: 10_May_Ave_DC
+employee is working at: 
+&> fast_flavors
+userID: asim, name: Anubha Sim, birth date: 1992-9-4, address: 1012_May_Ave_DC
+employee is working at: 
+&> fast_flavors
+&> speedy_spices
+userID: esmith5, name: Eric Smith, birth date: 1963-11-12, address: 101_Queens_Way_Washington_DC
+employee is managing: fast_flavors
+userID: jben, name: Jen Ben, birth date: 1902-7-9, address: 10_Apr_Ave_Atlanta
+employee is managing: speedy_spices
+user has a pilot's license (ncidq) with 10 successful flight(s)
+OK:display_completed
+
+> stop
+stop acknowledged
+simulation terminated

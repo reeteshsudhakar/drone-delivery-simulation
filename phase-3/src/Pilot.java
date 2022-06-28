@@ -11,19 +11,24 @@ public class Pilot extends Worker {
     int experience;
     TreeMap<Integer, Drone> pilotedDrones;
 
-    public Pilot(Worker worker, DeliveryService init_employer, String init_license, int init_experience) {
-        super(worker.getUsername(), worker.getFname(), worker.getLname(), worker.getYear(), worker.getMonth(),
-                worker.getDate(), worker.getAddress(), init_employer);
-        this.license = init_license;
-        this.experience = init_experience;
+    public Pilot(Worker worker, DeliveryService employer, String license, Integer experience) {
+        super(worker.getUsername(), worker.getFirstName(), worker.getLastName(), worker.getYear(), worker.getMonth(),
+                worker.getDate(), worker.getAddress(), employer);
+        this.license = license;
+        this.experience = experience;
         this.pilotedDrones = new TreeMap<>();
     }
 
-    public void changeEmployer(String service_name, DeliveryService employer, String init_license, int init_experience) {
+    public void changeEmployer(String serviceName, DeliveryService employer, String license, Integer experience) {
         this.getEmployers().clear();
-        this.getEmployers().put(service_name, employer);
-        this.setLicense(init_license);
-        this.setExperience(init_experience);
+        this.getEmployers().put(serviceName, employer);
+        this.setLicense(license);
+        this.setExperience(experience);
+    }
+
+    public boolean pilotingForAnotherService(DeliveryService service) {
+        return !this.getEmployers().isEmpty() && !this.getEmployers().firstKey().equals(service.getName())
+                && !this.getPilotedDrones().isEmpty();
     }
 
     /**
@@ -44,17 +49,14 @@ public class Pilot extends Worker {
         }
     }
 
-    public TreeMap<Integer, Drone> getPilotedDrones() {
-        return pilotedDrones;
-    }
+    public void addSuccessfulTrip() { this.experience += 1; }
 
-    public String getLicense() {
-        return license;
-    }
+    public TreeMap<Integer, Drone> getPilotedDrones() { return pilotedDrones; }
+
+    public String getLicense() { return license; }
 
     public void setLicense(String license) { this.license = license; }
 
     public void setExperience(int experience) { this.experience = experience; }
 
-    public void addSuccessfulTrip() { this.experience += 1; }
 }

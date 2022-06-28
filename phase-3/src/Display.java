@@ -12,7 +12,7 @@ public class Display {
     static void displayAllDrones() {
         // displaying all the drones in the system by iterating through the collection
         for (DeliveryService service : DeliveryService.services.values()) {
-            System.out.printf("Service name [%s] drones:%n", service.getName());
+            System.out.printf("service name [%s] drones:%n", service.getName());
             for (Drone drone : service.getDrones().values()) {
                 System.out.print(drone.toString());
             }
@@ -83,10 +83,10 @@ public class Display {
     /**
      * Method to display a message from the interface
      * @param status the status of the message
-     * @param text_output the text to be displayed
+     * @param output the text to be displayed
      */
-    static void displayMessage(String status, String text_output) {
-        System.out.println(status.toUpperCase() + ":" + text_output.toLowerCase());
+    static void displayMessage(String status, String output) {
+        System.out.println(status.toUpperCase() + ":" + output.toLowerCase());
     }
 
     /**

@@ -1,0 +1,158 @@
+Welcome to the Restaurant Supply Express System!
+
+> // Test case 1.
+
+> make_location,rock,1,1,10
+OK:location_created
+
+> display_locations
+name: rock, (x,y): (1, 1), space: [10 / 10] remaining
+OK:display_completed
+
+> make_service,rocky_delivery,300,rock
+OK:delivery_service_created
+
+> make_drone,rock,1234,5,10000000
+ERROR:delivery_service_does_not_exist
+
+> make_person,bobrrr44,Bob,Ross,1000,01,01,10_Bob_Ross_Street_City_Newcountry
+OK:person_created
+
+> make_person,hmm,Henry,m,4000,09,09,1134314_Car_Street_wow_city2_Newcountry2
+OK:person_created
+
+> make_person,ff,Cat,Me,2002,02,02,02_Two_Street_City_Newcountry3
+OK:person_created
+
+> display_persons
+userID: bobrrr44, name: Bob Ross, birth date: 1000-1-1, address: 10_Bob_Ross_Street_City_Newcountry
+userID: ff, name: Cat Me, birth date: 2002-2-2, address: 02_Two_Street_City_Newcountry3
+userID: hmm, name: Henry m, birth date: 4000-9-9, address: 1134314_Car_Street_wow_city2_Newcountry2
+OK:display_completed
+
+> // Firing non-existant worker BAD
+
+> fire_worker,rocky_delivery,dne
+ERROR:user_name_does_not_exist
+
+> // Hires manager that is not employed BAD
+
+> display_managers
+command display_managers NOT acknowledged
+
+> appoint_manager,rocky_delivery,bobrrr44
+ERROR:employee_does_not_work_for_this_service
+
+> hire_worker,rocky_delivery,bobrrr44
+OK:new_employee_has_been_hired
+
+> hire_worker,rocky_delivery,hmm
+OK:new_employee_has_been_hired
+
+> // Trains pilot b4 having a manager BAD
+
+> train_pilot,rocky_delivery,bobrrr44,44949,0
+ERROR:delivery_service_does_not_have_a_manager
+
+> // Appoints manager GOOD
+
+> appoint_manager,rocky_delivery,bobrrr44
+OK:employee_has_been_appointed_manager
+
+> // Train pilot for real this time GOOD
+
+> train_pilot,rocky_delivery,bobrrr44,44949,0
+ERROR:employee_is_too_busy_managing
+
+> // Train pilot with the same license number BAD
+
+> hire_worker,rocky_delivery,ff
+OK:new_employee_has_been_hired
+
+> train_pilot,rocky_delivery,ff,44949,0
+OK:pilot_has_been_trained
+
+> // Train second pilot GOOD
+
+> train_pilot,rocky_delivery,ff,00111,0
+OK:pilot_has_been_trained
+
+> // Train manager as pilot BAD
+
+> train_pilot,rocky_delivery,bobrrr44,-4
+java.lang.ArrayIndexOutOfBoundsException: Index 4 out of bounds for length 4
+	at edu.gatech.cs2340.InterfaceLoop.commandLoop(InterfaceLoop.java:374)
+	at edu.gatech.cs2340.Main.main(Main.java:8)
+
+
+> // Appoint manager as pilot BAD
+
+> appoint_pilot,rocky_delivery,bobrrr44,1234
+ERROR:drone_does_not_exist
+
+> // --------CHECK
+
+> // Appoint 2 pilots to same drone BAD
+
+> appoint_pilot,rocky_delivery,1234
+java.lang.ArrayIndexOutOfBoundsException: Index 3 out of bounds for length 3
+	at edu.gatech.cs2340.InterfaceLoop.commandLoop(InterfaceLoop.java:377)
+	at edu.gatech.cs2340.Main.main(Main.java:8)
+
+
+> appoint_pilot,rocky_delivery,
+java.lang.ArrayIndexOutOfBoundsException: Index 2 out of bounds for length 2
+	at edu.gatech.cs2340.InterfaceLoop.commandLoop(InterfaceLoop.java:377)
+	at edu.gatech.cs2340.Main.main(Main.java:8)
+
+
+> // join swarmy :)
+
+> make_drone,rock2,8888,5,100000000
+ERROR:delivery_service_does_not_exist
+
+> make_drone,rock3,4444,5,100000000
+ERROR:delivery_service_does_not_exist
+
+> join_swarm,rocky_delivery,1234,8888
+ERROR:lead_drone_does_not_exist
+
+> join_swarm,rocky_delivery,1234,4444
+ERROR:lead_drone_does_not_exist
+
+> // how's the format?
+
+> display_all_drones
+service name [rocky_delivery] drones:
+OK:display_completed
+
+> // what about with multiple services?
+
+> make_location,marshy_swamp,100,100,5
+OK:location_created
+
+> make_service,shrek_express,1000,marshy_swamp
+OK:delivery_service_created
+
+> make_drone,shrek_express,1337,1,1000000000
+OK:drone_created
+
+> display_all_drones
+service name [rocky_delivery] drones:
+service name [shrek_express] drones:
+tag: 1337, capacity: 1, remaining_cap: 1, fuel: 1000000000, sales: $0, location: marshy_swamp
+OK:display_completed
+
+> // shrek joins will try to join swarm at location rock BAD
+
+> join_swarm,rocky_delivery,1234,1337
+ERROR:lead_drone_does_not_exist
+
+> // fire leader of pilot BAD
+
+> fire_worker,rocky_delivery,___
+ERROR:user_name_does_not_exist
+
+> stop
+stop acknowledged
+simulation terminated

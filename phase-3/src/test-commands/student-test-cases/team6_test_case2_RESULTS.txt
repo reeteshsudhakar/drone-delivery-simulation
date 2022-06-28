@@ -1,0 +1,434 @@
+Welcome to the Restaurant Supply Express System!
+
+> //chicken SWARMa
+
+> //bad
+
+> make_location,aeropuerto,-1,-1,-1
+ERROR:negative_space_limit_not_allowed
+
+> //good
+
+> make_location,sillyhouse,5,6,7
+OK:location_created
+
+> //good
+
+> make_location,clowntown,9,3,6
+OK:location_created
+
+> display_locations
+name: clowntown, (x,y): (9, 3), space: [6 / 6] remaining
+name: sillyhouse, (x,y): (5, 6), space: [7 / 7] remaining
+OK:display_completed
+
+> //good
+
+> make_service,pinche_guey,4000,clowntown
+OK:delivery_service_created
+
+> //bad
+
+> make_service,servicio_malo,1000,sillyhome
+ERROR:location_does_not_exist
+
+> //good
+
+> make_service,servicio_bueno,2000,sillyhouse
+OK:delivery_service_created
+
+> display_services
+name: pinche_guey, revenue: $4000, location: clowntown
+name: servicio_bueno, revenue: $2000, location: sillyhouse
+OK:display_completed
+
+> //Make a bunch of drones
+
+> make_drone,servicio_bueno,69,4,50
+OK:drone_created
+
+> make_drone,servicio_bueno,420,5,100
+OK:drone_created
+
+> make_drone,servicio_bueno,1,4,150
+OK:drone_created
+
+> make_drone,pinche_guey,69,3,150
+OK:drone_created
+
+> make_drone,pinche_guey,1,3,150
+OK:drone_created
+
+> make_drone,pinche_guey,33,3,150
+OK:drone_created
+
+> display_all_drones
+service name [pinche_guey] drones:
+tag: 1, capacity: 3, remaining_cap: 3, fuel: 150, sales: $0, location: clowntown
+tag: 33, capacity: 3, remaining_cap: 3, fuel: 150, sales: $0, location: clowntown
+tag: 69, capacity: 3, remaining_cap: 3, fuel: 150, sales: $0, location: clowntown
+service name [servicio_bueno] drones:
+tag: 1, capacity: 4, remaining_cap: 4, fuel: 150, sales: $0, location: sillyhouse
+tag: 69, capacity: 4, remaining_cap: 4, fuel: 50, sales: $0, location: sillyhouse
+tag: 420, capacity: 5, remaining_cap: 5, fuel: 100, sales: $0, location: sillyhouse
+OK:display_completed
+
+> //make people
+
+> make_person,prettyprincess23,Pretty,Princess,1999,07,22,222_Clown_River_Road_Clowntown_GA
+OK:person_created
+
+> make_person,chocolatecharlie28,Charlie,Charlio,3000,11,11,123_Chocolate_Factory_Street_Duluth_GA
+OK:person_created
+
+> make_person,pokemaster565,Ash,Ketchum,1990,01,01,12_Squirtle_Street_Viridian_City_Kanto_JP
+OK:person_created
+
+> make_person,tiktoktoe33,Tik,Tok,-43,01,01,Mesopotamia
+OK:person_created
+
+> make_person,pincheguey73,Pedro,Martinez,1978,05,05,Benito_Juarez_El_Pueblito_34340_Durango_Dgo_MX
+OK:person_created
+
+> make_person,buzzlightyear03,Buzz,Lightyear,1992,11,01,International_Space_Station
+OK:person_created
+
+> display_persons
+userID: buzzlightyear03, name: Buzz Lightyear, birth date: 1992-11-1, address: International_Space_Station
+userID: chocolatecharlie28, name: Charlie Charlio, birth date: 3000-11-11, address: 123_Chocolate_Factory_Street_Duluth_GA
+userID: pincheguey73, name: Pedro Martinez, birth date: 1978-5-5, address: Benito_Juarez_El_Pueblito_34340_Durango_Dgo_MX
+userID: pokemaster565, name: Ash Ketchum, birth date: 1990-1-1, address: 12_Squirtle_Street_Viridian_City_Kanto_JP
+userID: prettyprincess23, name: Pretty Princess, birth date: 1999-7-22, address: 222_Clown_River_Road_Clowntown_GA
+userID: tiktoktoe33, name: Tik Tok, birth date: 44-1-1, address: Mesopotamia
+OK:display_completed
+
+> //hire workers for servicio_bueno
+
+> hire_worker,servicio_bueno,prettyprincess23
+OK:new_employee_has_been_hired
+
+> hire_worker,servicio_bueno,pokemaster565
+OK:new_employee_has_been_hired
+
+> hire_worker,servicio_bueno,chocolatecharlie28
+OK:new_employee_has_been_hired
+
+> //hire workers for pinche_guey
+
+> hire_worker,pinche_guey,tiktoktoe33
+OK:new_employee_has_been_hired
+
+> hire_worker,pinche_guey,pincheguey73
+OK:new_employee_has_been_hired
+
+> hire_worker,pinche_guey,buzzlightyear03
+OK:new_employee_has_been_hired
+
+> //Train a couple of pilots
+
+> train_pilot,servicio_bueno,prettyprincess23
+java.lang.ArrayIndexOutOfBoundsException: Index 3 out of bounds for length 3
+	at edu.gatech.cs2340.InterfaceLoop.commandLoop(InterfaceLoop.java:374)
+	at edu.gatech.cs2340.Main.main(Main.java:8)
+
+
+> train_pilot,servicio_bueno,chocolatecharlie28
+java.lang.ArrayIndexOutOfBoundsException: Index 3 out of bounds for length 3
+	at edu.gatech.cs2340.InterfaceLoop.commandLoop(InterfaceLoop.java:374)
+	at edu.gatech.cs2340.Main.main(Main.java:8)
+
+
+> //Make a pilot with no drones a Manager
+
+> appoint_manager,servicio_bueno,prettyprincess23
+OK:employee_has_been_appointed_manager
+
+> display_persons
+userID: buzzlightyear03, name: Buzz Lightyear, birth date: 1992-11-1, address: International_Space_Station
+employee is working at: 
+&> pinche_guey
+userID: chocolatecharlie28, name: Charlie Charlio, birth date: 3000-11-11, address: 123_Chocolate_Factory_Street_Duluth_GA
+employee is working at: 
+&> servicio_bueno
+userID: pincheguey73, name: Pedro Martinez, birth date: 1978-5-5, address: Benito_Juarez_El_Pueblito_34340_Durango_Dgo_MX
+employee is working at: 
+&> pinche_guey
+userID: pokemaster565, name: Ash Ketchum, birth date: 1990-1-1, address: 12_Squirtle_Street_Viridian_City_Kanto_JP
+employee is working at: 
+&> servicio_bueno
+userID: prettyprincess23, name: Pretty Princess, birth date: 1999-7-22, address: 222_Clown_River_Road_Clowntown_GA
+employee is managing: servicio_bueno
+userID: tiktoktoe33, name: Tik Tok, birth date: 44-1-1, address: Mesopotamia
+employee is working at: 
+&> pinche_guey
+OK:display_completed
+
+> //Give a pilot a couple of drones
+
+> appoint_pilot,servicio_bueno,chocolatecharlie28,1
+ERROR:employee_does_not_have_a_drone_license
+
+> appoint_pilot,servicio_bueno,chocolatecharlie28,69
+ERROR:employee_does_not_have_a_drone_license
+
+> fly_drone,servicio_bueno,1,clowntown
+ERROR:the_drone_does_not_have_a_pilot
+
+> display_drones,servicio_bueno
+tag: 1, capacity: 4, remaining_cap: 4, fuel: 150, sales: $0, location: sillyhouse
+tag: 69, capacity: 4, remaining_cap: 4, fuel: 50, sales: $0, location: sillyhouse
+tag: 420, capacity: 5, remaining_cap: 5, fuel: 100, sales: $0, location: sillyhouse
+OK:display_completed
+
+> display_all_drones
+service name [pinche_guey] drones:
+tag: 1, capacity: 3, remaining_cap: 3, fuel: 150, sales: $0, location: clowntown
+tag: 33, capacity: 3, remaining_cap: 3, fuel: 150, sales: $0, location: clowntown
+tag: 69, capacity: 3, remaining_cap: 3, fuel: 150, sales: $0, location: clowntown
+service name [servicio_bueno] drones:
+tag: 1, capacity: 4, remaining_cap: 4, fuel: 150, sales: $0, location: sillyhouse
+tag: 69, capacity: 4, remaining_cap: 4, fuel: 50, sales: $0, location: sillyhouse
+tag: 420, capacity: 5, remaining_cap: 5, fuel: 100, sales: $0, location: sillyhouse
+OK:display_completed
+
+> //wrong location
+
+> join_swarm,servicio_bueno,69,1
+ERROR:lead_drone_does_not_have_a_pilot
+
+> fly_drone,servicio_bueno,69,clowntown
+ERROR:the_drone_does_not_have_a_pilot
+
+> //should work now
+
+> join_swarm,servicio_bueno,69,1
+ERROR:lead_drone_does_not_have_a_pilot
+
+> //wrong location to fuel
+
+> load_fuel,servicio_bueno,69,2000
+OK:change_completed
+
+> fly_drone,servicio_bueno,69,sillyhouse
+OK:swarm_already_at_intended_destination
+
+> //correct location to fuel
+
+> load_fuel,servicio_bueno,69,2000
+OK:change_completed
+
+> load_fuel,servicio_bueno,1,1000
+OK:change_completed
+
+> appoint_pilot,servicio_bueno,chocolatecharlie28,420
+ERROR:employee_does_not_have_a_drone_license
+
+> //I think this errors?
+
+> join_swarm,servicio_bueno,420,69
+ERROR:lead_drone_does_not_have_a_pilot
+
+> display_all_drones
+service name [pinche_guey] drones:
+tag: 1, capacity: 3, remaining_cap: 3, fuel: 150, sales: $0, location: clowntown
+tag: 33, capacity: 3, remaining_cap: 3, fuel: 150, sales: $0, location: clowntown
+tag: 69, capacity: 3, remaining_cap: 3, fuel: 150, sales: $0, location: clowntown
+service name [servicio_bueno] drones:
+tag: 1, capacity: 4, remaining_cap: 4, fuel: 1150, sales: $0, location: sillyhouse
+tag: 69, capacity: 4, remaining_cap: 4, fuel: 4050, sales: $0, location: sillyhouse
+tag: 420, capacity: 5, remaining_cap: 5, fuel: 100, sales: $0, location: sillyhouse
+OK:display_completed
+
+> //This should join
+
+> join_swarm,servicio_bueno,69,420
+ERROR:lead_drone_does_not_have_a_pilot
+
+> //Try to fly a drone with a leader?
+
+> fly_drone,servicio_bueno,1,clowntown
+ERROR:the_drone_does_not_have_a_pilot
+
+> //fly a swarm
+
+> fly_drone,servicio_bueno,69,clowntown
+ERROR:the_drone_does_not_have_a_pilot
+
+> display_all_drones
+service name [pinche_guey] drones:
+tag: 1, capacity: 3, remaining_cap: 3, fuel: 150, sales: $0, location: clowntown
+tag: 33, capacity: 3, remaining_cap: 3, fuel: 150, sales: $0, location: clowntown
+tag: 69, capacity: 3, remaining_cap: 3, fuel: 150, sales: $0, location: clowntown
+service name [servicio_bueno] drones:
+tag: 1, capacity: 4, remaining_cap: 4, fuel: 1150, sales: $0, location: sillyhouse
+tag: 69, capacity: 4, remaining_cap: 4, fuel: 4050, sales: $0, location: sillyhouse
+tag: 420, capacity: 5, remaining_cap: 5, fuel: 100, sales: $0, location: sillyhouse
+OK:display_completed
+
+> make_ingredient,gno,Guineo,5
+OK:ingredient_created
+
+> make_ingredient,pltno,Platano,5
+OK:ingredient_created
+
+> make_ingredient,bnna,Banana,5
+OK:ingredient_created
+
+> make_ingredient,abcde,Alphabet Soup,20
+OK:ingredient_created
+
+> make_ingredient,sunny,Delicious Refreshing Sunny D!,10
+OK:ingredient_created
+
+> make_ingredient,queso,Paneer,10
+OK:ingredient_created
+
+> display_ingredients
+barcode: abcde, name: Alphabet Soup, unit_weight: 20
+barcode: bnna, name: Banana, unit_weight: 5
+barcode: gno, name: Guineo, unit_weight: 5
+barcode: pltno, name: Platano, unit_weight: 5
+barcode: queso, name: Paneer, unit_weight: 10
+barcode: sunny, name: Delicious Refreshing Sunny D!, unit_weight: 10
+OK:display_completed
+
+> load_ingredient,servicio_bueno,69,gno,3,50
+OK:change_completed
+
+> load_ingredient,servicio_bueno,69,pltno,3,30
+ERROR:not_enough_capacity_to_hold_new_packages
+
+> load_ingredient,servicio_bueno,69,pltno,1,35
+OK:change_completed
+
+> load_ingredient,servicio_bueno,1,bnna,3,3
+OK:change_completed
+
+> load_ingredient,servicio_bueno,420,sunny,2,2000
+OK:change_completed
+
+> load_ingredient,servicio_bueno,420,queso,2,15
+OK:change_completed
+
+> make_restaurant,Timmy_Tom's_Clown_Shack,clowntown
+OK:restaurant_created
+
+> make_restaurant,Timmy Tom's Clown Shack,clowntown
+OK:restaurant_created
+
+> fly_drone,servicio_bueno,69,clowntown
+ERROR:the_drone_does_not_have_a_pilot
+
+> purchase_ingredient,Timmy_Tom's_Clown_Shack,servicio_bueno,69,gno,3
+ERROR:drone_not_located_at_restaurant
+
+> purchase_ingredient,Timmy Tom's Clown Shack,servicio_bueno,420,sunny,1
+ERROR:drone_not_located_at_restaurant
+
+> display_all_drones
+service name [pinche_guey] drones:
+tag: 1, capacity: 3, remaining_cap: 3, fuel: 150, sales: $0, location: clowntown
+tag: 33, capacity: 3, remaining_cap: 3, fuel: 150, sales: $0, location: clowntown
+tag: 69, capacity: 3, remaining_cap: 3, fuel: 150, sales: $0, location: clowntown
+service name [servicio_bueno] drones:
+tag: 1, capacity: 4, remaining_cap: 1, fuel: 1150, sales: $0, location: sillyhouse
+&> barcode: bnna,  item_name: Banana, total_quantity: 3, unit_cost:3, total_weight: 15
+tag: 69, capacity: 4, remaining_cap: 0, fuel: 4050, sales: $0, location: sillyhouse
+&> barcode: gno,  item_name: Guineo, total_quantity: 3, unit_cost:50, total_weight: 15
+&> barcode: pltno,  item_name: Platano, total_quantity: 1, unit_cost:35, total_weight: 5
+tag: 420, capacity: 5, remaining_cap: 1, fuel: 100, sales: $0, location: sillyhouse
+&> barcode: queso,  item_name: Paneer, total_quantity: 2, unit_cost:15, total_weight: 20
+&> barcode: sunny,  item_name: Delicious Refreshing Sunny D!, total_quantity: 2, unit_cost:2000, total_weight: 20
+OK:display_completed
+
+> display_restaurants
+name: Timmy Tom's Clown Shack, money_spent: $0, location: clowntown
+name: Timmy_Tom's_Clown_Shack, money_spent: $0, location: clowntown
+OK:display_completed
+
+> collect_revenue,servicio_bueno
+OK:change_completed
+
+> display_all_drones
+service name [pinche_guey] drones:
+tag: 1, capacity: 3, remaining_cap: 3, fuel: 150, sales: $0, location: clowntown
+tag: 33, capacity: 3, remaining_cap: 3, fuel: 150, sales: $0, location: clowntown
+tag: 69, capacity: 3, remaining_cap: 3, fuel: 150, sales: $0, location: clowntown
+service name [servicio_bueno] drones:
+tag: 1, capacity: 4, remaining_cap: 1, fuel: 1150, sales: $0, location: sillyhouse
+&> barcode: bnna,  item_name: Banana, total_quantity: 3, unit_cost:3, total_weight: 15
+tag: 69, capacity: 4, remaining_cap: 0, fuel: 4050, sales: $0, location: sillyhouse
+&> barcode: gno,  item_name: Guineo, total_quantity: 3, unit_cost:50, total_weight: 15
+&> barcode: pltno,  item_name: Platano, total_quantity: 1, unit_cost:35, total_weight: 5
+tag: 420, capacity: 5, remaining_cap: 1, fuel: 100, sales: $0, location: sillyhouse
+&> barcode: queso,  item_name: Paneer, total_quantity: 2, unit_cost:15, total_weight: 20
+&> barcode: sunny,  item_name: Delicious Refreshing Sunny D!, total_quantity: 2, unit_cost:2000, total_weight: 20
+OK:display_completed
+
+> display_services
+name: pinche_guey, revenue: $4000, location: clowntown
+name: servicio_bueno, revenue: $2000, location: sillyhouse
+OK:display_completed
+
+> //What happens if we remove the leader?
+
+> leave_swarm,servicio_bueno,69
+ERROR:drone_not_in_a_swarm
+
+> //Normal remove
+
+> leave_swarm,servicio_bueno,1
+ERROR:drone_not_in_a_swarm
+
+> fire_worker,servicio_bueno,pokemaster565
+OK:employee_has_been_fired
+
+> fire_worker,servicio_bueno,chocolatecharlie28
+OK:employee_has_been_fired
+
+> hire_worker,servicio_bueno,pincheguey73
+OK:new_employee_has_been_hired
+
+> appoint_manager,pinche_guey,pincheguey73
+ERROR:employee_is_working_at_other_companies
+
+> fire_worker,servicio_bueno,pincheguey73
+OK:employee_has_been_fired
+
+> appoint_manager,pinche_guey,pincheguey73
+OK:employee_has_been_appointed_manager
+
+> display_persons
+userID: buzzlightyear03, name: Buzz Lightyear, birth date: 1992-11-1, address: International_Space_Station
+employee is working at: 
+&> pinche_guey
+userID: chocolatecharlie28, name: Charlie Charlio, birth date: 3000-11-11, address: 123_Chocolate_Factory_Street_Duluth_GA
+userID: pincheguey73, name: Pedro Martinez, birth date: 1978-5-5, address: Benito_Juarez_El_Pueblito_34340_Durango_Dgo_MX
+employee is managing: pinche_guey
+userID: pokemaster565, name: Ash Ketchum, birth date: 1990-1-1, address: 12_Squirtle_Street_Viridian_City_Kanto_JP
+userID: prettyprincess23, name: Pretty Princess, birth date: 1999-7-22, address: 222_Clown_River_Road_Clowntown_GA
+employee is managing: servicio_bueno
+userID: tiktoktoe33, name: Tik Tok, birth date: 44-1-1, address: Mesopotamia
+employee is working at: 
+&> pinche_guey
+OK:display_completed
+
+> display_all_drones
+service name [pinche_guey] drones:
+tag: 1, capacity: 3, remaining_cap: 3, fuel: 150, sales: $0, location: clowntown
+tag: 33, capacity: 3, remaining_cap: 3, fuel: 150, sales: $0, location: clowntown
+tag: 69, capacity: 3, remaining_cap: 3, fuel: 150, sales: $0, location: clowntown
+service name [servicio_bueno] drones:
+tag: 1, capacity: 4, remaining_cap: 1, fuel: 1150, sales: $0, location: sillyhouse
+&> barcode: bnna,  item_name: Banana, total_quantity: 3, unit_cost:3, total_weight: 15
+tag: 69, capacity: 4, remaining_cap: 0, fuel: 4050, sales: $0, location: sillyhouse
+&> barcode: gno,  item_name: Guineo, total_quantity: 3, unit_cost:50, total_weight: 15
+&> barcode: pltno,  item_name: Platano, total_quantity: 1, unit_cost:35, total_weight: 5
+tag: 420, capacity: 5, remaining_cap: 1, fuel: 100, sales: $0, location: sillyhouse
+&> barcode: queso,  item_name: Paneer, total_quantity: 2, unit_cost:15, total_weight: 20
+&> barcode: sunny,  item_name: Delicious Refreshing Sunny D!, total_quantity: 2, unit_cost:2000, total_weight: 20
+OK:display_completed
+
+> stop
+stop acknowledged
+simulation terminated

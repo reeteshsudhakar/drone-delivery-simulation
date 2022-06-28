@@ -7,7 +7,7 @@
 public class Manager extends Worker {
 
     public Manager(Worker worker, DeliveryService init_employer) {
-        super(worker.getUsername(), worker.getFname(), worker.getLname(), worker.getYear(),
+        super(worker.getUsername(), worker.getFirstName(), worker.getLastName(), worker.getYear(),
                 worker.getMonth(), worker.getDate(), worker.getAddress(), init_employer);
     }
 

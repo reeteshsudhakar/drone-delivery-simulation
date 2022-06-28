@@ -19,13 +19,13 @@ public class DeliveryService implements Comparable <DeliveryService> {
 
     /**
      * Constructor for DeliveryService class.
-     * @param init_name name of the Delivery Service.
-     * @param init_revenue initial revenue of the Delivery Service.
+     * @param name name of the Delivery Service.
+     * @param revenue initial revenue of the Delivery Service.
      * @param location location of the Delivery Service.
      */
-    public DeliveryService(String init_name, Integer init_revenue, Location location) {
-        this.name = init_name;
-        this.revenue = init_revenue;
+    public DeliveryService(String name, Integer revenue, Location location) {
+        this.name = name;
+        this.revenue = revenue;
         this.locatedAt = location;
         this.drones = new TreeMap<>();
     }
@@ -45,7 +45,7 @@ public class DeliveryService implements Comparable <DeliveryService> {
             Display.displayMessage("ERROR", "service_name_must_not_be_empty");
             return;
         } else if (locatedAt == null || locatedAt.equals("")) {
-            Display.displayMessage("ERROR", "service_located_at_must_not_be_empty");
+            Display.displayMessage("ERROR", "service_location_must_not_be_empty");
             return;
         }
 
@@ -54,15 +54,15 @@ public class DeliveryService implements Comparable <DeliveryService> {
         if (Location.locations.containsKey(locatedAt)) {
             DeliveryService newService = new DeliveryService(name, revenue, Location.locations.get(locatedAt));
             services.put(name, newService);
-            Display.displayMessage("OK","service_created");
+            Display.displayMessage("OK","delivery_service_created");
         } else {
             Display.displayMessage("ERROR", "location_identifier_does_not_exist");
         }
 
     }
 
-    public void hireWorker(String user_name) {
-        Person tempPerson = Person.people.get(user_name);
+    public void hireWorker(String username) {
+        Person tempPerson = Person.people.get(username);
         // Replaces Person object in TreeMap iff they are not a Manager or Pilot
         if (tempPerson instanceof Manager) {
             Display.displayMessage("ERROR", "employee_is_managing_a_service");
@@ -87,15 +87,15 @@ public class DeliveryService implements Comparable <DeliveryService> {
             } else {
                 // Object retrieved from TreeMap is a person, so a Worker object needs to be deep copied
                 hiredWorker = new Worker(tempPerson, this);
-                Person.people.put(user_name, hiredWorker);
+                Person.people.put(username, hiredWorker);
             }
             Display.displayMessage("OK", "new_employee_has_been_hired");
         }
     }
 
-    public void fireWorker(String user_name) {
+    public void fireWorker(String username) {
         // Fires a worker iff they are a worker and if they work for the delivery service provided
-        Person firedPerson = Person.people.get(user_name);
+        Person firedPerson = Person.people.get(username);
         if (firedPerson instanceof Manager) {
             Display.displayMessage("ERROR", "employee_is_managing_a_service");
         } else if (firedPerson instanceof Pilot && !((Pilot) firedPerson).getPilotedDrones().isEmpty()) {
@@ -111,10 +111,10 @@ public class DeliveryService implements Comparable <DeliveryService> {
             }
             firedWorker.removeEmployer(this);
             if (firedWorker.getEmployers().isEmpty()) {
-                Person newPerson = new Person(firedPerson.getUsername(), firedPerson.getFname(),
-                        firedPerson.getLname(), firedPerson.getYear(), firedPerson.getMonth(),
+                Person newPerson = new Person(firedPerson.getUsername(), firedPerson.getFirstName(),
+                        firedPerson.getLastName(), firedPerson.getYear(), firedPerson.getMonth(),
                         firedPerson.getDate(), firedPerson.getAddress());
-                Person.people.put(user_name, newPerson);
+                Person.people.put(username, newPerson);
             }
             Display.displayMessage("OK", "employee_has_been_fired");
         } else {
@@ -122,7 +122,7 @@ public class DeliveryService implements Comparable <DeliveryService> {
         }
     }
 
-    public void appointManager(String user_name, Person tempPerson) {
+    public void appointManager(String username, Person tempPerson) {
         //Appoints a manager iff they are a worker at the delivery service
         if (tempPerson instanceof Pilot) {
             Display.displayMessage("ERROR", "pilot_cannot_become_manager");
@@ -145,7 +145,7 @@ public class DeliveryService implements Comparable <DeliveryService> {
                     return;
                 }
                 Manager newManager = new Manager(tempWorker, this);
-                Person.people.put(user_name, newManager);
+                Person.people.put(username, newManager);
                 this.setManager(newManager);
                 Display.displayMessage("OK", "employee_has_been_appointed_manager");
             } else {
@@ -154,23 +154,23 @@ public class DeliveryService implements Comparable <DeliveryService> {
         }
     }
 
-    public void trainPilot(String user_name, Person tempPerson, String init_license, int init_experience) {
+    public void trainPilot(String username, Person tempPerson, String license, int experience) {
         if (tempPerson instanceof Manager) {
             Display.displayMessage("ERROR", "employee_is_too_busy_managing");
         } else if (tempPerson instanceof Pilot) {
             Pilot tempPilot = (Pilot) tempPerson;
-            if (!tempPilot.getEmployers().isEmpty() && !tempPilot.getEmployers().firstKey().equals(this.getName()) && !((Pilot) tempPerson).getPilotedDrones().isEmpty()) {
+            if (tempPilot.pilotingForAnotherService(this)) {
                 Display.displayMessage("ERROR", "employee_is_already_piloting_drones_for_another_service");
             } else {
-                tempPilot.changeEmployer(this.getName(), this, init_license, init_experience);
+                tempPilot.changeEmployer(this.getName(), this, license, experience);
                 Display.displayMessage("OK","pilot_has_been_trained");
             }
         } else if (tempPerson instanceof Worker) {
             Worker tempWorker = (Worker) tempPerson;
             if (tempWorker.getEmployers().containsKey(this.getName())) {
                 if (this.getManager() != null) {
-                    Pilot newPilot = new Pilot(tempWorker, this, init_license, init_experience);
-                    Person.people.put(user_name, newPilot);
+                    Pilot newPilot = new Pilot(tempWorker, this, license, experience);
+                    Person.people.put(username, newPilot);
                     Display.displayMessage("OK", "pilot_has_been_trained");
                 } else {
                     Display.displayMessage("ERROR", "delivery_service_does_not_have_a_manager");
@@ -183,32 +183,27 @@ public class DeliveryService implements Comparable <DeliveryService> {
         }
     }
 
-    public void appointPilot(String user_name, String service_name, Person tempPerson, int drone_tag) {
+    public void appointPilot(String username, String serviceName, Person tempPerson, Integer droneTag) {
         if (tempPerson instanceof Pilot) {
             Pilot appointedPilot = (Pilot) tempPerson;
             if (appointedPilot.getEmployers().containsValue(this)) {
-                Drone drone = services.get(service_name).getDrone(drone_tag);
+                Drone drone = services.get(serviceName).getDrone(droneTag);
                 if (drone == null) {
                     Display.displayMessage("ERROR", "drone_does_not_exist");
                 } else if (drone.hasPilot()) {
-                    if (drone.getPilot().getUsername().equals(user_name)) {
+                    if (drone.getPilot().getUsername().equals(username)) {
                         Display.displayMessage("ERROR","employee_has_already_been_appointed_pilot_for_this_drone");
                         return;
                     }
-                    drone.getPilot().getPilotedDrones().remove(drone.getTag());
-                    drone.assignPilot(appointedPilot);
-                    this.getDrones().put(drone_tag, drone);
-                    appointedPilot.getPilotedDrones().put(drone_tag, drone);
+                    drone.switchPilot(appointedPilot);
                     Display.displayMessage("OK", "employee_has_been_appointed_pilot");
                 } else if (drone.hasLeader()) {
-                    drone.getLeader().getFollowers().remove(drone.getTag());
-                    drone.assignPilot(appointedPilot);
-                    appointedPilot.getPilotedDrones().put(drone_tag, drone);
+                    drone.becomeLeader(appointedPilot);
                     Display.displayMessage("OK", "employee_has_been_appointed_pilot");
                 } else {
                     drone.assignPilot(appointedPilot);
-                    this.getDrones().put(drone_tag, drone);
-                    appointedPilot.getPilotedDrones().put(drone_tag, drone);
+                    this.getDrones().put(droneTag, drone);
+                    appointedPilot.getPilotedDrones().put(droneTag, drone);
                     Display.displayMessage("OK", "employee_has_been_appointed_pilot");
                 }
             } else {
@@ -221,13 +216,13 @@ public class DeliveryService implements Comparable <DeliveryService> {
 
     /**
      * This method collects all the revenue in a delivery service
-     * @param service_name A valid service name
+     * @param serviceName A valid service name
      */
-    public void collectRevenue(String service_name) {
-        if (service_name == null || services == null) {
+    public void collectRevenue(String serviceName) {
+        if (serviceName == null || services == null) {
             return;
         }
-        DeliveryService service = services.get(service_name);
+        DeliveryService service = services.get(serviceName);
         for (Drone drone : service.getDrones().values()) {
             service.revenue += drone.getSales();
             drone.clearSales();
@@ -238,18 +233,18 @@ public class DeliveryService implements Comparable <DeliveryService> {
     /**
      * @return A boolean that is true if there are no workers at home base, and false otherwise
      */
-    boolean noWorkersExist() {
+    public boolean noWorkersExist() {
         return Person.people.values().stream().findAny().filter((item) -> (item instanceof Worker))
                 .filter((item) -> (((Worker) item).getEmployers().containsKey(this.getName()))).isEmpty();
     }
 
     /**
      * Method to check if the service exists
-     * @param service_name the service to check
+     * @param serviceName the service to check
      * @return true if the service exists, false otherwise
      */
-    static boolean checkServiceName(String service_name) {
-        if (services.containsKey(service_name)) {
+    public static boolean checkServiceName(String serviceName) {
+        if (services.containsKey(serviceName)) {
             return true;
         } else {
             Display.displayMessage("ERROR", "service_does_not_exist");

@@ -24,12 +24,12 @@ public class InterfaceLoop {
     /**
      * Method to make locations for services and restaurants to be located at.
      * @param name the name of the location
-     * @param x_coordinate the x-coordinate of the location
-     * @param y_coordinate the y-coordinate of the location
+     * @param xCoordinate the x-coordinate of the location
+     * @param yCoordinate the y-coordinate of the location
      * @param spaceLimit the capacity of drones at the location
      */
-    private void makeLocation(String name, Integer x_coordinate, Integer y_coordinate, Integer spaceLimit) {
-        Location.makeLocation(name, x_coordinate, y_coordinate, spaceLimit);
+    private void makeLocation(String name, Integer xCoordinate, Integer yCoordinate, Integer spaceLimit) {
+        Location.makeLocation(name, xCoordinate, yCoordinate, spaceLimit);
     }
 
     /**
@@ -73,82 +73,82 @@ public class InterfaceLoop {
 
     /**
      * Method to make a person for the system.
-     * @param init_username the username of the person
-     * @param init_fname the first name of the person
-     * @param init_lname the last name of the person
-     * @param init_year the year of birth of the person
-     * @param init_month the month of birth of the person
-     * @param init_date the date of birth of the person
-     * @param init_address the address of the person
+     * @param username the username of the person
+     * @param firstName the first name of the person
+     * @param lastName the last name of the person
+     * @param year the year of birth of the person
+     * @param month the month of birth of the person
+     * @param date the date of birth of the person
+     * @param address the address of the person
      */
-    private void makePerson(String init_username, String init_fname, String init_lname,
-                    Integer init_year, Integer init_month, Integer init_date, String init_address) {
-        Person.makePerson(init_username, init_fname, init_lname,
-                init_year, init_month, init_date, init_address);
+    private void makePerson(String username, String firstName, String lastName,
+                    Integer year, Integer month, Integer date, String address) {
+        Person.makePerson(username, firstName, lastName,
+                year, month, date, address);
     }
 
     /**
      * Method to hire a person for a service as a worker
-     * @param service_name the name of the service
-     * @param user_name the username of the person to be hired as a worker
+     * @param serviceName the name of the service
+     * @param username the username of the person to be hired as a worker
      */
-    private void hireWorker(String service_name, String user_name) {
-        if (Person.checkUserName(user_name) && DeliveryService.checkServiceName(service_name)) {
-            DeliveryService employer = DeliveryService.services.get(service_name);
-            employer.hireWorker(user_name);
+    private void hireWorker(String serviceName, String username) {
+        if (Person.checkUserName(username) && DeliveryService.checkServiceName(serviceName)) {
+            DeliveryService employer = DeliveryService.services.get(serviceName);
+            employer.hireWorker(username);
         }
     }
 
     /**
      * Method to fire a worker from a specified service
-     * @param service_name the name of the service
-     * @param user_name the username of the worker to be fired
+     * @param serviceName the name of the service
+     * @param username the username of the worker to be fired
      */
-    private void fireWorker(String service_name, String user_name) {
-        if (Person.checkUserName(user_name) && DeliveryService.checkServiceName(service_name)) {
-            DeliveryService employer = DeliveryService.services.get(service_name);
-            employer.fireWorker(user_name);
+    private void fireWorker(String serviceName, String username) {
+        if (Person.checkUserName(username) && DeliveryService.checkServiceName(serviceName)) {
+            DeliveryService employer = DeliveryService.services.get(serviceName);
+            employer.fireWorker(username);
         }
     }
 
     /**
      * Method to appoint a new manager to a service
-     * @param service_name the name of the service
-     * @param user_name the name of the manager to be hired
+     * @param serviceName the name of the service
+     * @param username the name of the manager to be hired
      */
-    private void appointManager(String service_name, String user_name) {
-        if (Person.checkUserName(user_name) && DeliveryService.checkServiceName(service_name)) {
-            Person tempPerson = Person.people.get(user_name);
-            DeliveryService employer = DeliveryService.services.get(service_name);
-            employer.appointManager(user_name, tempPerson);
+    private void appointManager(String serviceName, String username) {
+        if (Person.checkUserName(username) && DeliveryService.checkServiceName(serviceName)) {
+            Person tempPerson = Person.people.get(username);
+            DeliveryService employer = DeliveryService.services.get(serviceName);
+            employer.appointManager(username, tempPerson);
         }
     }
 
     /**
      * Method to convert a user to a pilot
-     * @param service_name The name of the Delivery Service the pilot will work for
-     * @param user_name The username of the person who will become a pilot
-     * @param init_license A valid pilot's license
-     * @param init_experience The amount of flying experience the pilot has
+     * @param serviceName The name of the Delivery Service the pilot will work for
+     * @param username The username of the person who will become a pilot
+     * @param license A valid pilot's license
+     * @param experience The amount of flying experience the pilot has
      */
-    private void trainPilot(String service_name, String user_name, String init_license, Integer init_experience) {
-        if (init_experience == null || init_license == null || init_license.equals("")) {
+    private void trainPilot(String serviceName, String username, String license, Integer experience) {
+        if (experience == null || license == null || license.equals("")) {
             Display.displayMessage("ERROR", "invalid_arguments_entered");
             return;
         }
 
-        if (DeliveryService.checkServiceName(service_name) && Person.checkUserName(user_name)) {
-            Person tempPerson = Person.people.get(user_name);
-            DeliveryService employer = DeliveryService.services.get(service_name);
-            employer.trainPilot(user_name, tempPerson, init_license, init_experience);
+        if (DeliveryService.checkServiceName(serviceName) && Person.checkUserName(username)) {
+            Person tempPerson = Person.people.get(username);
+            DeliveryService employer = DeliveryService.services.get(serviceName);
+            employer.trainPilot(username, tempPerson, license, experience);
         }
     }
 
-    private void appointPilot(String service_name, String user_name, Integer drone_tag) {
-        if (DeliveryService.checkServiceName(service_name) && Person.checkUserName(user_name)) {
-            Person tempPerson = Person.people.get(user_name);
-            DeliveryService employer = DeliveryService.services.get(service_name);
-            employer.appointPilot(user_name, service_name, tempPerson, drone_tag);
+    private void appointPilot(String serviceName, String username, Integer droneTag) {
+        if (DeliveryService.checkServiceName(serviceName) && Person.checkUserName(username)) {
+            Person tempPerson = Person.people.get(username);
+            DeliveryService employer = DeliveryService.services.get(serviceName);
+            employer.appointPilot(username, serviceName, tempPerson, droneTag);
         }
     }
 
@@ -179,17 +179,17 @@ public class InterfaceLoop {
 
     /**
      * Have a drone join a swarm
-     * @param service_name The Delivery Service that owes both drones
-     * @param lead_drone_tag The tag of the drone that is leading the swarm to be joined
-     * @param swarm_drone_tag The tag of the drone that is joining the swarm
+     * @param serviceName The Delivery Service that owes both drones
+     * @param leadDroneTag The tag of the drone that is leading the swarm to be joined
+     * @param swarmDroneTag The tag of the drone that is joining the swarm
      */
-    private void joinSwarm(String service_name, Integer lead_drone_tag, Integer swarm_drone_tag) {
-        if (!DeliveryService.checkServiceName(service_name)) {
+    private void joinSwarm(String serviceName, Integer leadDroneTag, Integer swarmDroneTag) {
+        if (!DeliveryService.checkServiceName(serviceName)) {
             return;
         }
 
-        Drone leadDrone = DeliveryService.findDrone(service_name, lead_drone_tag);
-        Drone swarmDrone = DeliveryService.findDrone(service_name, swarm_drone_tag);
+        Drone leadDrone = DeliveryService.findDrone(serviceName, leadDroneTag);
+        Drone swarmDrone = DeliveryService.findDrone(serviceName, swarmDroneTag);
         if (swarmDrone == null) {
             Display.displayMessage("ERROR", "swarm_drone_does_not_exist");
             return;
@@ -199,15 +199,15 @@ public class InterfaceLoop {
 
     /**
      * This method is used to have a drone leave its swarm
-     * @param service_name The name of the service that owns the drone leaving the swarm
-     * @param swarm_drone_tag The tag of the drone leaving the swarm
+     * @param serviceName The name of the service that owns the drone leaving the swarm
+     * @param swarmDroneTag The tag of the drone leaving the swarm
      */
 
-    private void leaveSwarm(String service_name, Integer swarm_drone_tag) {
-        if (!DeliveryService.checkServiceName(service_name)) {
+    private void leaveSwarm(String serviceName, Integer swarmDroneTag) {
+        if (!DeliveryService.checkServiceName(serviceName)) {
             return;
         }
-        Drone swarmDrone = DeliveryService.findDrone(service_name, swarm_drone_tag);
+        Drone swarmDrone = DeliveryService.findDrone(serviceName, swarmDroneTag);
         if (swarmDrone == null) {
             Display.displayMessage("ERROR", "swarm_drone_does_not_exist");
             return;

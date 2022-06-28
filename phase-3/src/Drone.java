@@ -1,3 +1,5 @@
+import com.sun.source.tree.Tree;
+
 import java.util.TreeMap;
 
 /**
@@ -23,20 +25,20 @@ public class Drone {
     /**
      * Constructor for Drone class.
      *
-     * @param init_tag drone tag (unique)
-     * @param init_capacity drone capacity for ingredients
-     * @param init_fuel drone fuel
+     * @param tag drone tag (unique)
+     * @param capacity drone capacity for ingredients
+     * @param fuel drone fuel
      * @param homeBase home base currentLocation
      */
-    public Drone(Integer init_tag, Integer init_capacity, Integer init_fuel, Location homeBase, Location currentLocation, Integer sales, TreeMap<Ingredient, Package> payload) {
-        this.tag = init_tag;
-        this.capacity = init_capacity;
-        this.remainingCapacity = init_capacity;
-        this.fuel = init_fuel;
+    public Drone(Integer tag, Integer capacity, Integer fuel, Location homeBase, Location currentLocation) {
+        this.tag = tag;
+        this.capacity = capacity;
+        this.remainingCapacity = capacity;
+        this.fuel = fuel;
         this.currentLocation = currentLocation;
         this.homeBase = homeBase;
-        this.sales = sales;
-        this.payload = payload;
+        this.sales = 0;
+        this.payload = new TreeMap<>();
         this.pilot = null;
         this.leader = null;
         this.followers = new TreeMap<>();
@@ -155,7 +157,7 @@ public class Drone {
         if (serviceLocation.getSpacesLeft() == 0) {
             Display.displayMessage("ERROR","not_enough_space_to_create_new_drone");
         } else {
-            Drone newDrone = new Drone(tag, capacity, fuel, serviceLocation, serviceLocation, 0, new TreeMap<>());
+            Drone newDrone = new Drone(tag, capacity, fuel, serviceLocation, serviceLocation);
             newService.getDrones().put(tag, newDrone);
             serviceLocation.decrementSpacesLeft();
             Display.displayMessage("OK","drone_created");
@@ -235,7 +237,7 @@ public class Drone {
         }
     }
 
-    protected void flyDrone(String destination) {
+    public void flyDrone(String destination) {
         Location destinationLocation;
         if (Location.locations.containsKey(destination)) {
             destinationLocation = Location.locations.get(destination);
@@ -288,7 +290,7 @@ public class Drone {
         }
     }
 
-    protected void loadFuel(Integer petrol, DeliveryService service) {
+    public void loadFuel(Integer petrol, DeliveryService service) {
         // if the petrol to fill the drone is not valid, display an error message
         if (petrol <= 0) {
             Display.displayMessage("ERROR", "petrol_must_be_greater_than_zero");
@@ -312,6 +314,18 @@ public class Drone {
 
     public boolean notAtHomeBase() {
         return !(this.currentLocation.equals(this.homeBase));
+    }
+
+    public void switchPilot(Pilot pilot) {
+        this.getPilot().getPilotedDrones().remove(this.tag);
+        this.assignPilot(pilot);
+        pilot.getPilotedDrones().put(this.tag, this);
+    }
+
+    public void becomeLeader(Pilot pilot) {
+        this.getLeader().getFollowers().remove(this.tag);
+        this.assignPilot(pilot);
+        pilot.getPilotedDrones().put(this.tag, this);
     }
 
     @Override
@@ -348,15 +362,15 @@ public class Drone {
     private String getPayloadInfo() {
         StringBuilder payloadInfo = new StringBuilder();
         this.getPayload().forEach((key,value) ->
-                payloadInfo.append(String.format("&> Barcode: %s, Item Name: %s, Total Quantity: %d, Unit Cost: %d, " +
-                                "Total Weight: %d%n", key.getBarcode(), key.getName(), value.getQuantity(),
+                payloadInfo.append(String.format("&> barcode: %s, item_name: %s, total_quantity: %d, unit_cost: %d, " +
+                                "total_weight: %d%n", key.getBarcode(), key.getName(), value.getQuantity(),
                         value.getUnitPrice(), key.getWeight() * value.getQuantity())));
         return payloadInfo.toString();
     }
 
     private String getDroneInfo() {
-        return String.format("Tag: %d, Capacity: %d, Remaining Capacity: %d, Fuel: %d, Sales: $%d, " +
-                        "Location: %s%n",
+        return String.format("tag: %d, capacity: %d, remaining_cap: %d, fuel: %d, sales: $%d, " +
+                        "location: %s%n",
                 this.getTag(), this.getCapacity(), this.getRemainingCapacity(), this.getFuel(),
                 this.getSales(), this.getCurrentLocation().getName());
     }

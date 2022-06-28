@@ -17,11 +17,11 @@ public class Restaurant implements Comparable<Restaurant> {
 
     /**
      * Constructor for Restaurant class.
-     * @param init_name name of restaurant
+     * @param name name of restaurant
      * @param location location of restaurant
      */
-    public Restaurant(String init_name, Location location) {
-        this.name = init_name;
+    public Restaurant(String name, Location location) {
+        this.name = name;
         this.locatedAt = location;
         this.spending = 0;
     }
