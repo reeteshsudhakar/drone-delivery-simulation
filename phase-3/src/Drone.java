@@ -454,7 +454,7 @@ public class Drone {
         return this.pilot.getLicense();
     }
 
-    public int getIngredientPayload(Ingredient buyerIngredient, int quantity) {
+    public Integer getIngredientPayload(Ingredient buyerIngredient, Integer quantity) {
         return this.getPayload().get(buyerIngredient).getQuantity().compareTo(quantity);
     }
 

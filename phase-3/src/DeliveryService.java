@@ -78,7 +78,7 @@ public class DeliveryService implements Comparable <DeliveryService> {
             Display.displayMessage("ERROR", "employee_is_managing_a_service");
         } else if (tempPerson instanceof Pilot) {
             Pilot tempPilot = (Pilot) tempPerson;
-            if (tempPilot.pilotedDrones.size() > 0) {
+            if (tempPilot.getPilotedDrones().size() > 0) {
                 Display.displayMessage("ERROR", "employee_is_piloting_drones_for_a_service");
             } else {
                 tempPilot.getEmployers().clear();

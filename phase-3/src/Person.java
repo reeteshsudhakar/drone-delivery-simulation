@@ -14,9 +14,9 @@ public class Person implements Comparable<Person> {
     private final String username;
     private final String firstName;
     private final String lastName;
-    private final int year;
-    private final int month;
-    private final int date;
+    private final Integer year;
+    private final Integer month;
+    private final Integer date;
     private final String address;
 
     /**
