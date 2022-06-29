@@ -165,8 +165,6 @@ public class InterfaceLoop {
      * @param destination the name of the location the drone is flying to
      */
     private void flyDrone(String serviceName, Integer tag, String destination) {
-        // checking if the drone exists in the system
-        Drone movedDrone;
 
         if (!DeliveryService.checkServiceName(serviceName)) {
             return;
@@ -174,13 +172,14 @@ public class InterfaceLoop {
 
         DeliveryService service = DeliveryService.services.get(serviceName);
 
-        if (service.hasDrone(tag)) {
-            movedDrone = service.getDrone(tag);
-            movedDrone.flyDrone(destination);
-        } else {
+        // checking if the drone exists in the system
+        if (!service.hasDrone(tag)) {
             // if the drone does not exist in the system, display an error message
             Display.displayMessage("ERROR", "drone_does_not_exist");
+            return;
         }
+        Drone movedDrone = service.getDrone(tag);
+        movedDrone.flyDrone(destination);
     }
 
     /**
@@ -232,18 +231,18 @@ public class InterfaceLoop {
         // checking if the drone exists in the system
         Drone loadDrone;
         DeliveryService service;
-        if (DeliveryService.services.containsKey(serviceName)) {
+        if (DeliveryService.checkServiceName(serviceName)) {
             service = DeliveryService.services.get(serviceName);
-            if (service.hasDrone(tag)) {
-                loadDrone = service.getDrone(tag);
-            } else {
-                // if the drone does not exist in the system, display an error message
-                Display.displayMessage("ERROR", "drone_does_not_exist");
-                return;
-            }
         } else {
-            // if the service does not exist in the system, display an error message
-            Display.displayMessage("ERROR", "service_does_not_exist");
+            //error message displayed by checkServiceName function call if service does not exist
+            return;
+        }
+
+        if (service.hasDrone(tag)) {
+            loadDrone = service.getDrone(tag);
+        } else {
+            // if the drone does not exist in the service, display an error message
+            Display.displayMessage("ERROR", "drone_does_not_exist");
             return;
         }
 
@@ -270,23 +269,27 @@ public class InterfaceLoop {
      * @param petrol the quantity of petrol to be loaded
      */
     private void loadFuel(String serviceName, Integer tag, Integer petrol) {
-        // checking if the drone exists in the system
-        Drone loadFuelDrone;
 
-        if (DeliveryService.checkServiceName(serviceName)) {
-            DeliveryService service = DeliveryService.services.get(serviceName);
-            if (service.noWorkersExist()) {
-                Display.displayMessage("ERROR", "delivery_service_does_not_have_regular_workers");
-                return;
-            }
-            if (service.hasDrone(tag)) {
-                loadFuelDrone = service.getDrone(tag);
-                loadFuelDrone.loadFuel(petrol, service);
-            } else {
-                // If the drone does not exist in the service, display an error message
-                Display.displayMessage("ERROR", "drone_does_not_exist");
-            }
+        if (!DeliveryService.checkServiceName(serviceName)) {
+            return;
         }
+
+        DeliveryService service = DeliveryService.services.get(serviceName);
+
+        // checking if the drone exists in the service
+        if (!service.hasDrone(tag)) {
+            // If the drone does not exist in the service, display an error message
+            Display.displayMessage("ERROR", "drone_does_not_exist");
+            return;
+        }
+
+        if (service.noWorkersExist()) {
+            Display.displayMessage("ERROR", "delivery_service_does_not_have_regular_workers");
+            return;
+        }
+
+        Drone loadFuelDrone = service.getDrone(tag);
+        loadFuelDrone.loadFuel(petrol, service);
     }
 
     /**
