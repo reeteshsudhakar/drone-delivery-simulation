@@ -77,6 +77,7 @@ public class Drone {
 
         //If ingredient already exists in the payload, quantity is added, otherwise, ingredient is added to payload
         boolean ingredientInPayload = false;
+
         for (Ingredient ingredient : this.payload.keySet()) {
             if (ingredient.getBarcode().equals(barcode)) {
                 this.payload.get(ingredient).incrementQuantity(quantity);
@@ -263,46 +264,51 @@ public class Drone {
         // Drone can be made a LeaderDrone iff it is already a LeaderDrone & pilot is valid
         if (this.hasLeader()) {
             Display.displayMessage("ERROR", "drone_is_not_a_leader");
-        } else if (this.hasPilot()) {
-            if (this.getPilotLicense() == null) {
-                Display.displayMessage("ERROR", "pilot_has_no_license");
-                return;
-            }
-
-            if (destinationLocation.notEnoughSpace(this)) {
-                Display.displayMessage("ERROR", "not_enough_space_to_maneuver_the_" +
-                        "swarm_to_that_location");
-                return;
-            }
-            // Fly iff there is enough fuel to drop ingredients off and return back to home base
-            int distance = Location.calculateDistance(this.currentLocation, destinationLocation);
-            int returnDistance = Location.calculateDistance(destinationLocation, this.homeBase);
-            if (distance > this.fuel) {
-                Display.displayMessage("ERROR", "not_enough_fuel_to_reach_the_destination");
-            } else if (distance + returnDistance > this.fuel) {
-                Display.displayMessage("ERROR", "not_enough_fuel_to_reach_the_destination");
-            } else {
-                for (Drone drone : this.followers.values()) {
-                    if (distance > drone.fuel) {
-                        Display.displayMessage("ERROR", "not_enough_fuel_to_reach_the_destination");
-                        return;
-                    } else if (distance + returnDistance > drone.fuel) {
-                        Display.displayMessage("ERROR", "not_enough_fuel_to_reach_the_destination");
-                        return;
-                    }
-                }
-
-                this.flyToDestination(destinationLocation);
-                for (Drone drone : this.followers.values()) {
-                    drone.flyToDestination(destinationLocation);
-                }
-
-                this.pilot.addSuccessfulTrip();
-                Display.displayMessage("OK", "change_completed");
-            }
-        } else {
+            return;
+        } else if (!this.hasPilot()) {
             Display.displayMessage("ERROR", "the_drone_does_not_have_a_pilot");
+            return;
         }
+
+        if (this.getPilotLicense() == null) {
+            Display.displayMessage("ERROR", "pilot_has_no_license");
+            return;
+        }
+
+        if (destinationLocation.notEnoughSpace(this)) {
+            Display.displayMessage("ERROR", "not_enough_space_to_maneuver_the_" +
+                    "swarm_to_that_location");
+            return;
+        }
+        // Fly iff there is enough fuel to drop ingredients off and return back to home base
+        int distance = Location.calculateDistance(this.currentLocation, destinationLocation);
+        int returnDistance = Location.calculateDistance(destinationLocation, this.homeBase);
+
+        if (distance > this.fuel) {
+            Display.displayMessage("ERROR", "not_enough_fuel_to_reach_the_destination");
+            return;
+        } else if (distance + returnDistance > this.fuel) {
+            Display.displayMessage("ERROR", "not_enough_fuel_to_reach_the_destination");
+            return;
+        }
+
+        for (Drone drone : this.followers.values()) {
+            if (distance > drone.fuel) {
+                Display.displayMessage("ERROR", "not_enough_fuel_to_reach_the_destination");
+                return;
+            } else if (distance + returnDistance > drone.fuel) {
+                Display.displayMessage("ERROR", "not_enough_fuel_to_reach_the_destination");
+                return;
+            }
+        }
+
+        this.flyToDestination(destinationLocation);
+        for (Drone drone : this.followers.values()) {
+            drone.flyToDestination(destinationLocation);
+        }
+
+        this.pilot.addSuccessfulTrip();
+        Display.displayMessage("OK", "change_completed");
     }
 
     /**
@@ -382,23 +388,23 @@ public class Drone {
      */
     @Override
     public String toString() {
-        if (this.hasLeader()) {
+        if (this.hasLeader() || (!this.hasPilot())) {
             return this.getDroneInfo() + this.getPayloadInfo();
-        } else if (this.hasPilot()) {
-            StringBuilder swarmString = new StringBuilder();
-            swarmString.append(String.format("&> pilot:%s%n", this.pilot.getUsername()));
-            if (this.followers.size() > 0) {
-                swarmString.append("drone is directing this swarm: [ drone tags ");
-                for (Drone drone : this.followers.values()) {
-                    if (!drone.tag.equals(this.tag)){
-                        swarmString.append(String.format("| %d ", drone.tag));
-                    }
-                }
-                swarmString.append("]\n");
-            }
-            return this.getDroneInfo() + swarmString + this.getPayloadInfo();
         }
-        return this.getDroneInfo() + this.getPayloadInfo();
+
+        StringBuilder swarmString = new StringBuilder();
+        swarmString.append(String.format("&> pilot:%s%n", this.pilot.getUsername()));
+
+        if (this.followers.size() > 0) {
+            swarmString.append("drone is directing this swarm: [ drone tags ");
+            for (Drone drone : this.followers.values()) {
+                if (!drone.tag.equals(this.tag)){
+                    swarmString.append(String.format("| %d ", drone.tag));
+                }
+            }
+            swarmString.append("]\n");
+        }
+        return this.getDroneInfo() + swarmString + this.getPayloadInfo();
     }
 
     /**
