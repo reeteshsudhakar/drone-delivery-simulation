@@ -289,7 +289,7 @@ public class Drone {
             Display.displayMessage("ERROR", "not_enough_fuel_to_reach_the_destination");
             return;
         } else if (distance + returnDistance > this.fuel) {
-            Display.displayMessage("ERROR", "not_enough_fuel_to_reach_the_destination");
+            Display.displayMessage("ERROR", "not_enough_fuel_to_return_to_home_base_from_destination");
             return;
         }
 
@@ -298,7 +298,7 @@ public class Drone {
                 Display.displayMessage("ERROR", "not_enough_fuel_to_reach_the_destination");
                 return;
             } else if (distance + returnDistance > drone.fuel) {
-                Display.displayMessage("ERROR", "not_enough_fuel_to_reach_the_destination");
+                Display.displayMessage("ERROR", "not_enough_fuel_to_return_to_home_base_from_destination");
                 return;
             }
         }
