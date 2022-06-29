@@ -1,0 +1,292 @@
+Welcome to the Restaurant Supply Express System!
+
+> // TEST CASE 2
+
+> // make location
+
+> make_location,airport,3,4,6
+OK:location_created
+
+> make_location,plaza,10,5,4
+OK:location_created
+
+> display_locations
+name: airport, (x,y): (3, 4), space: [6 / 6] remaining
+name: plaza, (x,y): (10, 5), space: [4 / 4] remaining
+OK:display_completed
+
+> // make service
+
+> make_service,speedy_spices,100,plaza
+OK:delivery_service_created
+
+> make_service,fast_flavors,300,airport
+OK:delivery_service_created
+
+> display_services
+name: fast_flavors, revenue: $300, location: airport
+name: speedy_spices, revenue: $100, location: plaza
+OK:display_completed
+
+> // make drone
+
+> make_drone,fast_flavors,1,4,100
+OK:drone_created
+
+> make_drone,speedy_spices,4,7,80
+OK:drone_created
+
+> make_drone,fast_flavors,2,4,100
+OK:drone_created
+
+> display_all_drones
+service name [fast_flavors] drones:
+tag: 1, capacity: 4, remaining_cap: 4, fuel: 100, sales: $0, location: airport
+tag: 2, capacity: 4, remaining_cap: 4, fuel: 100, sales: $0, location: airport
+service name [speedy_spices] drones:
+tag: 4, capacity: 7, remaining_cap: 7, fuel: 80, sales: $0, location: plaza
+OK:display_completed
+
+> // make people
+
+> make_person,esmith5,Eric,Smith,1963,11,12,101_Queens_Way_Washington_DC
+OK:person_created
+
+> make_person,djohnson10,Denise,Johnson,1962,11,12,1600_Penn_Avenue_Washington_DC
+OK:person_created
+
+> make_person,amahajan1,Anubha,Mahajan,1972,09,09,10_May_Ave_DC
+OK:person_created
+
+> make_person,jstan,Jay,Stan,1982,07,09,1_Apr_Ave_Atlanta
+OK:person_created
+
+> make_person,jben,Jen,Ben,1902,07,09,10_Apr_Ave_Atlanta
+OK:person_created
+
+> make_person,jstan,John,Stan,1992,07,09,2_Apr_Ave_Atlanta
+ERROR:user_already_exists
+
+> // make person with same username
+
+> display_persons
+userID: amahajan1, name: Anubha Mahajan, birth date: 1972-9-9, address: 10_May_Ave_DC
+userID: djohnson10, name: Denise Johnson, birth date: 1962-11-12, address: 1600_Penn_Avenue_Washington_DC
+userID: esmith5, name: Eric Smith, birth date: 1963-11-12, address: 101_Queens_Way_Washington_DC
+userID: jben, name: Jen Ben, birth date: 1902-7-9, address: 10_Apr_Ave_Atlanta
+userID: jstan, name: Jay Stan, birth date: 1982-7-9, address: 1_Apr_Ave_Atlanta
+OK:display_completed
+
+> // appoint before hiring
+
+> train_pilot,fast_flavors,djohnson10,ncidq,10
+ERROR:employee_does_not_work_for_this_service
+
+> appoint_pilot,fast_flavors,esmith5,1
+ERROR:employee_does_not_work_for_this_service
+
+> appoint_manager,fast_flavors,esmith5
+ERROR:employee_does_not_work_for_this_service
+
+> display_persons
+userID: amahajan1, name: Anubha Mahajan, birth date: 1972-9-9, address: 10_May_Ave_DC
+userID: djohnson10, name: Denise Johnson, birth date: 1962-11-12, address: 1600_Penn_Avenue_Washington_DC
+userID: esmith5, name: Eric Smith, birth date: 1963-11-12, address: 101_Queens_Way_Washington_DC
+userID: jben, name: Jen Ben, birth date: 1902-7-9, address: 10_Apr_Ave_Atlanta
+userID: jstan, name: Jay Stan, birth date: 1982-7-9, address: 1_Apr_Ave_Atlanta
+OK:display_completed
+
+> // hire worker
+
+> hire_worker,fast_flavors,esmith5
+OK:new_employee_has_been_hired
+
+> hire_worker,fast_flavors,djohnson10
+OK:new_employee_has_been_hired
+
+> hire_worker,fast_flavors,amahajan1
+OK:new_employee_has_been_hired
+
+> display_persons
+userID: amahajan1, name: Anubha Mahajan, birth date: 1972-9-9, address: 10_May_Ave_DC
+employee is working at: 
+&> fast_flavors
+userID: djohnson10, name: Denise Johnson, birth date: 1962-11-12, address: 1600_Penn_Avenue_Washington_DC
+employee is working at: 
+&> fast_flavors
+userID: esmith5, name: Eric Smith, birth date: 1963-11-12, address: 101_Queens_Way_Washington_DC
+employee is working at: 
+&> fast_flavors
+userID: jben, name: Jen Ben, birth date: 1902-7-9, address: 10_Apr_Ave_Atlanta
+userID: jstan, name: Jay Stan, birth date: 1982-7-9, address: 1_Apr_Ave_Atlanta
+OK:display_completed
+
+> // train worker
+
+> train_pilot,fast_flavors,djohnson10,ncidq,10
+ERROR:delivery_service_does_not_have_a_manager
+
+> // train worker without manager
+
+> appoint_manager,speedy_spices,esmith5
+ERROR:employee_does_not_work_for_this_service
+
+> // appoint manager of different company
+
+> appoint_manager,fast_flavors,esmith5 
+OK:employee_has_been_appointed_manager
+
+> train_pilot,fast_flavors,djohnson10,ncidq,10
+OK:pilot_has_been_trained
+
+> train_pilot,speedy_spices,amahajan1,abcde,10
+ERROR:employee_does_not_work_for_this_service
+
+> // train worker not of the same company
+
+> train_pilot,fast_flavors,djohnson10,ncidq,10
+OK:pilot_has_been_trained
+
+> // train worker that is already trained
+
+> display_persons
+userID: amahajan1, name: Anubha Mahajan, birth date: 1972-9-9, address: 10_May_Ave_DC
+employee is working at: 
+&> fast_flavors
+userID: djohnson10, name: Denise Johnson, birth date: 1962-11-12, address: 1600_Penn_Avenue_Washington_DC
+employee is working at: 
+&> fast_flavors
+user has a pilot's license (ncidq) with 10 successful flight(s)
+userID: esmith5, name: Eric Smith, birth date: 1963-11-12, address: 101_Queens_Way_Washington_DC
+employee is managing: fast_flavors
+userID: jben, name: Jen Ben, birth date: 1902-7-9, address: 10_Apr_Ave_Atlanta
+userID: jstan, name: Jay Stan, birth date: 1982-7-9, address: 1_Apr_Ave_Atlanta
+OK:display_completed
+
+> // fly drone
+
+> fly_drone,fast_flavors,1,plaza
+ERROR:the_drone_does_not_have_a_pilot
+
+> // fly drone that doesn’t have a pilot assigned
+
+> fly_drone,fast_flavors,9,plaza
+ERROR:drone_identifier_does_not_exist
+
+> // fly drone that doesn’t exist
+
+> // appointing and hiring workers
+
+> appoint_pilot,fast_flavors,esmith5,1
+ERROR:employee_is_too_busy_managing
+
+> // appoint worker that doesn’t have valid license
+
+> appoint_pilot,fast_flavors,djohnson10,1
+OK:employee_has_been_appointed_pilot
+
+> hire_worker,speedy_spices,esmith5
+ERROR:employee_is_managing_a_service
+
+> // hire manager for different service
+
+> hire_worker,speedy_spices,djohnson10
+ERROR:employee_is_flying_drones
+
+> // hire pilot for different service
+
+> appoint_manager,fast_flavors,amahajan1
+OK:employee_has_been_appointed_manager
+
+> // appoint another person as manager
+
+> hire_worker,speedy_spices,esmith5
+OK:new_employee_has_been_hired
+
+> // hire ex-manager
+
+> appoint_manager,fast_flavors,esmith5
+ERROR:employee_is_working_at_other_companies
+
+> // appoint person who is working at two services
+
+> display_persons
+userID: amahajan1, name: Anubha Mahajan, birth date: 1972-9-9, address: 10_May_Ave_DC
+employee is managing: fast_flavors
+userID: djohnson10, name: Denise Johnson, birth date: 1962-11-12, address: 1600_Penn_Avenue_Washington_DC
+employee is working at: 
+&> fast_flavors
+user has a pilot's license (ncidq) with 10 successful flight(s)
+employee is flying these drones: [ drone tags | 1 ]
+userID: esmith5, name: Eric Smith, birth date: 1963-11-12, address: 101_Queens_Way_Washington_DC
+employee is working at: 
+&> fast_flavors
+&> speedy_spices
+userID: jben, name: Jen Ben, birth date: 1902-7-9, address: 10_Apr_Ave_Atlanta
+userID: jstan, name: Jay Stan, birth date: 1982-7-9, address: 1_Apr_Ave_Atlanta
+OK:display_completed
+
+> // joining and leaving swarm
+
+> join_swarm,fast_flavors,1 ,4
+ERROR:swarm_drone_does_not_exist
+
+> // join swarm of different service
+
+> join_swarm,fast_flavors,1,2 
+OK:change_completed
+
+> fly_drone,fast_flavors,1,plaza
+OK:change_completed
+
+> leave_swarm,fast_flavors,1
+ERROR:drone_can_not_leave_while_leading_a_swarm
+
+> // leave swarm for leader
+
+> leave_swarm,fast_flavors,2
+OK:change_completed
+
+> display_all_drones
+service name [fast_flavors] drones:
+tag: 1, capacity: 4, remaining_cap: 4, fuel: 92, sales: $0, location: plaza
+&> pilot:djohnson10
+tag: 2, capacity: 4, remaining_cap: 4, fuel: 92, sales: $0, location: plaza
+&> pilot:djohnson10
+service name [speedy_spices] drones:
+tag: 4, capacity: 7, remaining_cap: 7, fuel: 80, sales: $0, location: plaza
+OK:display_completed
+
+> display_persons
+userID: amahajan1, name: Anubha Mahajan, birth date: 1972-9-9, address: 10_May_Ave_DC
+employee is managing: fast_flavors
+userID: djohnson10, name: Denise Johnson, birth date: 1962-11-12, address: 1600_Penn_Avenue_Washington_DC
+employee is working at: 
+&> fast_flavors
+user has a pilot's license (ncidq) with 11 successful flight(s)
+employee is flying these drones: [ drone tags | 1 ]
+userID: esmith5, name: Eric Smith, birth date: 1963-11-12, address: 101_Queens_Way_Washington_DC
+employee is working at: 
+&> fast_flavors
+&> speedy_spices
+userID: jben, name: Jen Ben, birth date: 1902-7-9, address: 10_Apr_Ave_Atlanta
+userID: jstan, name: Jay Stan, birth date: 1982-7-9, address: 1_Apr_Ave_Atlanta
+OK:display_completed
+
+> // check for flight experience
+
+> // firing
+
+> fire_worker,speedy_spices,mten4
+ERROR:user_name_does_not_exist
+
+> // fire worker who doesn’t exist
+
+> fire_worker,speedy_spices,jben
+OK:employee_does_not_work_for_this_service
+
+> // fire worker who has not been hired
+
+> stop
+stop acknowledged
+simulation terminated
