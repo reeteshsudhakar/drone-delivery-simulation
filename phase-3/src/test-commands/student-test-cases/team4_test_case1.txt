@@ -17,8 +17,7 @@ display_all_drones
 
 // make people
 make_person,esmith5,Eric,Smith,1963,11,12,101_Queens_Way_Washington_DC
-make_person,djohnson10,Denise,Johnson,1962,11,12,1600_Penn_Avenue_Washingt
-on_DC
+make_person,djohnson10,Denise,Johnson,1962,11,12,1600_Penn_Avenue_Washington_DC
 display_persons
 
 // make ingredient
@@ -32,11 +31,14 @@ make_restaurant,realRestaurant,airport
 display_restaurants
 
 // load a drone
-load_ingredient,fast_flavors,1,bf_id,5,1 // loading without any workers
-load_fuel,fast_flavors,1,10 // loading without any workers
+load_ingredient,fast_flavors,1,bf_id,5,1
+// loading without any workers
+load_fuel,fast_flavors,1,10
+// loading without any workers
 
 // collect revenue
-collect_revenue,fast_flavors // without manager
+collect_revenue,fast_flavors
+// without manager
 
 // hiring
 hire_worker,fast_flavors,esmith5
@@ -52,7 +54,8 @@ load_fuel,fast_flavors,1,10
 
 // flying
 flyDrone,fast_flavors,1,airport
-display_persons // flight experience check
+display_persons
+// flight experience check
 
 // restaurant buying some ingredients
 purchase_ingredient,realRestauraunt,fast_flavors,1,bf_id,2
