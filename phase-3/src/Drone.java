@@ -91,6 +91,7 @@ public class Drone {
         }
 
         decrementRemainingCapacity(quantity);
+        Display.displayMessage("OK","change_completed");
     }
 
     /**

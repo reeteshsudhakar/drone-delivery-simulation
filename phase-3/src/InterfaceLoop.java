@@ -258,7 +258,6 @@ public class InterfaceLoop {
             Display.displayMessage("ERROR","not_enough_capacity_to_hold_new_packages");
         } else {
             loadDrone.addToPayload(barcode, quantity, unitPrice);
-            Display.displayMessage("OK","change_completed");
         }
     }
 
