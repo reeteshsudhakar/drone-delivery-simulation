@@ -81,15 +81,6 @@ public class Display {
     }
 
     /**
-     * Method to display a message from the interface
-     * @param status the status of the message
-     * @param output the text to be displayed
-     */
-    public static void displayMessage(String status, String output) {
-        System.out.println(status.toUpperCase() + ":" + output.toLowerCase());
-    }
-
-    /**
      * Method to display the people in our service
      */
     public static void displayPersons() {
@@ -97,5 +88,14 @@ public class Display {
             System.out.println(person.toString());
         }
         Display.displayMessage("OK","display_completed");
+    }
+
+    /**
+     * Method to display a message from the interface
+     * @param status the status of the message
+     * @param output the text to be displayed
+     */
+    public static void displayMessage(String status, String output) {
+        System.out.println(status.toUpperCase() + ":" + output.toLowerCase());
     }
 }

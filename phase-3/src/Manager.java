@@ -6,11 +6,20 @@
  */
 public class Manager extends Worker {
 
-    public Manager(Worker worker, DeliveryService init_employer) {
+    /**
+     * Constructor for Manager class.
+     * @param worker worker to become a manager
+     * @param employer employer of the worker
+     */
+    public Manager(Worker worker, DeliveryService employer) {
         super(worker.getUsername(), worker.getFirstName(), worker.getLastName(), worker.getYear(),
-                worker.getMonth(), worker.getDate(), worker.getAddress(), init_employer);
+                worker.getMonth(), worker.getDate(), worker.getAddress(), employer);
     }
 
+    /**
+     * Method to display the information of the manager.
+     * @return String containing the information of the manager
+     */
     @Override
     public String toString() {
         String manages = String.format("\nemployee is managing: %s",

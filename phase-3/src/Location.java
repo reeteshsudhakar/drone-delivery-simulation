@@ -41,12 +41,19 @@ public class Location implements Comparable<Location> {
         if (start.equals(destination)) {
             return 0;
         } else {
-            return 1 + (int) Math.floor(Math.sqrt(Math.pow(start.getX_coordinate() - destination.getX_coordinate(), 2)
-                    + Math.pow(start.getY_coordinate() - destination.getY_coordinate(), 2)));
+            return 1 + (int) Math.floor(Math.sqrt(Math.pow(start.xCoordinate - destination.xCoordinate, 2)
+                    + Math.pow(start.yCoordinate - destination.yCoordinate, 2)));
         }
     }
 
-    public static void makeLocation(String name, Integer x_coordinate, Integer y_coordinate,
+    /**
+     * Method to create a location
+     * @param name name of the location
+     * @param xCoordinate x coordinate of the location
+     * @param yCoordinate y coordinate of the location
+     * @param spaceLimit space limit for drones of the location
+     */
+    public static void makeLocation(String name, Integer xCoordinate, Integer yCoordinate,
                                     Integer spaceLimit) {
         // checking if the location already exists
         if (locations.containsKey(name)) {
@@ -64,11 +71,16 @@ public class Location implements Comparable<Location> {
         }
 
         // creating the location and adding it to the collection
-        Location location = new Location(name, x_coordinate, y_coordinate, spaceLimit);
+        Location location = new Location(name, xCoordinate, yCoordinate, spaceLimit);
         locations.put(name, location);
         Display.displayMessage("OK","location_created");
     }
 
+    /**
+     * Method to check the distance between two locations
+     * @param departurePoint departure location
+     * @param arrivalPoint arrival location
+     */
     public static void checkDistance(String departurePoint, String arrivalPoint) {
         // checking if the departure and arrival points are valid
         Location departureLocation;
@@ -93,8 +105,13 @@ public class Location implements Comparable<Location> {
         Display.displayMessage("OK", String.format("distance = %d", distance));
     }
 
+    /**
+     * Method to check if a location has enough space for a drone to land
+     * @param drone drone to check space for
+     * @return false if there is NOT enough space, true otherwise
+     */
     public boolean notEnoughSpace(Drone drone) {
-        return this.getSpacesLeft() < drone.getFollowers().size() + 1;
+        return this.spacesLeft < drone.getFollowers().size() + 1;
     }
 
     /**
@@ -108,7 +125,7 @@ public class Location implements Comparable<Location> {
             return false;
         } else {
             Location l = (Location) obj;
-            return this.getName().equals(l.getName());
+            return this.name.equals(l.name);
         }
     }
 
@@ -129,7 +146,7 @@ public class Location implements Comparable<Location> {
      */
     @Override
     public int compareTo(Location other) {
-        return this.getName().compareTo(other.getName());
+        return this.name.compareTo(other.name);
     }
 
     /**
@@ -138,22 +155,6 @@ public class Location implements Comparable<Location> {
      */
     public String getName() {
         return this.name;
-    }
-
-    /**
-     * Getter for x_coordinate.
-     * @return X coordinate of location
-     */
-    public Integer getX_coordinate() {
-        return this.xCoordinate;
-    }
-
-    /**
-     * Getter for y_coordinate.
-     * @return Y coordinate of location
-     */
-    public Integer getY_coordinate() {
-        return this.yCoordinate;
     }
 
     /**

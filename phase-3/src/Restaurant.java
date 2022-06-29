@@ -36,6 +36,11 @@ public class Restaurant implements Comparable<Restaurant> {
         this.addSpending(drone.getPayload().get(ingredient).getUnitPrice() * quantity);
     }
 
+    /**
+     * Method of creating a restaurant in the system.
+     * @param name name of the restaurant
+     * @param locatedAt location of the restaurant
+     */
     public static void makeRestaurant(String name, String locatedAt) {
         // checking if the restaurant already exists
         if (restaurants.containsKey(name)) {
@@ -54,6 +59,13 @@ public class Restaurant implements Comparable<Restaurant> {
         }
     }
 
+    /**
+     * Method for a restaurant to purchase ingredients from a drone in the system.
+     * @param tag tag of the drone to purchase from
+     * @param barcode barcode of the ingredient to be purchased
+     * @param quantity quantity requested of the ingredient
+     * @param serviceName name of the service to be purchased from
+     */
     public void purchaseIngredient(Integer tag, String barcode, int quantity, String serviceName) {
         // checking if the drone exists in the system
         Drone buyerDrone;
@@ -121,7 +133,7 @@ public class Restaurant implements Comparable<Restaurant> {
      */
     @Override
     public String toString() {
-        return String.format("Name: %s, Money Spent: $%d, Location: %s", this.name,
+        return String.format("name: %s, money_spent: $%d, location: %s", this.name,
                 this.spending, this.locatedAt.getName());
     }
 
@@ -132,7 +144,7 @@ public class Restaurant implements Comparable<Restaurant> {
      */
     @Override
     public int compareTo(Restaurant other) {
-        return this.getName().compareTo(other.getName());
+        return this.name.compareTo(other.name);
     }
 
     /**

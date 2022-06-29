@@ -27,6 +27,12 @@ public class Ingredient implements Comparable<Ingredient> {
         this.weight = weight;
     }
 
+    /**
+     * Method to make an ingredient
+     * @param barcode barcode of the ingredient
+     * @param name name of the ingredient
+     * @param weight unit weight of the ingredient
+     */
     public static void makeIngredient(String barcode, String name, Integer weight) {
         // checking if the ingredient already exists
         if (ingredients.containsKey(barcode)) {
@@ -54,7 +60,7 @@ public class Ingredient implements Comparable<Ingredient> {
      */
     @Override
     public int compareTo(Ingredient other) {
-        return this.getBarcode().compareTo(other.getBarcode());
+        return this.barcode.compareTo(other.barcode);
     }
 
     /**

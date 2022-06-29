@@ -120,7 +120,7 @@ public class InterfaceLoop {
         if (Person.checkUserName(username) && DeliveryService.checkServiceName(serviceName)) {
             Person tempPerson = Person.people.get(username);
             DeliveryService employer = DeliveryService.services.get(serviceName);
-            employer.appointManager(username, tempPerson);
+            employer.appointManager(tempPerson);
         }
     }
 
@@ -140,15 +140,21 @@ public class InterfaceLoop {
         if (DeliveryService.checkServiceName(serviceName) && Person.checkUserName(username)) {
             Person tempPerson = Person.people.get(username);
             DeliveryService employer = DeliveryService.services.get(serviceName);
-            employer.trainPilot(username, tempPerson, license, experience);
+            employer.trainPilot(tempPerson, license, experience);
         }
     }
 
+    /**
+     * Method to appoint a pilot to a drone
+     * @param serviceName the name of the delivery service the pilot and drone are working for
+     * @param username the username of the pilot to be appointed
+     * @param droneTag the tag of the drone to be appointed to the pilot
+     */
     private void appointPilot(String serviceName, String username, Integer droneTag) {
         if (DeliveryService.checkServiceName(serviceName) && Person.checkUserName(username)) {
             Person tempPerson = Person.people.get(username);
             DeliveryService employer = DeliveryService.services.get(serviceName);
-            employer.appointPilot(username, serviceName, tempPerson, droneTag);
+            employer.appointPilot(serviceName, tempPerson, droneTag);
         }
     }
 
@@ -202,7 +208,6 @@ public class InterfaceLoop {
      * @param serviceName The name of the service that owns the drone leaving the swarm
      * @param swarmDroneTag The tag of the drone leaving the swarm
      */
-
     private void leaveSwarm(String serviceName, Integer swarmDroneTag) {
         if (!DeliveryService.checkServiceName(serviceName)) {
             return;
