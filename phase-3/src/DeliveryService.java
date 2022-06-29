@@ -178,7 +178,7 @@ public class DeliveryService implements Comparable <DeliveryService> {
      * @param license license of the person to be trained
      * @param experience initial experience of the person to be trained
      */
-    public void trainPilot(Person tempPerson, String license, int experience) {
+    public void trainPilot(Person tempPerson, String license, Integer experience) {
         if (tempPerson instanceof Manager) {
             Display.displayMessage("ERROR", "employee_is_too_busy_managing");
         } else if (tempPerson instanceof Pilot) {

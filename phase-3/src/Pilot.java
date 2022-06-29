@@ -94,6 +94,6 @@ public class Pilot extends Worker {
      * Setter for the experience of a pilot
      * @param experience new experience of a pilot
      */
-    public void setExperience(int experience) { this.experience = experience; }
+    public void setExperience(Integer experience) { this.experience = experience; }
 
 }
