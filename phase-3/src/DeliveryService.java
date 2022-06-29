@@ -64,7 +64,6 @@ public class DeliveryService implements Comparable <DeliveryService> {
         } else {
             Display.displayMessage("ERROR", "location_identifier_does_not_exist");
         }
-
     }
 
     /**
@@ -143,7 +142,6 @@ public class DeliveryService implements Comparable <DeliveryService> {
     public void appointManager(Person tempPerson) {
         // Appoints a manager iff they are a worker at the delivery service
         if (tempPerson instanceof Pilot && ((Pilot) tempPerson).getPilotedDrones().size() > 0) {
-
             Display.displayMessage("ERROR", "pilot_flying_drones_cannot_become_manager");
             return;
         }
@@ -165,13 +163,17 @@ public class DeliveryService implements Comparable <DeliveryService> {
                 }
                 Manager newManager = new Manager(tempWorker, this);
                 Person.people.put(newManager.getUsername(), newManager);
-                Worker oldManager = manager;
-                Person.people.put(this.manager.getUsername(), oldManager);
+                if (!(this.manager == null)) {
+                    Worker oldManager = this.manager;
+                    Person.people.put(oldManager.getUsername(), oldManager);
+                }
                 this.setManager(newManager);
                 Display.displayMessage("OK", "employee_has_been_appointed_manager");
             } else {
                 Display.displayMessage("ERROR", "employee_does_not_work_for_this_service");
             }
+        } else { // tempPerson is just a Person that has no employer, so they can't be employed as a manager
+            Display.displayMessage("ERROR", "person_is_currently_unemployed");
         }
     }
 
