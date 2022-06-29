@@ -283,6 +283,16 @@ public class DeliveryService implements Comparable <DeliveryService> {
     }
 
     /**
+     * Method to find a drone based on their service and tag
+     * @param service_name name of the service of the drone
+     * @param drone_tag tag of the drone
+     * @return drone with the tag.
+     */
+    public static Drone findDrone(String service_name, Integer drone_tag) {
+        return services.get(service_name).getDrone(drone_tag);
+    }
+
+    /**
      * Override to string method to print the info about the Delivery Service.
      * @return string representation of the Delivery Service.
      */
@@ -357,14 +367,4 @@ public class DeliveryService implements Comparable <DeliveryService> {
      * @param manager new manager of the service.
      */
     public void setManager(Manager manager) { this.manager = manager; }
-
-    /**
-     * Method to find a drone based on their service and tag
-     * @param service_name name of the service of the drone
-     * @param drone_tag tag of the drone
-     * @return drone with the tag.
-     */
-    public static Drone findDrone(String service_name, Integer drone_tag) {
-        return services.get(service_name).getDrone(drone_tag);
-    }
 }
