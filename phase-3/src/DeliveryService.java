@@ -78,7 +78,7 @@ public class DeliveryService implements Comparable <DeliveryService> {
             Display.displayMessage("ERROR", "employee_is_managing_a_service");
         } else if (tempPerson instanceof Pilot) {
             Pilot tempPilot = (Pilot) tempPerson;
-            if (tempPilot.pilotedDrones.size() > 0) {
+            if (tempPilot.getPilotedDrones().size() > 0) {
                 Display.displayMessage("ERROR", "employee_is_piloting_drones_for_a_service");
             } else {
                 tempPilot.getEmployers().clear();
@@ -178,7 +178,8 @@ public class DeliveryService implements Comparable <DeliveryService> {
      * @param license license of the person to be trained
      * @param experience initial experience of the person to be trained
      */
-    public void trainPilot(Person tempPerson, String license, int experience) {
+    public void trainPilot(Person tempPerson, String license, Integer experience) {
+        // trains a pilot iff they are a initially a Worker for the DeliveryService and the service has a Manager
         if (tempPerson instanceof Manager) {
             Display.displayMessage("ERROR", "employee_is_too_busy_managing");
         } else if (tempPerson instanceof Pilot) {
@@ -215,6 +216,7 @@ public class DeliveryService implements Comparable <DeliveryService> {
      * @param droneTag the tag of the drone
      */
     public void appointPilot(String serviceName, Person tempPerson, Integer droneTag) {
+        // Appoints a pilot iff droneTag is valid and person is a pilot
         if (tempPerson instanceof Pilot) {
             Pilot appointedPilot = (Pilot) tempPerson;
             if (appointedPilot.getEmployers().containsValue(this)) {

@@ -1,0 +1,120 @@
+//chicken SWARMa
+//bad
+make_location,aeropuerto,-1,-1,-1
+//good
+make_location,sillyhouse,5,6,7
+//good
+make_location,clowntown,9,3,6
+display_locations
+//good
+make_service,pinche_guey,4000,clowntown
+//bad
+make_service,servicio_malo,1000,sillyhome
+//good
+make_service,servicio_bueno,2000,sillyhouse
+display_services
+//Make a bunch of drones
+make_drone,servicio_bueno,69,4,50
+make_drone,servicio_bueno,420,5,100
+make_drone,servicio_bueno,1,4,150
+make_drone,pinche_guey,69,3,150
+make_drone,pinche_guey,1,3,150
+make_drone,pinche_guey,33,3,150
+display_all_drones
+//make people
+make_person,prettyprincess23,Pretty,Princess,1999,07,22,222_Clown_River_Road_Clowntown_GA
+make_person,chocolatecharlie28,Charlie,Charlio,3000,11,11,123_Chocolate_Factory_Street_Duluth_GA
+make_person,pokemaster565,Ash,Ketchum,1990,01,01,12_Squirtle_Street_Viridian_City_Kanto_JP
+make_person,tiktoktoe33,Tik,Tok,-43,01,01,Mesopotamia
+make_person,pincheguey73,Pedro,Martinez,1978,05,05,Benito_Juarez_El_Pueblito_34340_Durango_Dgo_MX
+make_person,buzzlightyear03,Buzz,Lightyear,1992,11,01,International_Space_Station
+display_persons
+//hire workers for servicio_bueno
+hire_worker,servicio_bueno,prettyprincess23
+hire_worker,servicio_bueno,pokemaster565
+hire_worker,servicio_bueno,chocolatecharlie28
+//hire workers for pinche_guey
+hire_worker,pinche_guey,tiktoktoe33
+hire_worker,pinche_guey,pincheguey73
+hire_worker,pinche_guey,buzzlightyear03
+//Train a couple of pilots
+train_pilot,servicio_bueno,prettyprincess23
+train_pilot,servicio_bueno,chocolatecharlie28
+//Make a pilot with no drones a Manager
+appoint_manager,servicio_bueno,prettyprincess23
+display_persons
+//Give a pilot a couple of drones
+appoint_pilot,servicio_bueno,chocolatecharlie28,1
+appoint_pilot,servicio_bueno,chocolatecharlie28,69
+fly_drone,servicio_bueno,1,clowntown
+display_drones,servicio_bueno
+display_all_drones
+//wrong location
+join_swarm,servicio_bueno,69,1
+fly_drone,servicio_bueno,69,clowntown
+//should work now
+join_swarm,servicio_bueno,69,1
+//wrong location to fuel
+load_fuel,servicio_bueno,69,2000
+fly_drone,servicio_bueno,69,sillyhouse
+//correct location to fuel
+load_fuel,servicio_bueno,69,2000
+load_fuel,servicio_bueno,1,1000
+appoint_pilot,servicio_bueno,chocolatecharlie28,420
+//I think this errors?
+join_swarm,servicio_bueno,420,69
+display_all_drones
+//This should join
+join_swarm,servicio_bueno,69,420
+//Try to fly a drone with a leader?
+fly_drone,servicio_bueno,1,clowntown
+//fly a swarm
+fly_drone,servicio_bueno,69,clowntown
+display_all_drones
+make_ingredient,gno,Guineo,5
+make_ingredient,pltno,Platano,5
+make_ingredient,bnna,Banana,5
+make_ingredient,abcde,Alphabet Soup,20
+make_ingredient,sunny,Delicious Refreshing Sunny D!,10
+make_ingredient,queso,Paneer,10
+display_ingredients
+load_ingredient,servicio_bueno,69,gno,3,50
+load_ingredient,servicio_bueno,69,pltno,3,30
+load_ingredient,servicio_bueno,69,pltno,1,35
+load_ingredient,servicio_bueno,1,bnna,3,3
+load_ingredient,servicio_bueno,420,sunny,2,2000
+load_ingredient,servicio_bueno,420,queso,2,15
+make_restaurant,Timmy_Tom's_Clown_Shack,clowntown
+make_restaurant,Timmy Tom's Clown Shack,clowntown
+fly_drone,servicio_bueno,69,clowntown
+purchase_ingredient,Timmy_Tom's_Clown_Shack,servicio_bueno,69,gno,3
+purchase_ingredient,Timmy Tom's Clown Shack,servicio_bueno,420,sunny,1
+display_all_drones
+display_restaurants
+collect_revenue,servicio_bueno
+display_all_drones
+display_services
+//What happens if we remove the leader?
+leave_swarm,servicio_bueno,69
+//Normal remove
+leave_swarm,servicio_bueno,1
+fire_worker,servicio_bueno,pokemaster565
+fire_worker,servicio_bueno,chocolatecharlie28
+hire_worker,servicio_bueno,pincheguey73
+appoint_manager,pinche_guey,pincheguey73
+fire_worker,servicio_bueno,pincheguey73
+appoint_manager,pinche_guey,pincheguey73
+display_persons
+display_all_drones
+stop
+
+
+
+
+
+
+
+
+
+
+

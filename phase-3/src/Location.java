@@ -101,7 +101,7 @@ public class Location implements Comparable<Location> {
         }
 
         // if the departure and arrival points are valid, calculate and display the distance between them
-        int distance = Location.calculateDistance(departureLocation, arrivalLocation);
+        Integer distance = Location.calculateDistance(departureLocation, arrivalLocation);
         Display.displayMessage("OK", String.format("distance = %d", distance));
     }
 

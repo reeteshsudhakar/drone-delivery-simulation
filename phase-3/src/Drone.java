@@ -281,8 +281,8 @@ public class Drone {
             return;
         }
         // Fly iff there is enough fuel to drop ingredients off and return back to home base
-        int distance = Location.calculateDistance(this.currentLocation, destinationLocation);
-        int returnDistance = Location.calculateDistance(destinationLocation, this.homeBase);
+        Integer distance = Location.calculateDistance(this.currentLocation, destinationLocation);
+        Integer returnDistance = Location.calculateDistance(destinationLocation, this.homeBase);
 
         if (distance > this.fuel) {
             Display.displayMessage("ERROR", "not_enough_fuel_to_reach_the_destination");
@@ -454,7 +454,7 @@ public class Drone {
         return this.pilot.getLicense();
     }
 
-    public int getIngredientPayload(Ingredient buyerIngredient, int quantity) {
+    public Integer getIngredientPayload(Ingredient buyerIngredient, Integer quantity) {
         return this.getPayload().get(buyerIngredient).getQuantity().compareTo(quantity);
     }
 

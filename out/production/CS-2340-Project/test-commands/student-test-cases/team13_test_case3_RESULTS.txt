@@ -1,0 +1,88 @@
+Welcome to the Restaurant Supply Express System!
+
+> make_location,airport,3,4,6
+OK:location_created
+
+> make_location,plaza,10,5,4
+OK:location_created
+
+> make_service,speedy_spices,0,plaza
+OK:delivery_service_created
+
+> make_service,fast_flavors,300,airport
+OK:delivery_service_created
+
+> display_locations
+name: airport, (x,y): (3, 4), space: [6 / 6] remaining
+name: plaza, (x,y): (10, 5), space: [4 / 4] remaining
+OK:display_completed
+
+> display_services
+name: fast_flavors, revenue: $300, location: airport
+name: speedy_spices, revenue: $0, location: plaza
+OK:display_completed
+
+> make_drone,fast_flavors,1,4,100
+OK:drone_created
+
+> join_swarm,fast_flavors,1,1
+ERROR:drone_can_not_join_its_own_swarm
+
+> display_all_drones
+service name [fast_flavors] drones:
+tag: 1, capacity: 4, remaining_cap: 4, fuel: 100, sales: $0, location: airport
+service name [speedy_spices] drones:
+OK:display_completed
+
+> make_person,mmoss8,Mark,Moss,1960,05,19,10_Downing_Street_London_UK
+OK:person_created
+
+> make_person,djohnson10,Denise,Johnson,1962,11,12,1600_Penn_Avenue_Washington_DC
+OK:person_created
+
+> hire_worker,fast_flavors,mmoss8
+OK:new_employee_has_been_hired
+
+> hire_worker,fast_flavors,djohnson10
+OK:new_employee_has_been_hired
+
+> appoint_manager,fast_flavors,djohnson10
+OK:employee_has_been_appointed_manager
+
+> train_pilot,fast_flavors,mmoss8,asdfg,0
+OK:pilot_has_been_trained
+
+> appoint_pilot,fast_flavors,mmoss8,1
+OK:employee_has_been_appointed_pilot
+
+> leave_swarm,fast_flavors,1
+ERROR:drone_not_in_a_swarm
+
+> fly_drone,fast_flavors,1,plaza
+OK:change_completed
+
+> display_all_drones
+service name [fast_flavors] drones:
+tag: 1, capacity: 4, remaining_cap: 4, fuel: 92, sales: $0, location: plaza
+&> pilot:mmoss8
+service name [speedy_spices] drones:
+OK:display_completed
+
+> display_persons
+userID: djohnson10, name: Denise Johnson, birth date: 1962-11-12, address: 1600_Penn_Avenue_Washington_DC
+employee is managing: fast_flavors
+userID: mmoss8, name: Mark Moss, birth date: 1960-5-19, address: 10_Downing_Street_London_UK
+employee is working at: 
+&> fast_flavors
+user has a pilot's license (asdfg) with 1 successful flight(s)
+employee is flying these drones: [ drone tags | 1 ]
+OK:display_completed
+
+> display_locations
+name: airport, (x,y): (3, 4), space: [6 / 6] remaining
+name: plaza, (x,y): (10, 5), space: [3 / 4] remaining
+OK:display_completed
+
+> stop
+stop acknowledged
+simulation terminated

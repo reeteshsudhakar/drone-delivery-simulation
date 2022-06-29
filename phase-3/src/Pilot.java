@@ -7,9 +7,9 @@ import java.util.TreeMap;
  * @version 2.0
  */
 public class Pilot extends Worker {
-    String license;
-    int experience;
-    TreeMap<Integer, Drone> pilotedDrones;
+    private String license;
+    private Integer experience;
+    private TreeMap<Integer, Drone> pilotedDrones;
 
     /**
      * Constructor for the Pilot class.
@@ -94,6 +94,6 @@ public class Pilot extends Worker {
      * Setter for the experience of a pilot
      * @param experience new experience of a pilot
      */
-    public void setExperience(int experience) { this.experience = experience; }
+    public void setExperience(Integer experience) { this.experience = experience; }
 
 }

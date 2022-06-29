@@ -84,6 +84,7 @@ public class Display {
      * Method to display the people in our service
      */
     public static void displayPersons() {
+        // displaying all the people in the system by iterating through the collection
         for (Person person : Person.people.values()) {
             System.out.println(person.toString());
         }

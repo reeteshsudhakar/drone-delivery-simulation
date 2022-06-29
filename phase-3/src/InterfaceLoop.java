@@ -315,13 +315,13 @@ public class InterfaceLoop {
 
     /**
      * This method collects all the revenue made by a delivery service
-     * @param service_name The name of the delivery service
+     * @param serviceName The name of the delivery service
      */
-    private void collectRevenue(String service_name) {
+    private void collectRevenue(String serviceName) {
         // checking if the service exists in the system
-        if (DeliveryService.checkServiceName(service_name)) {
-            DeliveryService employer = DeliveryService.services.get(service_name);
-            employer.collectRevenue(service_name);
+        if (DeliveryService.checkServiceName(serviceName)) {
+            DeliveryService employer = DeliveryService.services.get(serviceName);
+            employer.collectRevenue(serviceName);
         }
     }
 

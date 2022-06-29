@@ -1,0 +1,359 @@
+Welcome to the Restaurant Supply Express System!
+
+> //Testing weird inputs for locations
+
+> make_location,funZone,-5,4,6
+OK:location_created
+
+> make_location,funZone,5,-4,6
+ERROR:location_already_exists
+
+> make_location,funZone,5,4,-6
+ERROR:location_already_exists
+
+> make_location,funZone,-5,-4,-6
+ERROR:location_already_exists
+
+> make_location,funZone,5,-4,-6
+ERROR:location_already_exists
+
+> make_location,funZone,-5,4,-6
+ERROR:location_already_exists
+
+> make_location,funZone,-5,-4,6
+ERROR:location_already_exists
+
+> make_location,funZone,5,4,6
+ERROR:location_already_exists
+
+> make_location,funZone,10,5,4
+ERROR:location_already_exists
+
+> make_location,sadZone,10,5,4
+OK:location_created
+
+> display_locations
+name: funZone, (x,y): (-5, 4), space: [6 / 6] remaining
+name: sadZone, (x,y): (10, 5), space: [4 / 4] remaining
+OK:display_completed
+
+> //Testing weird inputs for services
+
+> make_service,theBest,-100,funZone
+ERROR:negative_revenue_not_allowed
+
+> make_service,theBest,100,mediumZone
+ERROR:location_does_not_exist
+
+> make_service,theBest,-100,mediumZone
+ERROR:location_does_not_exist
+
+> make_service,theBest,100,funZone
+OK:delivery_service_created
+
+> make_service,theBest,100,sadZone
+ERROR:delivery_service_already_exists
+
+> make_service,theWorst,300,sadZone
+OK:delivery_service_created
+
+> display_services
+name: theBest, revenue: $100, location: funZone
+name: theWorst, revenue: $300, location: sadZone
+OK:display_completed
+
+> //Testing weird inputs for drones
+
+> make_drone,theWorst,-1,4,100
+OK:drone_created
+
+> make_drone,theWorst,1,-4,100
+ERROR:negative_capacity_not_allowed
+
+> make_drone,theWorst,1,4,-100
+ERROR:negative_fuel_not_allowed
+
+> make_drone,theWorst,-1,-4,-100
+ERROR:drone_identifier_tag_already_exists
+
+> make_drone,theWorst,1,-4,-100
+ERROR:negative_capacity_not_allowed
+
+> make_drone,theWorst,-1,4,-100
+ERROR:drone_identifier_tag_already_exists
+
+> make_drone,theWorst,-1,-4,100
+ERROR:drone_identifier_tag_already_exists
+
+> make_drone,theWorst,1,4,100
+OK:drone_created
+
+> make_drone,theWorst,1,4,100
+ERROR:drone_identifier_tag_already_exists
+
+> make_drone,theBest,1,4,100
+OK:drone_created
+
+> make_drone,theWorst,2,5,85
+OK:drone_created
+
+> make_drone,theWorst,3,9,70
+OK:drone_created
+
+> make_drone,theBest,4,7,80
+OK:drone_created
+
+> make_drone,theBest,5,7,80
+OK:drone_created
+
+> display_all_drones
+service name [theBest] drones:
+tag: 1, capacity: 4, remaining_cap: 4, fuel: 100, sales: $0, location: funZone
+tag: 4, capacity: 7, remaining_cap: 7, fuel: 80, sales: $0, location: funZone
+tag: 5, capacity: 7, remaining_cap: 7, fuel: 80, sales: $0, location: funZone
+service name [theWorst] drones:
+tag: -1, capacity: 4, remaining_cap: 4, fuel: 100, sales: $0, location: sadZone
+tag: 1, capacity: 4, remaining_cap: 4, fuel: 100, sales: $0, location: sadZone
+tag: 2, capacity: 5, remaining_cap: 5, fuel: 85, sales: $0, location: sadZone
+tag: 3, capacity: 9, remaining_cap: 9, fuel: 70, sales: $0, location: sadZone
+OK:display_completed
+
+> display_drones,theBest
+tag: 1, capacity: 4, remaining_cap: 4, fuel: 100, sales: $0, location: funZone
+tag: 4, capacity: 7, remaining_cap: 7, fuel: 80, sales: $0, location: funZone
+tag: 5, capacity: 7, remaining_cap: 7, fuel: 80, sales: $0, location: funZone
+OK:display_completed
+
+> display_drones,the Worst
+ERROR:delivery_service_does_not_exist
+
+> //Testing weird inputs for people
+
+> make_person,guy55,Fun,Guy,-1860,09,20,fun_street_55
+OK:person_created
+
+> make_person,guy55,Fun,Guy,1860,-09,20,fun_street_55
+ERROR:user_already_exists
+
+> make_person,guy55,Fun,Guy,1860,09,-20,fun_street_55
+ERROR:user_already_exists
+
+> make_person,guy55,Fun,Guy,-1860,-09,-20,fun_street_55
+ERROR:user_already_exists
+
+> make_person,guy55,Fun,Guy,1860,-09,-20,fun_street_55
+ERROR:user_already_exists
+
+> make_person,guy55,Fun,Guy,-1860,09,-20,fun_street_55
+ERROR:user_already_exists
+
+> make_person,guy55,Fun,Guy,-1860,-09,20,fun_street_55
+ERROR:user_already_exists
+
+> make_person,guy55,Fun,Guy,1860,500,20,fun_street_55
+ERROR:user_already_exists
+
+> make_person,guy55,Fun,Guy,1860,09,200,fun_street_55
+ERROR:user_already_exists
+
+> make_person,guy55,Fun,Guy,1860,09,20,fun_street_55
+ERROR:user_already_exists
+
+> make_person,guy55,Fun,Guy,1860,09,20,fun_street_55
+ERROR:user_already_exists
+
+> make_person,guy55,Other,Guy,1860,09,20,fun_street_55
+ERROR:user_already_exists
+
+> make_person,guy55,Fun,Guy,1860,09,20,other_street_55
+ERROR:user_already_exists
+
+> make_person,guy66,Sad,Guy,1962,11,12,sad_street_66
+OK:person_created
+
+> make_person,guy77,Other,Person,1963,11,12,other_street_77
+OK:person_created
+
+> display_persons
+userID: guy55, name: Fun Guy, birth date: 1861-9-20, address: fun_street_55
+userID: guy66, name: Sad Guy, birth date: 1962-11-12, address: sad_street_66
+userID: guy77, name: Other Person, birth date: 1963-11-12, address: other_street_77
+OK:display_completed
+
+> //Testing weird inputs for hiring workers
+
+> hire_worker,speedy_spices,mmoss8
+ERROR:delivery_service_does_not_exist
+
+> hire_worker,speedy_spices,guy55
+ERROR:delivery_service_does_not_exist
+
+> hire_worker,theBest,mmoss8
+ERROR:user_name_does_not_exist
+
+> hire_worker,theBest,guy55
+OK:new_employee_has_been_hired
+
+> hire_worker,theBest,guy55
+OK:employee_already_works_for_service
+
+> hire_worker,theBest,guy77
+OK:new_employee_has_been_hired
+
+> display_persons
+userID: guy55, name: Fun Guy, birth date: 1861-9-20, address: fun_street_55
+employee is working at: 
+&> theBest
+userID: guy66, name: Sad Guy, birth date: 1962-11-12, address: sad_street_66
+userID: guy77, name: Other Person, birth date: 1963-11-12, address: other_street_77
+employee is working at: 
+&> theBest
+OK:display_completed
+
+> //Testing weird inputs for appointing manager
+
+> appoint_manager,fast_flavors,mmoss8
+ERROR:delivery_service_does_not_exist
+
+> appoint_manager,fast_flavors,guy55
+ERROR:delivery_service_does_not_exist
+
+> appoint_manager,theBest,mmoss8
+ERROR:user_name_does_not_exist
+
+> appoint_manager,theBest,guy66
+ERROR:employee_does_not_work_for_this_service
+
+> appoint_manager,theWorst,guy55
+ERROR:employee_does_not_work_for_this_service
+
+> appoint_manager,theBest,guy55
+OK:employee_has_been_appointed_manager
+
+> appoint_manager,theWorst,guy55
+ERROR:employee_does_not_work_for_this_service
+
+> display_persons
+userID: guy55, name: Fun Guy, birth date: 1861-9-20, address: fun_street_55
+employee is managing: theBest
+userID: guy66, name: Sad Guy, birth date: 1962-11-12, address: sad_street_66
+userID: guy77, name: Other Person, birth date: 1963-11-12, address: other_street_77
+employee is working at: 
+&> theBest
+OK:display_completed
+
+> //Testing weird inputs for fire worker
+
+> fire_worker,speedy_spices,mmoss8
+ERROR:delivery_service_does_not_exist
+
+> fire_worker,speedy_spices,guy77
+ERROR:delivery_service_does_not_exist
+
+> fire_worker,theBest,mmoss8
+ERROR:user_name_does_not_exist
+
+> fire_worker,theBest,guy55
+ERROR:employee_is_managing_a_service
+
+> fire_worker,theWorst,guy77
+OK:employee_does_not_work_for_this_service
+
+> fire_worker,theBest,guy77
+OK:employee_has_been_fired
+
+> fire_worker,theBest,guy77
+OK:employee_does_not_work_for_this_service
+
+> display_persons
+userID: guy55, name: Fun Guy, birth date: 1861-9-20, address: fun_street_55
+employee is managing: theBest
+userID: guy66, name: Sad Guy, birth date: 1962-11-12, address: sad_street_66
+userID: guy77, name: Other Person, birth date: 1963-11-12, address: other_street_77
+OK:display_completed
+
+> //Testing weird inputs for train pilot
+
+> hire_worker,theBest,guy66
+OK:new_employee_has_been_hired
+
+> train_pilot,fast_flavors,mmoss8,ncidq,-10
+ERROR:delivery_service_does_not_exist
+
+> train_pilot,theBest,mmoss8,ncidq,10
+ERROR:user_name_does_not_exist
+
+> train_pilot,fast_flavors,guy66,ncidq,10
+ERROR:delivery_service_does_not_exist
+
+> train_pilot,theBest,guy66,ncidq,-10
+OK:pilot_has_been_trained
+
+> train_pilot,theWorst,guy66,ncidq,10
+ERROR:employee_does_not_work_for_this_service
+
+> train_pilot,theBest,guy77,bestLicense,10
+ERROR:employee_does_not_work_for_this_service
+
+> train_pilot,theBest,guy66,bestLicense,10
+OK:pilot_has_been_trained
+
+> train_pilot,theBest,guy66,bestLicense,10
+OK:pilot_has_been_trained
+
+> //Testing weird inputs for appoint pilot
+
+> hire_worker,theBest,guy77
+OK:new_employee_has_been_hired
+
+> appoint_pilot,fast_flavors,mmoss8
+java.lang.ArrayIndexOutOfBoundsException: Index 3 out of bounds for length 3
+	at edu.gatech.cs2340.InterfaceLoop.commandLoop(InterfaceLoop.java:377)
+	at edu.gatech.cs2340.Main.main(Main.java:8)
+
+
+> appoint_pilot,fast_flavors,guy77
+java.lang.ArrayIndexOutOfBoundsException: Index 3 out of bounds for length 3
+	at edu.gatech.cs2340.InterfaceLoop.commandLoop(InterfaceLoop.java:377)
+	at edu.gatech.cs2340.Main.main(Main.java:8)
+
+
+> appoint_pilot,theBest,mmoss8
+java.lang.ArrayIndexOutOfBoundsException: Index 3 out of bounds for length 3
+	at edu.gatech.cs2340.InterfaceLoop.commandLoop(InterfaceLoop.java:377)
+	at edu.gatech.cs2340.Main.main(Main.java:8)
+
+
+> appoint_pilot,theBest,guy66
+java.lang.ArrayIndexOutOfBoundsException: Index 3 out of bounds for length 3
+	at edu.gatech.cs2340.InterfaceLoop.commandLoop(InterfaceLoop.java:377)
+	at edu.gatech.cs2340.Main.main(Main.java:8)
+
+
+> appoint_pilot,theBest,guy55
+java.lang.ArrayIndexOutOfBoundsException: Index 3 out of bounds for length 3
+	at edu.gatech.cs2340.InterfaceLoop.commandLoop(InterfaceLoop.java:377)
+	at edu.gatech.cs2340.Main.main(Main.java:8)
+
+
+> appoint_pilot,theWorst,guy77
+java.lang.ArrayIndexOutOfBoundsException: Index 3 out of bounds for length 3
+	at edu.gatech.cs2340.InterfaceLoop.commandLoop(InterfaceLoop.java:377)
+	at edu.gatech.cs2340.Main.main(Main.java:8)
+
+
+> appoint_pilot,theBest,guy77
+java.lang.ArrayIndexOutOfBoundsException: Index 3 out of bounds for length 3
+	at edu.gatech.cs2340.InterfaceLoop.commandLoop(InterfaceLoop.java:377)
+	at edu.gatech.cs2340.Main.main(Main.java:8)
+
+
+> appoint_pilot,theBest,guy77
+java.lang.ArrayIndexOutOfBoundsException: Index 3 out of bounds for length 3
+	at edu.gatech.cs2340.InterfaceLoop.commandLoop(InterfaceLoop.java:377)
+	at edu.gatech.cs2340.Main.main(Main.java:8)
+
+
+> stop
+stop acknowledged
+simulation terminated

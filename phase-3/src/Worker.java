@@ -8,7 +8,7 @@ import java.util.TreeMap;
  */
 public class Worker extends Person {
 
-    // collection of workers
+    // TreeMap of workers
     private TreeMap<String, DeliveryService> employers = new TreeMap<>();
 
     /**
