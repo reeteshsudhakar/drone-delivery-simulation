@@ -141,9 +141,10 @@ public class DeliveryService implements Comparable <DeliveryService> {
      * @param tempPerson the person to be appointed as a manager
      */
     public void appointManager(Person tempPerson) {
-        //Appoints a manager iff they are a worker at the delivery service
-        if (tempPerson instanceof Pilot) {
-            Display.displayMessage("ERROR", "pilot_cannot_become_manager");
+        // Appoints a manager iff they are a worker at the delivery service
+        if (tempPerson instanceof Pilot && ((Pilot) tempPerson).getPilotedDrones().size() > 0) {
+
+            Display.displayMessage("ERROR", "pilot_flying_drones_cannot_become_manager");
             return;
         }
         if (tempPerson instanceof Manager && ((Manager) tempPerson).getEmployers().firstKey().equals(this.name)) {
@@ -164,6 +165,8 @@ public class DeliveryService implements Comparable <DeliveryService> {
                 }
                 Manager newManager = new Manager(tempWorker, this);
                 Person.people.put(newManager.getUsername(), newManager);
+                Worker oldManager = manager;
+                Person.people.put(this.manager.getUsername(), oldManager);
                 this.setManager(newManager);
                 Display.displayMessage("OK", "employee_has_been_appointed_manager");
             } else {
@@ -180,6 +183,10 @@ public class DeliveryService implements Comparable <DeliveryService> {
      */
     public void trainPilot(Person tempPerson, String license, Integer experience) {
         // trains a pilot iff they are a initially a Worker for the DeliveryService and the service has a Manager
+        if (this.manager == null) {
+            Display.displayMessage("ERROR", "delivery_service_does_not_have_a_manager");
+            return;
+        }
         if (tempPerson instanceof Manager) {
             Display.displayMessage("ERROR", "employee_is_too_busy_managing");
         } else if (tempPerson instanceof Pilot) {
@@ -194,13 +201,9 @@ public class DeliveryService implements Comparable <DeliveryService> {
         } else if (tempPerson instanceof Worker) {
             Worker tempWorker = (Worker) tempPerson;
             if (tempWorker.getEmployers().containsKey(this.name)) {
-                if (this.manager != null) {
-                    Pilot newPilot = new Pilot(tempWorker, this, license, experience);
-                    Person.people.put(newPilot.getUsername(), newPilot);
-                    Display.displayMessage("OK", "pilot_has_been_trained");
-                } else {
-                    Display.displayMessage("ERROR", "delivery_service_does_not_have_a_manager");
-                }
+                Pilot newPilot = new Pilot(tempWorker, this, license, experience);
+                Person.people.put(newPilot.getUsername(), newPilot);
+                Display.displayMessage("OK", "pilot_has_been_trained");
             } else {
                 Display.displayMessage("ERROR", "employee_does_not_work_for_delivery_service");
             }
@@ -251,7 +254,11 @@ public class DeliveryService implements Comparable <DeliveryService> {
      * @param serviceName A valid service name
      */
     public void collectRevenue(String serviceName) {
-        if (serviceName == null || services == null) {
+        if (!checkServiceName(serviceName) || services == null) {
+            return;
+        }
+        if (this.manager == null) {
+            Display.displayMessage("ERROR", "delivery_service_does_not_have_valid_manager");
             return;
         }
         DeliveryService service = services.get(serviceName);
@@ -266,7 +273,7 @@ public class DeliveryService implements Comparable <DeliveryService> {
      * @return A boolean that is true if there are no workers at home base, and false otherwise
      */
     public boolean noWorkersExist() {
-        return Person.people.values().stream().findAny().filter((item) -> (item instanceof Worker))
+        return Person.people.values().stream().findAny().filter((item) -> (item instanceof Worker && !(item instanceof Pilot || item instanceof Manager)))
                 .filter((item) -> (((Worker) item).getEmployers().containsKey(this.name))).isEmpty();
     }
 
