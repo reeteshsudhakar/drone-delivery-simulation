@@ -1,10 +1,38 @@
+import javafx.application.Application;
+import javafx.scene.Scene;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.StackPane;
+import javafx.stage.Stage;
+
 /**
  * This class is used to display the messages from the program.
  *
  * @author Reetesh Sudhakar, Sebastian Jaskowski, Yash Gupta, Kunal Daga
  * @version 2.0
  */
-public class Display {
+public class Display extends Application {
+    public static void main(String[] args) {
+        launch(args);
+    }
+    @Override
+    public void start(Stage stage) throws Exception {
+        // background image
+        Image image = new Image("resources/background.jpeg");
+        ImageView background = new ImageView(image);
+        background.setFitHeight(background.getFitHeight());
+        background.setFitWidth(background.getFitWidth());
+
+        // adding background image to the scene and showing the stage
+        StackPane root = new StackPane();
+        root.getChildren().add(background);
+        stage.setScene(new Scene(root));
+        stage.setTitle("Ingredient Delivery System");
+        stage.setMinWidth(background.getFitWidth());
+        stage.setMinHeight(background.getFitHeight());
+        stage.setResizable(true);
+        stage.show();
+    }
 
     /**
      * Method to display all of the drones in the system.
