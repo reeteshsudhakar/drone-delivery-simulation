@@ -27,3 +27,4 @@ Project workspace for [Reetesh Sudhakar](mailto::rsudhakar9@gatech.edu), [Sebast
 3. [Updated Functional Requirements to Code](https://github.gatech.edu/rsudhakar9/CS-2340-Project/tree/main/phase-3)
 
 ## Phase IV
+**Problem Description**: [Phase IV: Problem Description](https://github.gatech.edu/rsudhakar9/CS-2340-Project/blob/main/resources/phase-iv-problem-description.md)
