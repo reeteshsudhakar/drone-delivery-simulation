@@ -1,0 +1,170 @@
+Welcome to the Restaurant Supply Express System!
+> //Make ingredients
+> make_ingredient,saff_spc,saffron,2
+OK:change_completed
+> display_ingredients
+barcode: saff_spc, name: saffron, unit_weight: 2
+OK:display_completed
+> make_ingredient,truf_fgs,truffles,6
+OK:change_completed
+> display_ingredients
+barcode: saff_spc, name: saffron, unit_weight: 2
+barcode: truf_fgs, name: truffles, unit_weight: 6
+OK:display_completed
+> //Make service w/o location
+> make_service,swift_spices,0,airport
+ERROR:location_does_not_exist
+> display_services
+OK:display_completed
+> //Make restaurant w/o location
+> make_restaurant,tre_vele,plaza
+ERROR:location_does_not_exist
+> display_restaurants
+OK:display_completed
+> //make locations
+> make_location,plaza,10,18,2
+OK:change_completed
+> display_locations
+name: plaza, (x,y): (10, 18), space: [2 / 2] remaining
+OK:display_completed
+> make_location,airport,5,6,3
+OK:change_completed
+> display_locations
+name: airport, (x,y): (5, 6), space: [3 / 3] remaining
+name: plaza, (x,y): (10, 18), space: [2 / 2] remaining
+OK:display_completed
+> //Make services w/ location
+> make_service,swift_spices,0,airport
+OK:service_created
+> display_services
+name: swift_spices, revenue: $0, location: airport
+OK:display_completed
+> make_service,mobile_sous_chef,0,_
+ERROR:location_does_not_exist
+> display_services
+name: swift_spices, revenue: $0, location: airport
+OK:display_completed
+> //make restaurants w/ location
+> make_restaurant,tre_vele,plaza
+OK:change_completed
+> display_restaurants
+name: tre_vele, money_spent: $0, location: plaza
+OK:display_completed
+> //make one more location and restaurant
+> make_location,southside,8,3,2
+OK:change_completed
+> display_locations
+name: airport, (x,y): (5, 6), space: [3 / 3] remaining
+name: plaza, (x,y): (10, 18), space: [2 / 2] remaining
+name: southside, (x,y): (8, 3), space: [2 / 2] remaining
+OK:display_completed
+> make_restaurant,casi_cielo,southside
+OK:change_completed
+> display_restaurants
+name: casi_cielo, money_spent: $0, location: southside
+name: tre_vele, money_spent: $0, location: plaza
+OK:display_completed
+> //Make drones
+> make_drone,newService,4,3,10
+ERROR:service_identifier_does_not_exist
+> display_all_drones
+service name [swift_spices] drones:
+OK:display_completed
+> make_drone,swift_spices,4,2,10
+OK:change_completed
+> display_all_drones
+service name [swift_spices] drones:
+tag: 4, capacity: 2, remaining_cap: 2, fuel: 10, sales: $0, location: airport
+OK:display_completed
+> display_drones,swift_spices
+tag: 4, capacity: 2, remaining_cap: 2, fuel: 10, sales: $0, location: airport
+OK:display_completed
+> make_drone,mobile_sous_chef,7,8,100
+ERROR:service_identifier_does_not_exist
+> display_all_drones
+service name [swift_spices] drones:
+tag: 4, capacity: 2, remaining_cap: 2, fuel: 10, sales: $0, location: airport
+OK:display_completed
+> display_drones,swift_spices
+tag: 4, capacity: 2, remaining_cap: 2, fuel: 10, sales: $0, location: airport
+OK:display_completed
+> display_drones,mobile_sous_chef
+ERROR:service_identifier_does_not_exist
+> //Load ingredients onto wrong drone
+> load_ingredient,mobile_sous_chef,4,saf_spc,2,8
+ERROR:store_identifier_does_not_exist
+> display_all_drones
+service name [swift_spices] drones:
+tag: 4, capacity: 2, remaining_cap: 2, fuel: 10, sales: $0, location: airport
+OK:display_completed
+> load_ingredient,swift_spices,9,saf_spc,2,8
+ERROR:drone_identifier_does_not_exist
+> display_all_drones
+service name [swift_spices] drones:
+tag: 4, capacity: 2, remaining_cap: 2, fuel: 10, sales: $0, location: airport
+OK:display_completed
+> //Load ingredients correctly
+> load_ingredient,swift_spices,4,saf_spc,2,8
+ERROR:ingredient_identifier_does_not_exist
+> display_all_drones
+service name [swift_spices] drones:
+tag: 4, capacity: 2, remaining_cap: 2, fuel: 10, sales: $0, location: airport
+OK:display_completed
+> display_drones,swift_spices
+tag: 4, capacity: 2, remaining_cap: 2, fuel: 10, sales: $0, location: airport
+OK:display_completed
+> display_drones,mobile_sous_chef
+ERROR:service_identifier_does_not_exist
+> load_ingredient,swift_spices,4,truf_fgs,2,8
+OK:change_completed
+> display_all_drones
+service name [swift_spices] drones:
+tag: 4, capacity: 2, remaining_cap: 0, fuel: 10, sales: $0, location: airport
+&> barcode: truf_fgs,  item_name: truffles, total_quantity: 2, unit_cost:8, total_weight: 12
+OK:display_completed
+> display_drones,swift_spices
+tag: 4, capacity: 2, remaining_cap: 0, fuel: 10, sales: $0, location: airport
+&> barcode: truf_fgs,  item_name: truffles, total_quantity: 2, unit_cost:8, total_weight: 12
+OK:display_completed
+> display_drones,mobile_sous_chef
+ERROR:service_identifier_does_not_exist
+> //Fly with not enough gas
+> fly_drone,swift_spices,4,plaza
+ERROR:not_enough_fuel_to_reach_the_destination
+> display_drones,swift_spices
+tag: 4, capacity: 2, remaining_cap: 0, fuel: 10, sales: $0, location: airport
+&> barcode: truf_fgs,  item_name: truffles, total_quantity: 2, unit_cost:8, total_weight: 12
+OK:display_completed
+> //Try to buy with drone not there
+> purchase_ingredient,tre_vele,swift_spices,4,saf_spc,1
+ERROR:ingredient_identifier_does_not_exist
+> //load fuel
+> load_fuel,swift_spices,4,100
+OK:change_completed
+> display_drones,swift_spices
+tag: 4, capacity: 2, remaining_cap: 0, fuel: 110, sales: $0, location: airport
+&> barcode: truf_fgs,  item_name: truffles, total_quantity: 2, unit_cost:8, total_weight: 12
+OK:display_completed
+> //now fly to plaza
+> fly_drone,swift_spices,4,plaza
+OK:change_completed
+> //Now buy ingredients
+> purchase_ingredient,tre_vele,swift_spices,4,saf_spc,1
+ERROR:ingredient_identifier_does_not_exist
+> //Make lots of drones!
+> make_drone,swift_spices,5,2,10
+OK:change_completed
+> make_drone,swift_spices,6,2,10
+OK:change_completed
+> make_drone,swift_spices,7,2,10
+OK:change_completed
+> make_drone,swift_spices,8,2,10
+ERROR:not_enough_space_to_create_new_drone
+> make_drone,swift_spices,9,2,10
+ERROR:not_enough_space_to_create_new_drone
+> //Try to fly over there!
+> fly_drone,swift_spices,4,airport
+ERROR:not_enough_space_to_maneuver_the_drone_to_that_location
+> stop
+stop acknowledged
+simulation terminated

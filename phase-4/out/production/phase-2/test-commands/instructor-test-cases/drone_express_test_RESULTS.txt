@@ -1,0 +1,227 @@
+Welcome to the Restaurant Supply Express System!
+> // create some ingredients to be purchased
+> make_ingredient,saf_spc,saffron,4
+OK:change_completed
+> display_ingredients
+barcode: saf_spc, name: saffron, unit_weight: 4
+OK:display_completed
+> make_ingredient,iku_sfd,ikura,9
+OK:change_completed
+> make_ingredient,truf_fgs,truffles,6
+OK:change_completed
+> // for display consistency, information is listed in ascending alphanumeric order
+> display_ingredients
+barcode: iku_sfd, name: ikura, unit_weight: 9
+barcode: saf_spc, name: saffron, unit_weight: 4
+barcode: truf_fgs, name: truffles, unit_weight: 6
+OK:display_completed
+> // create some locations for... well, everything else
+> make_location,airport,5,6,3
+OK:change_completed
+> display_locations
+name: airport, (x,y): (5, 6), space: [3 / 3] remaining
+OK:display_completed
+> make_location,plaza,10,18,2
+OK:change_completed
+> display_locations
+name: airport, (x,y): (5, 6), space: [3 / 3] remaining
+name: plaza, (x,y): (10, 18), space: [2 / 2] remaining
+OK:display_completed
+> // the distance function is shared with you for test result standardization
+> check_distance,airport,plaza
+OK:distance = 14
+> // create delivery services to supply the various ingredients
+> make_service,swift_spices,0,airport
+OK:service_created
+> display_services
+name: swift_spices, revenue: $0, location: airport
+OK:display_completed
+> make_service,mobile_sous_chef,0,plaza
+OK:service_created
+> display_services
+name: mobile_sous_chef, revenue: $0, location: plaza
+name: swift_spices, revenue: $0, location: airport
+OK:display_completed
+> // create restaurants who generate a demand for the ingredients
+> make_restaurant,tre_vele,plaza
+OK:change_completed
+> display_restaurants
+name: tre_vele, money_spent: $0, location: plaza
+OK:display_completed
+> // the swift_spices delivery service creates drones to deliver ingredients
+> // drones are created (by default) at the service's home base
+> make_drone,swift_spices,4,2,10
+OK:change_completed
+> make_drone,swift_spices,16,2,20
+OK:change_completed
+> make_drone,swift_spices,9,2,30
+OK:change_completed
+> display_drones,swift_spices
+tag: 4, capacity: 2, remaining_cap: 2, fuel: 10, sales: $0, location: airport
+tag: 9, capacity: 2, remaining_cap: 2, fuel: 30, sales: $0, location: airport
+tag: 16, capacity: 2, remaining_cap: 2, fuel: 20, sales: $0, location: airport
+OK:display_completed
+> // the drones can be loaded with ingredients (or none at all) in various ways
+> load_ingredient,swift_spices,16,saf_spc,2,8
+OK:change_completed
+> load_ingredient,swift_spices,9,saf_spc,1,10
+OK:change_completed
+> load_ingredient,swift_spices,9,truf_fgs,1,7
+OK:change_completed
+> display_drones,swift_spices
+tag: 4, capacity: 2, remaining_cap: 2, fuel: 10, sales: $0, location: airport
+tag: 9, capacity: 2, remaining_cap: 0, fuel: 30, sales: $0, location: airport
+&> barcode: saf_spc,  item_name: saffron, total_quantity: 1, unit_cost:10, total_weight: 4
+&> barcode: truf_fgs,  item_name: truffles, total_quantity: 1, unit_cost:7, total_weight: 6
+tag: 16, capacity: 2, remaining_cap: 0, fuel: 20, sales: $0, location: airport
+&> barcode: saf_spc,  item_name: saffron, total_quantity: 2, unit_cost:8, total_weight: 8
+OK:display_completed
+> // restaurants will purchase ingredients only from local drones at their location
+> purchase_ingredient,tre_vele,swift_spices,16,saf_spc,2
+ERROR:drone_not_located_at_restaurant
+> // drones must move to the restaurant's location safely to complete the purchase
+> fly_drone,swift_spices,4,plaza
+ERROR:not_enough_fuel_to_reach_the_destination
+> fly_drone,swift_spices,16,plaza
+ERROR:not_enough_fuel_to_reach_home_base_from_the_destination
+> fly_drone,swift_spices,9,plaza
+OK:change_completed
+> display_drones,swift_spices
+tag: 4, capacity: 2, remaining_cap: 2, fuel: 10, sales: $0, location: airport
+tag: 9, capacity: 2, remaining_cap: 0, fuel: 16, sales: $0, location: plaza
+&> barcode: saf_spc,  item_name: saffron, total_quantity: 1, unit_cost:10, total_weight: 4
+&> barcode: truf_fgs,  item_name: truffles, total_quantity: 1, unit_cost:7, total_weight: 6
+tag: 16, capacity: 2, remaining_cap: 0, fuel: 20, sales: $0, location: airport
+&> barcode: saf_spc,  item_name: saffron, total_quantity: 2, unit_cost:8, total_weight: 8
+OK:display_completed
+> // restaurant purchases are limited by the drone's carrying capacity
+> purchase_ingredient,tre_vele,swift_spices,9,saf_spc,2
+ERROR:drone_does_not_have_enough_ingredient
+> purchase_ingredient,tre_vele,swift_spices,9,saf_spc,1
+OK:change_completed
+> display_drones,swift_spices
+tag: 4, capacity: 2, remaining_cap: 2, fuel: 10, sales: $0, location: airport
+tag: 9, capacity: 2, remaining_cap: 1, fuel: 16, sales: $10, location: plaza
+&> barcode: truf_fgs,  item_name: truffles, total_quantity: 1, unit_cost:7, total_weight: 6
+tag: 16, capacity: 2, remaining_cap: 0, fuel: 20, sales: $0, location: airport
+&> barcode: saf_spc,  item_name: saffron, total_quantity: 2, unit_cost:8, total_weight: 8
+OK:display_completed
+> // the purchase payment is exchange between the restaurant and drone for now
+> display_restaurants,swift_spices
+name: tre_vele, money_spent: $10, location: plaza
+OK:display_completed
+> // the mobile_sous_chef delivery service creates drones to compete with swift_spices
+> make_drone,mobile_sous_chef,4,5,35
+OK:change_completed
+> display_drones,mobile_sous_chef
+tag: 4, capacity: 5, remaining_cap: 5, fuel: 35, sales: $0, location: plaza
+OK:display_completed
+> // you can display all drones to get a more comprehensive view of the system state
+> display_all_drones
+service name [mobile_sous_chef] drones:
+tag: 4, capacity: 5, remaining_cap: 5, fuel: 35, sales: $0, location: plaza
+service name [swift_spices] drones:
+tag: 4, capacity: 2, remaining_cap: 2, fuel: 10, sales: $0, location: airport
+tag: 9, capacity: 2, remaining_cap: 1, fuel: 16, sales: $10, location: plaza
+&> barcode: truf_fgs,  item_name: truffles, total_quantity: 1, unit_cost:7, total_weight: 6
+tag: 16, capacity: 2, remaining_cap: 0, fuel: 20, sales: $0, location: airport
+&> barcode: saf_spc,  item_name: saffron, total_quantity: 2, unit_cost:8, total_weight: 8
+OK:display_completed
+> // each location has a limited space that impacts the number of drones in that area
+> make_drone,mobile_sous_chef,7,8,100
+ERROR:not_enough_space_to_create_new_drone
+> display_drones,mobile_sous_chef
+tag: 4, capacity: 5, remaining_cap: 5, fuel: 35, sales: $0, location: plaza
+OK:display_completed
+> // this drone is loaded with ingredients to begin its flying and purchasing actions
+> load_ingredient,mobile_sous_chef,4,truf_fgs,2,8
+OK:change_completed
+> load_ingredient,mobile_sous_chef,4,iku_sfd,2,17
+OK:change_completed
+> display_all_drones
+service name [mobile_sous_chef] drones:
+tag: 4, capacity: 5, remaining_cap: 1, fuel: 35, sales: $0, location: plaza
+&> barcode: iku_sfd,  item_name: ikura, total_quantity: 2, unit_cost:17, total_weight: 18
+&> barcode: truf_fgs,  item_name: truffles, total_quantity: 2, unit_cost:8, total_weight: 12
+service name [swift_spices] drones:
+tag: 4, capacity: 2, remaining_cap: 2, fuel: 10, sales: $0, location: airport
+tag: 9, capacity: 2, remaining_cap: 1, fuel: 16, sales: $10, location: plaza
+&> barcode: truf_fgs,  item_name: truffles, total_quantity: 1, unit_cost:7, total_weight: 6
+tag: 16, capacity: 2, remaining_cap: 0, fuel: 20, sales: $0, location: airport
+&> barcode: saf_spc,  item_name: saffron, total_quantity: 2, unit_cost:8, total_weight: 8
+OK:display_completed
+> // various entities can be created dynamically during the execution of the simulation
+> make_location,southside,8,3,2
+OK:change_completed
+> display_locations
+name: airport, (x,y): (5, 6), space: [1 / 3] remaining
+name: plaza, (x,y): (10, 18), space: [0 / 2] remaining
+name: southside, (x,y): (8, 3), space: [2 / 2] remaining
+OK:display_completed
+> check_distance,plaza,southside
+OK:distance = 16
+> make_restaurant,casi_cielo,southside
+OK:change_completed
+> display_restaurants
+name: casi_cielo, money_spent: $0, location: southside
+name: tre_vele, money_spent: $10, location: plaza
+OK:display_completed
+> // drone travel must be conducted safely and...
+> fly_drone,swift_spices,9,southside
+ERROR:not_enough_fuel_to_reach_home_base_from_the_destination
+> // ...refueling operations much be conducted at the service's home base...
+> load_fuel,swift_spices,9,20
+ERROR:drone_not_located_at_home_base
+> load_fuel,swift_spices,4,20
+OK:change_completed
+> load_ingredient,swift_spices,4,truf_fgs,2,19
+OK:change_completed
+> display_drones,swift_spices
+tag: 4, capacity: 2, remaining_cap: 0, fuel: 30, sales: $0, location: airport
+&> barcode: truf_fgs,  item_name: truffles, total_quantity: 2, unit_cost:19, total_weight: 12
+tag: 9, capacity: 2, remaining_cap: 1, fuel: 16, sales: $10, location: plaza
+&> barcode: truf_fgs,  item_name: truffles, total_quantity: 1, unit_cost:7, total_weight: 6
+tag: 16, capacity: 2, remaining_cap: 0, fuel: 20, sales: $0, location: airport
+&> barcode: saf_spc,  item_name: saffron, total_quantity: 2, unit_cost:8, total_weight: 8
+OK:display_completed
+> // ...as well as restocking operations
+> fly_drone,mobile_sous_chef,4,southside
+OK:change_completed
+> purchase_ingredient,casi_cielo,mobile_sous_chef,4,truf_fgs,2
+OK:change_completed
+> load_ingredient,mobile_sous_chef,4,truf_fgs,3,17
+ERROR:drone_not_located_at_home_base
+> // a final look at the overall system state of the system
+> display_all_drones
+service name [mobile_sous_chef] drones:
+tag: 4, capacity: 5, remaining_cap: 3, fuel: 19, sales: $16, location: southside
+&> barcode: iku_sfd,  item_name: ikura, total_quantity: 2, unit_cost:17, total_weight: 18
+service name [swift_spices] drones:
+tag: 4, capacity: 2, remaining_cap: 0, fuel: 30, sales: $0, location: airport
+&> barcode: truf_fgs,  item_name: truffles, total_quantity: 2, unit_cost:19, total_weight: 12
+tag: 9, capacity: 2, remaining_cap: 1, fuel: 16, sales: $10, location: plaza
+&> barcode: truf_fgs,  item_name: truffles, total_quantity: 1, unit_cost:7, total_weight: 6
+tag: 16, capacity: 2, remaining_cap: 0, fuel: 20, sales: $0, location: airport
+&> barcode: saf_spc,  item_name: saffron, total_quantity: 2, unit_cost:8, total_weight: 8
+OK:display_completed
+> display_ingredients
+barcode: iku_sfd, name: ikura, unit_weight: 9
+barcode: saf_spc, name: saffron, unit_weight: 4
+barcode: truf_fgs, name: truffles, unit_weight: 6
+OK:display_completed
+> display_locations
+name: airport, (x,y): (5, 6), space: [1 / 3] remaining
+name: plaza, (x,y): (10, 18), space: [1 / 2] remaining
+name: southside, (x,y): (8, 3), space: [1 / 2] remaining
+OK:display_completed
+> display_services
+name: mobile_sous_chef, revenue: $0, location: plaza
+name: swift_spices, revenue: $0, location: airport
+OK:display_completed
+> display_restaurants
+name: casi_cielo, money_spent: $16, location: southside
+name: tre_vele, money_spent: $10, location: plaza
+OK:display_completed
+> stop
+stop acknowledged
+simulation terminated

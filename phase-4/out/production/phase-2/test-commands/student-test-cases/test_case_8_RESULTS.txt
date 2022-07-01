@@ -1,0 +1,199 @@
+Welcome to the Restaurant Supply Express System!
+> // create some locations
+> make_location,plaza,3,4,5
+OK:change_completed
+> make_location,hotel,5,6,2
+OK:change_completed
+> make_location,mall,2,1,5
+OK:change_completed
+> make_location,bad1,2,1,0
+OK:change_completed
+> //check if you can make a location with negative capacity
+> make_location,bad,4,5,-4
+ERROR:negative_space_limit_not_allowed
+> display_locations
+name: bad1, (x,y): (2, 1), space: [0 / 0] remaining
+name: hotel, (x,y): (5, 6), space: [2 / 2] remaining
+name: mall, (x,y): (2, 1), space: [5 / 5] remaining
+name: plaza, (x,y): (3, 4), space: [5 / 5] remaining
+OK:display_completed
+> // check some distances
+> check_distance,plaza,hotel
+OK:distance = 3
+> // check if you can check the distance to a location with an invalid attribute
+> check_distance,mall,bad
+ERROR:arrival_point_does_not_exist
+> // check if you can check the distance to a location with an invalid attribute
+> check_distance,hotel,bad
+ERROR:arrival_point_does_not_exist
+> // check if you can calculate a distance to a nonexistent location
+> check_distance,hotel,subway
+ERROR:arrival_point_does_not_exist
+> // create a delivery service
+> make_service,genericName,5,plaza
+OK:service_created
+> // test if a service can be made in a nonexistent location
+> make_service,namedService,3,subway
+ERROR:location_does_not_exist
+> display_services
+name: genericName, revenue: $5, location: plaza
+OK:display_completed
+> // make some drones
+> make_drone,genericName,10,10,10
+OK:change_completed
+> make_drone,genericName,16,10,2
+OK:change_completed
+> // check if you can make a drone with a negative loading capacity
+> make_drone,genericName,-10,-10,10
+ERROR:negative_capacity_not_allowed
+> // check if you can make a drone with negative fuel capacity
+> make_drone,genericName,5,5,-10
+ERROR:negative_fuel_not_allowed
+> // check Drone with no fuel capacity
+> make_drone,genericName,5,1,0
+OK:change_completed
+> //check if you can make a drone to a nonexistent service
+> make_drone,someService,5,6,7
+ERROR:service_identifier_does_not_exist
+> //check if you can make a drone in a nonexistent location
+> make_drone,namedService,7,8,9
+ERROR:service_identifier_does_not_exist
+> display_all_drones
+service name [genericName] drones:
+tag: 5, capacity: 1, remaining_cap: 1, fuel: 0, sales: $0, location: plaza
+tag: 10, capacity: 10, remaining_cap: 10, fuel: 10, sales: $0, location: plaza
+tag: 16, capacity: 10, remaining_cap: 10, fuel: 2, sales: $0, location: plaza
+OK:display_completed
+> // make some restaurants
+> make_restaurant,realRestaurant,mall
+OK:change_completed
+> //if you can make restaurant in non-existent location
+> make_restaraunt,aRestaurant,subway
+command make_restaraunt NOT acknowledged
+> //if you can make restaurant in non-valid location
+> make_restaurant,twoRestaurant,bad
+ERROR:location_does_not_exist
+> display_restaraunts
+command display_restaraunts NOT acknowledged
+> // make some ingredients
+> make_ingredient,bf_id,beef,10
+OK:change_completed
+> make_ingredient,tmt_id,tomatoes,10
+OK:change_completed
+> make_ingredient,pasta_id,pasta,1
+OK:change_completed
+> //testing if the barcode does not exist
+> make_ingredient, ,steak,1
+OK:change_completed
+> //testing if you can have 2 different ingredients with the same barcode
+> make_ingredient,tmt_id,toboggan,2
+ERROR:ingredient_already_exists
+> //testing if you can have negative quantity of an ingredient
+> make_ingredient,cbg_id,cabbage,-1
+ERROR:negative_weight_not_allowed
+> //testing if you can have an ingredient with no quantity
+> make_ingredient,crrt_id,carrot,0
+OK:change_completed
+> display_ingredients
+barcode:  , name: steak, unit_weight: 1
+barcode: bf_id, name: beef, unit_weight: 10
+barcode: crrt_id, name: carrot, unit_weight: 0
+barcode: pasta_id, name: pasta, unit_weight: 1
+barcode: tmt_id, name: tomatoes, unit_weight: 10
+OK:display_completed
+> // load a drone
+> load_ingredient,genericName,10,bf_id,5,1
+OK:change_completed
+> //testing load ingredients with negative capacity
+> load_ingredient,genericName,-10,bf_id,1,2
+ERROR:drone_identifier_does_not_exist
+> //testing if you can load the ingredient with a null barcode
+> load_ingredient,genericName,10, ,1,1
+OK:change_completed
+> //testing which ingredient it would have loaded
+> load_ingredient,genericName,10,tmt_id,3,1
+OK:change_completed
+> //testing load more of an ingredient than exists
+> load_ingredient,genericName,10,pasta_id,2,1
+ERROR:not_enough_capacity_to_hold_new_packages
+> //testing  negative quantity of an ingredient
+> load_ingredient,genericName,10,bf_id,-1,1
+ERROR:negative_quantity_not_allowed
+> //test if you can load more than the capacity of drone
+> load_ingredient,genericName,16,bf_id,3,1
+OK:change_completed
+> display_all_drones
+service name [genericName] drones:
+tag: 5, capacity: 1, remaining_cap: 1, fuel: 0, sales: $0, location: plaza
+tag: 10, capacity: 10, remaining_cap: 1, fuel: 10, sales: $0, location: plaza
+&> barcode:  ,  item_name: steak, total_quantity: 1, unit_cost:1, total_weight: 1
+&> barcode: bf_id,  item_name: beef, total_quantity: 5, unit_cost:1, total_weight: 50
+&> barcode: tmt_id,  item_name: tomatoes, total_quantity: 3, unit_cost:1, total_weight: 30
+tag: 16, capacity: 10, remaining_cap: 7, fuel: 2, sales: $0, location: plaza
+&> barcode: bf_id,  item_name: beef, total_quantity: 3, unit_cost:1, total_weight: 30
+OK:display_completed
+> // test if a restaurant can buy from a drone not there
+> // flying drone
+> purchase_ingredient,realRestaurant,genericName,10,bf_id,1
+ERROR:drone_not_located_at_restaurant
+> // flying to working location
+> flyDrone,mall,10,plaza
+command flyDrone NOT acknowledged
+> // flying to location with insufficient fuel
+> flyDrone,mall,1,plaza
+command flyDrone NOT acknowledged
+> // flying to location that doesn’t exist
+> flyDrone,mall,10,airport
+command flyDrone NOT acknowledged
+> // flying to location that doesn’t have enough space
+> flyDrone,mall,10,bad1
+command flyDrone NOT acknowledged
+> display_locations
+name: bad1, (x,y): (2, 1), space: [0 / 0] remaining
+name: hotel, (x,y): (5, 6), space: [2 / 2] remaining
+name: mall, (x,y): (2, 1), space: [5 / 5] remaining
+name: plaza, (x,y): (3, 4), space: [2 / 5] remaining
+OK:display_completed
+> // restaurant buying some ingredients
+> purchase_ingredient,realRestauraunt,genericName,10,bf_id,2
+ERROR:restaurant_identifier_does_not_exist
+> purchase_ingredient,realRestauraunt,genericName,10,not_id,1
+ERROR:restaurant_identifier_does_not_exist
+> // testing if you can buy a non-existent ingredient
+> purchase_ingredient,realRestauraunt,genericName,10,pasta_id,1
+ERROR:restaurant_identifier_does_not_exist
+> // testing if you can buy more of an ingredient than exists
+> purchase_ingredient,realRestaurant,someService,16,bf_id,2,1
+ERROR:store_identifier_does_not_exist
+> // testing if you can buy more of an ingredient than is on the drone
+> purchase_ingredient,realRestaurant,genericName,2,bf_id,1
+ERROR:drone_identifier_does_not_exist
+> // testing if you can purchase from a non-existent drone
+> purchase_ingredient,realRestaurant,genericName,10,bf_id,-2
+ERROR:negative_quantity_not_allowed
+> // testing if you can purchase negative ingredients
+> display_restaurants
+name: realRestaurant, money_spent: $0, location: mall
+OK:display_completed
+> display_all_drones
+service name [genericName] drones:
+tag: 5, capacity: 1, remaining_cap: 1, fuel: 0, sales: $0, location: plaza
+tag: 10, capacity: 10, remaining_cap: 1, fuel: 10, sales: $0, location: plaza
+&> barcode:  ,  item_name: steak, total_quantity: 1, unit_cost:1, total_weight: 1
+&> barcode: bf_id,  item_name: beef, total_quantity: 5, unit_cost:1, total_weight: 50
+&> barcode: tmt_id,  item_name: tomatoes, total_quantity: 3, unit_cost:1, total_weight: 30
+tag: 16, capacity: 10, remaining_cap: 7, fuel: 2, sales: $0, location: plaza
+&> barcode: bf_id,  item_name: beef, total_quantity: 3, unit_cost:1, total_weight: 30
+OK:display_completed
+> display_locations
+name: bad1, (x,y): (2, 1), space: [0 / 0] remaining
+name: hotel, (x,y): (5, 6), space: [2 / 2] remaining
+name: mall, (x,y): (2, 1), space: [5 / 5] remaining
+name: plaza, (x,y): (3, 4), space: [2 / 5] remaining
+OK:display_completed
+> display_services
+name: genericName, revenue: $5, location: plaza
+OK:display_completed
+> stop
+stop acknowledged
+simulation terminated

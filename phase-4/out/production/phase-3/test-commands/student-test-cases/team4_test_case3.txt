@@ -1,0 +1,59 @@
+// TEST CASE 3
+// make location
+make_location,airport,3,4,6
+make_location,plaza,10,5,4
+display_locations
+
+// make service
+make_service,speedy_spices,100,plaza
+make_service,fast_flavors,300,airport
+display_services
+
+// make drone
+make_drone,fast_flavors,1,4,100
+make_drone,speedy_spices,4,7,80
+make_drone,fast_flavors,2,4,100
+display_all_drones
+
+// make people
+make_person,esmith5,Eric,Smith,1963,11,12,101_Queens_Way_Washington_DC
+make_person,jben,Jen,Ben,1902,07,09,10_Apr_Ave_Atlanta
+make_person,amahajan1,Anubha,Mahajan,1972,09,09,10_May_Ave_DC
+make_person,asim,Anubha,Sim,1992,09,04,1012_May_Ave_DC
+display_persons
+
+// hiring
+hire_worker,fast_flavors,esmith5
+hire_worker,fast_flavors,jben
+hire_worker,fast_flavors,amahajan1
+hire_worker,speedy_spices,asim
+appoint_manager,fast_flavors,esmith5 
+train_pilot,fast_flavors,jben,ncidq,10
+display_persons
+
+// firing
+fire_worker,fast_flavors,jben // fire pilot who hasn’t been appointed
+display_persons
+
+// hiring
+hire_worker,speedy_spices,jben // hire worker with pilot license
+hire_worker,fast_flavors,jben
+appoint_pilot,speedy_spices,jben,4 // appoint worker who is hired at two services
+fire_worker,fast_flavors,jben
+appoint_pilot,speedy_spices,jben,1
+appoint_manager,speedy_spices,jben // appoint manager who is a pilot
+hire_worker,fast_flavors,jben // hire pilot to another service
+appoint_manager,speedy_spices,amahajan1 // appoint manager who is hired at two services
+
+// training
+train_pilot,fast_flavors,esmith5,nci78dq,10 // train manager to be a pilot
+train_pilot,fast_flavors,asim,nci08dq,10 // train pilot who is not hired
+train_pilot,fast_flavors,asim,””,10 // train pilot with invalid license
+train_pilot,fast_flavors,asim,ncq,10
+fire_worker,fast_flavors,asim // fire worker with pilot license
+hire_worker,fast_flavors,asim 
+appoint_pilot,fast_flavors,asim,1 // appoint pilot who has license from another service
+appoint_pilot,speedy_spices,asim,1 // appoint different pilot to same drone
+display_persons
+
+stop
