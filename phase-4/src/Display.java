@@ -1,10 +1,19 @@
 import javafx.application.Application;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
+// TODO: look into styling things using CSS (https://docs.oracle.com/javafx/2/css_tutorial/jfxpub-css_tutorial.htm)
 /**
  * This class is used to display the messages from the program.
  *
@@ -16,22 +25,61 @@ public class Display extends Application {
         launch(args);
     }
     @Override
-    public void start(Stage stage) throws Exception {
+    public void start(Stage stage) {
+        // creating a grid to display the entities
+        GridPane grid = new GridPane();
+        grid.setAlignment(Pos.CENTER);
+        grid.setHgap(20);
+        grid.setVgap(20);
+
+        addAsset(grid, 0, 0, "drone.png");
+        addAsset(grid, 0, 1, "ingredient.png");
+        addAsset(grid, 0, 2, "person.png");
+        addAsset(grid, 0, 3, "restaurant.png");
+        addAsset(grid, 0, 4, "service.png");
+
+
+        // adding background image to the scene and showing the stage
+        StackPane root = new StackPane();
+        initializeWindow(root, grid, stage);
+    }
+
+    public void initializeWindow(StackPane root, GridPane grid, Stage stage) {
         // background image
         Image image = new Image("resources/background.jpeg");
         ImageView background = new ImageView(image);
         background.setFitHeight(background.getFitHeight());
         background.setFitWidth(background.getFitWidth());
 
-        // adding background image to the scene and showing the stage
-        StackPane root = new StackPane();
-        root.getChildren().add(background);
+        // Main Text of the window
+        Text title = new Text("Drone Ingredient Delivery System");
+        title.setFont(Font.font("Helvetica", FontWeight.BOLD, 75));
+        title.setFill(Color.BLACK);
+        title.setStroke(Color.BLACK);
+        title.setUnderline(true);
+        title.setTranslateY(20);
+
+        root.getChildren().addAll(background, title, grid);
+        root.setAlignment(title, Pos.TOP_CENTER);
         stage.setScene(new Scene(root));
         stage.setTitle("Ingredient Delivery System");
         stage.setMinWidth(background.getFitWidth());
         stage.setMinHeight(background.getFitHeight());
         stage.setResizable(true);
         stage.show();
+    }
+
+    public void addAsset(GridPane grid, int row, int column, String fileName) {
+        Image image = new Image("resources/" + fileName, 250, 250, true, true);
+        ImageView imageView = new ImageView(image);
+        Button button = new Button("Display");
+
+        VBox vbox = new VBox();
+        vbox.setAlignment(Pos.CENTER);
+        vbox.setSpacing(20);
+        vbox.getChildren().addAll(imageView, button);
+
+        grid.add(vbox, column, row);
     }
 
     /**
