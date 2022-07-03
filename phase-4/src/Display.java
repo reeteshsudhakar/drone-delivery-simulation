@@ -32,11 +32,11 @@ public class Display extends Application {
         grid.setHgap(20);
         grid.setVgap(20);
 
-        addAsset(grid, 0, 0, "drone.png");
-        addAsset(grid, 0, 1, "ingredient.png");
-        addAsset(grid, 0, 2, "person.png");
-        addAsset(grid, 0, 3, "restaurant.png");
-        addAsset(grid, 0, 4, "service.png");
+        addAsset(grid, 0, 0, "drone.png", "Display Drones");
+        addAsset(grid, 0, 1, "ingredient.png", "Display Ingredients");
+        addAsset(grid, 0, 2, "person.png", "Display People");
+        addAsset(grid, 0, 3, "restaurant.png", "Display Restaurants");
+        addAsset(grid, 0, 4, "service.png", "Display Services");
 
 
         // adding background image to the scene and showing the stage
@@ -69,10 +69,10 @@ public class Display extends Application {
         stage.show();
     }
 
-    public void addAsset(GridPane grid, int row, int column, String fileName) {
+    public void addAsset(GridPane grid, int row, int column, String fileName, String buttonName) {
         Image image = new Image("resources/" + fileName, 250, 250, true, true);
         ImageView imageView = new ImageView(image);
-        Button button = new Button("Display");
+        Button button = new Button(buttonName);
 
         VBox vbox = new VBox();
         vbox.setAlignment(Pos.CENTER);
