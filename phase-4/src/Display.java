@@ -14,6 +14,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 // TODO: look into styling things using CSS (https://docs.oracle.com/javafx/2/css_tutorial/jfxpub-css_tutorial.htm)
+// TODO: port over this to the Main class to connect things up to the InterfaceLoop easier
 /**
  * This class is used to display the messages from the program.
  *
