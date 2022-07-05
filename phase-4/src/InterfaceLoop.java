@@ -398,7 +398,7 @@ public class InterfaceLoop {
                     collectRevenue(tokens[1]);
                 } else if (tokens[0].equals("stop")) {
                     Main.closeWindow("stop acknowledged");
-                } else if (tokens[0].equals("")) {
+                } else if (tokens[0].equals("") || tokens[0].isBlank() || tokens[0].isEmpty()) {
                     Main.displayError("please enter a command");
                 } else {
                     Main.displayError("command " + tokens[0] + " NOT acknowledged");
