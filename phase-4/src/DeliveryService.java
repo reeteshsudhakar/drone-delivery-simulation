@@ -39,19 +39,19 @@ public class DeliveryService implements Comparable <DeliveryService> {
     public static void makeDeliveryService(String name, Integer revenue, String locatedAt) {
         // checking if the service already exists
         if (services.containsKey(name)) {
-            Display.displayMessage("ERROR", "service_already_exists");
+            Main.displayError("service_already_exists");
             return;
         }
 
         // checking if the revenue is valid (positive) and whether the passed in arguments are valid
         if (revenue < 0) {
-            Display.displayMessage("ERROR", "service_revenue_must_be_greater_than_or_equal_to_zero");
+            Main.displayError("service_revenue_must_be_greater_than_or_equal_to_zero");
             return;
         } else if (name == null || name.equals("")) {
-            Display.displayMessage("ERROR", "service_name_must_not_be_empty");
+            Main.displayError("service_name_must_not_be_empty");
             return;
         } else if (locatedAt == null || locatedAt.equals("")) {
-            Display.displayMessage("ERROR", "service_location_must_not_be_empty");
+            Main.displayError("service_location_must_not_be_empty");
             return;
         }
 
@@ -60,9 +60,9 @@ public class DeliveryService implements Comparable <DeliveryService> {
         if (Location.locations.containsKey(locatedAt)) {
             DeliveryService newService = new DeliveryService(name, revenue, Location.locations.get(locatedAt));
             services.put(name, newService);
-            Display.displayMessage("OK","delivery_service_created");
+            Main.displayMessage("delivery_service_created");
         } else {
-            Display.displayMessage("ERROR", "location_identifier_does_not_exist");
+            Main.displayError("location_identifier_does_not_exist");
         }
     }
 
@@ -74,22 +74,22 @@ public class DeliveryService implements Comparable <DeliveryService> {
         Person tempPerson = Person.people.get(username);
         // Replaces Person object in TreeMap iff they are not a Manager or Pilot
         if (tempPerson instanceof Manager) {
-            Display.displayMessage("ERROR", "employee_is_managing_a_service");
+            Main.displayError("employee_is_managing_a_service");
         } else if (tempPerson instanceof Pilot) {
             Pilot tempPilot = (Pilot) tempPerson;
             if (tempPilot.getPilotedDrones().size() > 0) {
-                Display.displayMessage("ERROR", "employee_is_piloting_drones_for_a_service");
+                Main.displayError("employee_is_piloting_drones_for_a_service");
             } else {
                 tempPilot.getEmployers().clear();
                 tempPilot.addEmployer(this);
-                Display.displayMessage("OK","new_employee_has_been_hired");
+                Main.displayMessage("new_employee_has_been_hired");
             }
         } else {
             Worker hiredWorker;
             if (tempPerson instanceof Worker) {
                 hiredWorker = (Worker) tempPerson;
                 if (hiredWorker.getEmployers().containsKey(this.name)) {
-                    Display.displayMessage("ERROR", "employee_already_works_for_service");
+                    Main.displayError( "employee_already_works_for_service");
                     return;
                 }
                 hiredWorker.addEmployer(this);
@@ -98,7 +98,7 @@ public class DeliveryService implements Comparable <DeliveryService> {
                 hiredWorker = new Worker(tempPerson, this);
                 Person.people.put(username, hiredWorker);
             }
-            Display.displayMessage("OK", "new_employee_has_been_hired");
+            Main.displayMessage("new_employee_has_been_hired");
         }
     }
 
@@ -110,16 +110,16 @@ public class DeliveryService implements Comparable <DeliveryService> {
         // Fires a worker iff they are a worker and if they work for the delivery service provided
         Person firedPerson = Person.people.get(username);
         if (firedPerson instanceof Manager) {
-            Display.displayMessage("ERROR", "employee_is_managing_a_service");
+            Main.displayError("employee_is_managing_a_service");
         } else if (firedPerson instanceof Pilot && !((Pilot) firedPerson).getPilotedDrones().isEmpty()) {
-            Display.displayMessage("ERROR","employee_is_piloting_drones_for_service");
+            Main.displayError("employee_is_piloting_drones_for_service");
         } else if (firedPerson instanceof Pilot) {
             ((Pilot) firedPerson).getEmployers().remove(this.name);
-            Display.displayMessage("OK", "employee_has_been_fired");
+            Main.displayMessage("employee_has_been_fired");
         } else if (firedPerson instanceof Worker) { // If person is a Worker, removes employer from list of employers
             Worker firedWorker = (Worker) firedPerson;
             if (!firedWorker.getEmployers().containsValue(this)) {
-                Display.displayMessage("ERROR", "employee_does_not_work_for_service");
+                Main.displayError("employee_does_not_work_for_service");
                 return;
             }
             firedWorker.removeEmployer(this);
@@ -129,9 +129,9 @@ public class DeliveryService implements Comparable <DeliveryService> {
                         firedPerson.getDate(), firedPerson.getAddress());
                 Person.people.put(username, newPerson);
             }
-            Display.displayMessage("OK", "employee_has_been_fired");
+            Main.displayMessage("employee_has_been_fired");
         } else {
-            Display.displayMessage("ERROR","person_is_currently_unemployed");
+            Main.displayError("person_is_currently_unemployed");
         }
     }
 
@@ -142,15 +142,15 @@ public class DeliveryService implements Comparable <DeliveryService> {
     public void appointManager(Person tempPerson) {
         // Appoints a manager iff they are a worker at the delivery service
         if (tempPerson instanceof Pilot && ((Pilot) tempPerson).getPilotedDrones().size() > 0) {
-            Display.displayMessage("ERROR", "pilot_flying_drones_cannot_become_manager");
+            Main.displayError("pilot_flying_drones_cannot_become_manager");
             return;
         }
         if (tempPerson instanceof Manager && ((Manager) tempPerson).getEmployers().firstKey().equals(this.name)) {
-            Display.displayMessage("ERROR","employee_is_already_managing_service");
+            Main.displayError("employee_is_already_managing_service");
             return;
         }
         if (tempPerson instanceof Manager) {
-            Display.displayMessage("ERROR", "employee_is_managing_another_service");
+            Main.displayError("employee_is_managing_another_service");
             return;
         }
         if (tempPerson instanceof Worker) {
@@ -158,7 +158,7 @@ public class DeliveryService implements Comparable <DeliveryService> {
             if (tempWorker.getEmployers().containsValue(this)) {
                 // Worker can only work at one delivery service if they are to become a manager
                 if (tempWorker.getEmployers().size() > 1) {
-                    Display.displayMessage("ERROR", "employee_is_working_at_other_companies");
+                    Main.displayError("employee_is_working_at_other_companies");
                     return;
                 }
                 Manager newManager = new Manager(tempWorker, this);
@@ -168,12 +168,12 @@ public class DeliveryService implements Comparable <DeliveryService> {
                     Person.people.put(oldManager.getUsername(), oldManager);
                 }
                 this.setManager(newManager);
-                Display.displayMessage("OK", "employee_has_been_appointed_manager");
+                Main.displayMessage("employee_has_been_appointed_manager");
             } else {
-                Display.displayMessage("ERROR", "employee_does_not_work_for_this_service");
+                Main.displayError("employee_does_not_work_for_this_service");
             }
         } else { // tempPerson is just a Person that has no employer, so they can't be employed as a manager
-            Display.displayMessage("ERROR", "person_is_currently_unemployed");
+            Main.displayError("person_is_currently_unemployed");
         }
     }
 
@@ -186,31 +186,31 @@ public class DeliveryService implements Comparable <DeliveryService> {
     public void trainPilot(Person tempPerson, String license, Integer experience) {
         // trains a pilot iff they are a initially a Worker for the DeliveryService and the service has a Manager
         if (this.manager == null) {
-            Display.displayMessage("ERROR", "delivery_service_does_not_have_a_manager");
+            Main.displayError("delivery_service_does_not_have_a_manager");
             return;
         }
         if (tempPerson instanceof Manager) {
-            Display.displayMessage("ERROR", "employee_is_too_busy_managing");
+            Main.displayError( "employee_is_too_busy_managing");
         } else if (tempPerson instanceof Pilot) {
             Pilot tempPilot = (Pilot) tempPerson;
             if (tempPilot.pilotingForAnotherService(this)) {
-                Display.displayMessage("ERROR", "employee_is_already_piloting_drones_" +
+                Main.displayError("employee_is_already_piloting_drones_" +
                         "for_another_service");
             } else {
                 tempPilot.changeEmployer(this, license, experience);
-                Display.displayMessage("OK","pilot_has_been_trained");
+                Main.displayMessage("pilot_has_been_trained");
             }
         } else if (tempPerson instanceof Worker) {
             Worker tempWorker = (Worker) tempPerson;
             if (tempWorker.getEmployers().containsKey(this.name)) {
                 Pilot newPilot = new Pilot(tempWorker, this, license, experience);
                 Person.people.put(newPilot.getUsername(), newPilot);
-                Display.displayMessage("OK", "pilot_has_been_trained");
+                Main.displayMessage("pilot_has_been_trained");
             } else {
-                Display.displayMessage("ERROR", "employee_does_not_work_for_delivery_service");
+                Main.displayError("employee_does_not_work_for_delivery_service");
             }
         } else {
-            Display.displayMessage("ERROR","person_is_currently_unemployed");
+            Main.displayError("person_is_currently_unemployed");
         }
     }
 
@@ -227,27 +227,27 @@ public class DeliveryService implements Comparable <DeliveryService> {
             if (appointedPilot.getEmployers().containsValue(this)) {
                 Drone drone = services.get(serviceName).getDrone(droneTag);
                 if (drone == null) {
-                    Display.displayMessage("ERROR", "drone_does_not_exist");
+                    Main.displayError("drone_does_not_exist");
                 } else if (drone.hasPilot()) {
                     if (drone.pilotAlreadyAppointed(appointedPilot)) {
-                        Display.displayMessage("ERROR","employee_has_already_been_appointed_" +
+                        Main.displayError("employee_has_already_been_appointed_" +
                                 "pilot_for_this_drone");
                         return;
                     }
                     drone.switchPilot(appointedPilot);
-                    Display.displayMessage("OK", "employee_has_been_appointed_pilot");
+                    Main.displayMessage("employee_has_been_appointed_pilot");
                 } else if (drone.hasLeader()) {
                     drone.becomeLeader(appointedPilot);
-                    Display.displayMessage("OK", "employee_has_been_appointed_pilot");
+                    Main.displayMessage("employee_has_been_appointed_pilot");
                 } else {
                     drone.assignPilot(appointedPilot);
-                    Display.displayMessage("OK", "employee_has_been_appointed_pilot");
+                    Main.displayMessage("employee_has_been_appointed_pilot");
                 }
             } else {
-                Display.displayMessage("ERROR", "pilot_does_not_work_for_delivery_service");
+                Main.displayError("pilot_does_not_work_for_delivery_service");
             }
         } else {
-            Display.displayMessage("ERROR", "person_is_not_a_pilot");
+            Main.displayError("person_is_not_a_pilot");
         }
     }
 
@@ -260,7 +260,7 @@ public class DeliveryService implements Comparable <DeliveryService> {
             return;
         }
         if (this.manager == null) {
-            Display.displayMessage("ERROR", "delivery_service_does_not_have_valid_manager");
+            Main.displayError("delivery_service_does_not_have_valid_manager");
             return;
         }
         DeliveryService service = services.get(serviceName);
@@ -268,7 +268,7 @@ public class DeliveryService implements Comparable <DeliveryService> {
             service.revenue += drone.getSales();
             drone.clearSales();
         }
-        Display.displayMessage("OK", "change_completed");
+        Main.displayMessage("change_completed");
     }
 
     /**
@@ -288,7 +288,7 @@ public class DeliveryService implements Comparable <DeliveryService> {
         if (services.containsKey(serviceName)) {
             return true;
         } else {
-            Display.displayMessage("ERROR", "service_does_not_exist");
+            Main.displayError("service_does_not_exist");
             return false;
         }
     }
@@ -363,14 +363,6 @@ public class DeliveryService implements Comparable <DeliveryService> {
      */
     public Drone getDrone(Integer tag) {
         return drones.get(tag);
-    }
-
-    /**
-     * Getter for the manager of the Delivery Service.
-     * @return manager of the Delivery Service.
-     */
-    public Manager getManager() {
-        return this.manager;
     }
 
     /**

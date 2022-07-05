@@ -56,22 +56,22 @@ public class Drone {
         if (Ingredient.ingredients.containsKey(barcode)) {
             loadIngredient = Ingredient.ingredients.get(barcode);
         } else {
-            Display.displayMessage("ERROR","ingredient_identifier_does_not_exist");
+            Main.displayError("ingredient_identifier_does_not_exist");
             return;
         }
 
         // checking if the drone is at the service's home base
         if (this.notAtHomeBase()) {
-            Display.displayMessage("ERROR","drone_not_located_at_home_base");
+            Main.displayError("drone_not_located_at_home_base");
             return;
         }
 
         // checking if the quantity and price of the ingredient are valid
         if (quantity <= 0) {
-            Display.displayMessage("ERROR","quantity_must_be_greater_than_zero");
+            Main.displayError("quantity_must_be_greater_than_zero");
             return;
         } else if (unitPrice <= 0) {
-            Display.displayMessage("ERROR","unit_price_must_be_greater_than_zero");
+            Main.displayError("unit_price_must_be_greater_than_zero");
             return;
         }
 
@@ -91,7 +91,7 @@ public class Drone {
         }
 
         decrementRemainingCapacity(quantity);
-        Display.displayMessage("OK","change_completed");
+        Main.displayMessage("change_completed");
     }
 
     /**
@@ -142,33 +142,33 @@ public class Drone {
 
         // if the service does not exist in the system, display an error message
         if (newService == null) {
-            Display.displayMessage("ERROR","service_identifier_does_not_exist");
+            Main.displayError("service_identifier_does_not_exist");
             return;
         }
 
         // checking if the drone already exists in the system
         if (newService.getDrones().containsKey(tag)) {
-            Display.displayMessage("ERROR","drone_already_exists");
+            Main.displayError("drone_already_exists");
             return;
         }
 
         // checking if the capacity is valid (positive) and whether the fuel is valid (non-negative)
         if (capacity == null || capacity <= 0) {
-            Display.displayMessage("ERROR","drone_capacity_must_be_greater_than_zero");
+            Main.displayMessage("drone_capacity_must_be_greater_than_zero");
             return;
         } else if (fuel == null || fuel < 0) {
-            Display.displayMessage("ERROR","drone_fuel_must_be_greater_than_or_equal_to_zero");
+            Main.displayError("drone_fuel_must_be_greater_than_or_equal_to_zero");
             return;
         }
 
         // creating the drone IFF there is space in the service's home base for it
         if (serviceLocation.getSpacesLeft() == 0) {
-            Display.displayMessage("ERROR","not_enough_space_to_create_new_drone");
+            Main.displayError("not_enough_space_to_create_new_drone");
         } else {
             Drone newDrone = new Drone(tag, capacity, fuel, serviceLocation, serviceLocation);
             newService.getDrones().put(tag, newDrone);
             serviceLocation.decrementSpacesLeft();
-            Display.displayMessage("OK","drone_created");
+            Main.displayMessage("drone_created");
         }
     }
 
@@ -179,15 +179,15 @@ public class Drone {
     public void joinSwarm(Drone leadDrone) {
         //Checks if lead drone and swarm drone are valid, and if they are in the same location
         if (leadDrone == null) {
-            Display.displayMessage("ERROR","lead_drone_does_not_exist");
+            Main.displayMessage("lead_drone_does_not_exist");
             return;
         } else if (leadDrone.getCurrentLocation() != this.currentLocation) {
-            Display.displayMessage("ERROR", "lead_and_swarm_drone_must_be_at_same_location");
+            Main.displayError("lead_and_swarm_drone_must_be_at_same_location");
             return;
         }
 
         if (leadDrone.equals(this)) {
-            Display.displayMessage("ERROR", "drone_cannot_join_its_own_swarm");
+            Main.displayError("drone_cannot_join_its_own_swarm");
             return;
         }
 
@@ -195,39 +195,39 @@ public class Drone {
         // IF swarmDrone is a FollowerDrone, add it to leadDrone's swarm iff it isn't already in the swarm, and leadDrone is a valid LeaderDrone
         if (this.hasPilot()) {
             if (!this.followers.isEmpty()) {
-                Display.displayMessage("ERROR", "swarm_drone_is_leading_a_swarm");
+                Main.displayError("swarm_drone_is_leading_a_swarm");
             } else {
                 if (leadDrone.hasPilot()) {
                     this.pilot.getPilotedDrones().remove(this.tag);
                     this.assignLeader(leadDrone);
-                    Display.displayMessage("OK", "change_completed");
+                    Main.displayMessage("change_completed");
                 } else if (leadDrone.hasLeader()) {
-                    Display.displayMessage("ERROR", "lead_drone_is_following_another_swarm");
+                    Main.displayError("lead_drone_is_following_another_swarm");
                 } else { // the passed in lead drone tag is just a normal drone, so it doesn't have a pilot
-                    Display.displayMessage("ERROR", "lead_drone_does_not_have_a_pilot");
+                    Main.displayError("lead_drone_does_not_have_a_pilot");
                 }
             }
         } else if (this.hasLeader()) {
             if (leadDrone.hasPilot()) {
                 if (this.leader.getTag().equals(leadDrone.getTag())) {
-                    Display.displayMessage("ERROR","swarm_drone_already_following_lead_drone");
+                    Main.displayError("swarm_drone_already_following_lead_drone");
                     return;
                 }
                 // remove the drone from the old lead drone's swarm and add it to the new one
                 this.leader.getFollowers().remove(this.tag);
                 this.assignLeader(leadDrone);
-                Display.displayMessage("OK", "change_completed");
+                Main.displayMessage("change_completed");
             } else if (leadDrone.hasLeader()) {
-                Display.displayMessage("ERROR", "lead_drone_is_following_another_swarm");
+                Main.displayError("lead_drone_is_following_another_swarm");
             } else { // the passed in lead drone tag is just a normal drone, so it doesn't have a pilot
-                Display.displayMessage("ERROR", "lead_drone_does_not_have_a_pilot");
+                Main.displayError("lead_drone_does_not_have_a_pilot");
             }
         } else { // the passed in swarm drone tag is just a normal drone, so it doesn't have a pilot or a lead drone
             if (leadDrone.hasPilot()) {
                 this.assignLeader(leadDrone);
-                Display.displayMessage("OK","change_completed");
+                Main.displayMessage("change_completed");
             } else { // the lead drone is also just a normal drone and doesn't have a pilot
-                Display.displayMessage("ERROR", "lead_drone_does_not_have_a_pilot");
+                Main.displayError("lead_drone_does_not_have_a_pilot");
             }
         }
     }
@@ -238,14 +238,14 @@ public class Drone {
     public void leaveSwarm() {
         // Remove swarmDrone from swarm iff it is in a swarm (ensuring it is not a leader)
         if (this.hasPilot()) {
-            Display.displayMessage("ERROR", "drone_not_in_a_swarm");
+            Main.displayError("drone_not_in_a_swarm");
         } else if (this.hasLeader()) {
             Pilot pilot = this.leader.pilot;
             this.removeFromSwarm();
             this.assignPilot(pilot);
-            Display.displayMessage("OK", "change_completed");
+            Main.displayMessage("change_completed");
         } else {
-            Display.displayMessage("ERROR", "drone_not_in_a_swarm");
+            Main.displayError("drone_not_in_a_swarm");
         }
     }
 
@@ -258,27 +258,26 @@ public class Drone {
         if (Location.locations.containsKey(destination)) {
             destinationLocation = Location.locations.get(destination);
         } else {
-            Display.displayMessage("ERROR","flight_destination_does_not_exist");
+            Main.displayError("flight_destination_does_not_exist");
             return;
         }
 
         // Drone can be made a LeaderDrone iff it is already a LeaderDrone & pilot is valid
         if (this.hasLeader()) {
-            Display.displayMessage("ERROR", "drone_is_not_a_leader");
+            Main.displayError("drone_is_not_a_leader");
             return;
         } else if (!this.hasPilot()) {
-            Display.displayMessage("ERROR", "the_drone_does_not_have_a_pilot");
+            Main.displayError("the_drone_does_not_have_a_pilot");
             return;
         }
 
         if (this.getPilotLicense() == null) {
-            Display.displayMessage("ERROR", "pilot_has_no_license");
+            Main.displayError("pilot_has_no_license");
             return;
         }
 
         if (destinationLocation.notEnoughSpace(this)) {
-            Display.displayMessage("ERROR", "not_enough_space_to_maneuver_the_" +
-                    "swarm_to_that_location");
+            Main.displayError("not_enough_space_to_maneuver_the_swarm_to_that_location");
             return;
         }
         // Fly iff there is enough fuel to drop ingredients off and return back to home base
@@ -286,19 +285,19 @@ public class Drone {
         Integer returnDistance = Location.calculateDistance(destinationLocation, this.homeBase);
 
         if (distance > this.fuel) {
-            Display.displayMessage("ERROR", "not_enough_fuel_to_reach_the_destination");
+            Main.displayError("not_enough_fuel_to_reach_the_destination");
             return;
         } else if (distance + returnDistance > this.fuel) {
-            Display.displayMessage("ERROR", "not_enough_fuel_to_return_to_home_base_from_destination");
+            Main.displayError("not_enough_fuel_to_return_to_home_base_from_destination");
             return;
         }
 
         for (Drone drone : this.followers.values()) {
             if (distance > drone.fuel) {
-                Display.displayMessage("ERROR", "not_enough_fuel_to_reach_the_destination");
+                Main.displayError("not_enough_fuel_to_reach_the_destination");
                 return;
             } else if (distance + returnDistance > drone.fuel) {
-                Display.displayMessage("ERROR", "not_enough_fuel_to_return_to_home_base_from_destination");
+                Main.displayError("not_enough_fuel_to_return_to_home_base_from_destination");
                 return;
             }
         }
@@ -309,7 +308,7 @@ public class Drone {
         }
 
         this.pilot.addSuccessfulTrip();
-        Display.displayMessage("OK", "change_completed");
+        Main.displayMessage("change_completed");
     }
 
     /**
@@ -320,23 +319,23 @@ public class Drone {
     public void loadFuel(Integer petrol, DeliveryService service) {
         // if the petrol to fill the drone is not valid, display an error message
         if (petrol <= 0) {
-            Display.displayMessage("ERROR", "petrol_must_be_greater_than_zero");
+            Main.displayError("petrol_must_be_greater_than_zero");
             return;
         }
 
         // if the drone is at the service's home base, fill the drone with fuel
         if (this.notAtHomeBase()) {
-            Display.displayMessage("ERROR", "drone_not_located_at_home_base");
+            Main.displayError("drone_not_located_at_home_base");
             return;
         }
 
         if (service.noWorkersExist()) {
-            Display.displayMessage("ERROR", "delivery_service_does_not_have_regular_workers");
+            Main.displayError("delivery_service_does_not_have_regular_workers");
             return;
         }
 
         this.loadDroneFuel(petrol);
-        Display.displayMessage("OK", "change_completed");
+        Main.displayMessage("change_completed");
     }
 
     /**

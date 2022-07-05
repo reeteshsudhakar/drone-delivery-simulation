@@ -1,4 +1,3 @@
-import java.util.Scanner;
 
 /**
  * Ingredient delivery service system for restaurants
@@ -17,7 +16,7 @@ public class InterfaceLoop {
      * @param name the name of the ingredient
      * @param weight the unit weight of the ingredient
      */
-    private void makeIngredient(String barcode, String name, Integer weight) {
+    private static void makeIngredient(String barcode, String name, Integer weight) {
         Ingredient.makeIngredient(barcode, name, weight);
     }
 
@@ -28,7 +27,7 @@ public class InterfaceLoop {
      * @param yCoordinate the y-coordinate of the location
      * @param spaceLimit the capacity of drones at the location
      */
-    private void makeLocation(String name, Integer xCoordinate, Integer yCoordinate, Integer spaceLimit) {
+    private static void makeLocation(String name, Integer xCoordinate, Integer yCoordinate, Integer spaceLimit) {
         Location.makeLocation(name, xCoordinate, yCoordinate, spaceLimit);
     }
 
@@ -37,7 +36,7 @@ public class InterfaceLoop {
      * @param departurePoint the name of the departure location
      * @param arrivalPoint the name of the arrival location
      */
-    private void checkDistance(String departurePoint, String arrivalPoint) {
+    private static void checkDistance(String departurePoint, String arrivalPoint) {
         Location.checkDistance(departurePoint, arrivalPoint);
     }
 
@@ -47,7 +46,7 @@ public class InterfaceLoop {
      * @param revenue the revenue of the service
      * @param locatedAt the name of the location the service is located at
      */
-    private void makeDeliveryService(String name, Integer revenue, String locatedAt) {
+    private static void makeDeliveryService(String name, Integer revenue, String locatedAt) {
         DeliveryService.makeDeliveryService(name, revenue, locatedAt);
     }
 
@@ -56,7 +55,7 @@ public class InterfaceLoop {
      * @param name the name of the restaurant
      * @param locatedAt the name of the location the restaurant is located at
      */
-    private void makeRestaurant(String name, String locatedAt) {
+    private static void makeRestaurant(String name, String locatedAt) {
         Restaurant.makeRestaurant(name, locatedAt);
     }
 
@@ -67,7 +66,7 @@ public class InterfaceLoop {
      * @param capacity the number of units of ingredients the drone can carry
      * @param fuel the fuel of the drone
      */
-    private void makeDrone(String serviceName, Integer tag, Integer capacity, Integer fuel) {
+    private static void makeDrone(String serviceName, Integer tag, Integer capacity, Integer fuel) {
         Drone.makeDrone(serviceName, tag, capacity, fuel);
     }
 
@@ -81,7 +80,7 @@ public class InterfaceLoop {
      * @param date the date of birth of the person
      * @param address the address of the person
      */
-    private void makePerson(String username, String firstName, String lastName,
+    private static void makePerson(String username, String firstName, String lastName,
                     Integer year, Integer month, Integer date, String address) {
         Person.makePerson(username, firstName, lastName,
                 year, month, date, address);
@@ -92,7 +91,7 @@ public class InterfaceLoop {
      * @param serviceName the name of the service
      * @param username the username of the person to be hired as a worker
      */
-    private void hireWorker(String serviceName, String username) {
+    private static void hireWorker(String serviceName, String username) {
         if (Person.checkUserName(username) && DeliveryService.checkServiceName(serviceName)) {
             DeliveryService employer = DeliveryService.services.get(serviceName);
             employer.hireWorker(username);
@@ -104,7 +103,7 @@ public class InterfaceLoop {
      * @param serviceName the name of the service
      * @param username the username of the worker to be fired
      */
-    private void fireWorker(String serviceName, String username) {
+    private static void fireWorker(String serviceName, String username) {
         if (Person.checkUserName(username) && DeliveryService.checkServiceName(serviceName)) {
             DeliveryService employer = DeliveryService.services.get(serviceName);
             employer.fireWorker(username);
@@ -116,7 +115,7 @@ public class InterfaceLoop {
      * @param serviceName the name of the service
      * @param username the name of the manager to be hired
      */
-    private void appointManager(String serviceName, String username) {
+    private static void appointManager(String serviceName, String username) {
         if (Person.checkUserName(username) && DeliveryService.checkServiceName(serviceName)) {
             Person tempPerson = Person.people.get(username);
             DeliveryService employer = DeliveryService.services.get(serviceName);
@@ -131,9 +130,9 @@ public class InterfaceLoop {
      * @param license A valid pilot's license
      * @param experience The amount of flying experience the pilot has
      */
-    private void trainPilot(String serviceName, String username, String license, Integer experience) {
+    private static void trainPilot(String serviceName, String username, String license, Integer experience) {
         if (experience == null || license == null || license.equals("")) {
-            Display.displayMessage("ERROR", "invalid_arguments_entered");
+            Main.displayError("invalid_arguments_entered");
             return;
         }
 
@@ -150,7 +149,7 @@ public class InterfaceLoop {
      * @param username the username of the pilot to be appointed
      * @param droneTag the tag of the drone to be appointed to the pilot
      */
-    private void appointPilot(String serviceName, String username, Integer droneTag) {
+    private static void appointPilot(String serviceName, String username, Integer droneTag) {
         if (DeliveryService.checkServiceName(serviceName) && Person.checkUserName(username)) {
             Person tempPerson = Person.people.get(username);
             DeliveryService employer = DeliveryService.services.get(serviceName);
@@ -164,7 +163,7 @@ public class InterfaceLoop {
      * @param tag the tag of the drone
      * @param destination the name of the location the drone is flying to
      */
-    private void flyDrone(String serviceName, Integer tag, String destination) {
+    private static void flyDrone(String serviceName, Integer tag, String destination) {
 
         if (!DeliveryService.checkServiceName(serviceName)) {
             return;
@@ -175,7 +174,7 @@ public class InterfaceLoop {
         // checking if the drone exists in the system
         if (!service.hasDrone(tag)) {
             // if the drone does not exist in the system, display an error message
-            Display.displayMessage("ERROR", "drone_does_not_exist");
+            Main.displayError("drone_does_not_exist");
             return;
         }
         Drone movedDrone = service.getDrone(tag);
@@ -188,7 +187,7 @@ public class InterfaceLoop {
      * @param leadDroneTag The tag of the drone that is leading the swarm to be joined
      * @param swarmDroneTag The tag of the drone that is joining the swarm
      */
-    private void joinSwarm(String serviceName, Integer leadDroneTag, Integer swarmDroneTag) {
+    private static void joinSwarm(String serviceName, Integer leadDroneTag, Integer swarmDroneTag) {
         if (!DeliveryService.checkServiceName(serviceName)) {
             return;
         }
@@ -196,7 +195,7 @@ public class InterfaceLoop {
         Drone leadDrone = DeliveryService.findDrone(serviceName, leadDroneTag);
         Drone swarmDrone = DeliveryService.findDrone(serviceName, swarmDroneTag);
         if (swarmDrone == null) {
-            Display.displayMessage("ERROR", "swarm_drone_does_not_exist");
+            Main.displayError("swarm_drone_does_not_exist");
             return;
         }
         swarmDrone.joinSwarm(leadDrone);
@@ -207,13 +206,13 @@ public class InterfaceLoop {
      * @param serviceName The name of the service that owns the drone leaving the swarm
      * @param swarmDroneTag The tag of the drone leaving the swarm
      */
-    private void leaveSwarm(String serviceName, Integer swarmDroneTag) {
+    private static void leaveSwarm(String serviceName, Integer swarmDroneTag) {
         if (!DeliveryService.checkServiceName(serviceName)) {
             return;
         }
         Drone swarmDrone = DeliveryService.findDrone(serviceName, swarmDroneTag);
         if (swarmDrone == null) {
-            Display.displayMessage("ERROR", "swarm_drone_does_not_exist");
+            Main.displayError("swarm_drone_does_not_exist");
             return;
         }
         swarmDrone.leaveSwarm();
@@ -227,7 +226,7 @@ public class InterfaceLoop {
      * @param quantity the quantity of the ingredient to be loaded
      * @param unitPrice the price of the ingredient
      */
-    private void loadIngredient(String serviceName, Integer tag, String barcode, Integer quantity, Integer unitPrice) {
+    private static void loadIngredient(String serviceName, Integer tag, String barcode, Integer quantity, Integer unitPrice) {
         // checking if the drone exists in the system
         Drone loadDrone;
         DeliveryService service;
@@ -242,20 +241,20 @@ public class InterfaceLoop {
             loadDrone = service.getDrone(tag);
         } else {
             // if the drone does not exist in the service, display an error message
-            Display.displayMessage("ERROR", "drone_does_not_exist");
+            Main.displayError("drone_does_not_exist");
             return;
         }
 
         if (service.noWorkersExist()) {
-            Display.displayMessage("ERROR", "delivery_service_does_not_have_regular_workers");
+            Main.displayError("delivery_service_does_not_have_regular_workers");
             return;
         }
 
         // load the ingredient and track quantity and price using a package if there is space to load it
         if (loadDrone.getRemainingCapacity() == 0) {
-            Display.displayMessage("ERROR","no_capacity_left_to_load_more_packages");
+            Main.displayError("no_capacity_left_to_load_more_packages");
         } else if (loadDrone.getRemainingCapacity() < quantity) {
-            Display.displayMessage("ERROR","not_enough_capacity_to_hold_new_packages");
+            Main.displayError("not_enough_capacity_to_hold_new_packages");
         } else {
             loadDrone.addToPayload(barcode, quantity, unitPrice);
         }
@@ -267,7 +266,7 @@ public class InterfaceLoop {
      * @param tag the tag of the drone
      * @param petrol the quantity of petrol to be loaded
      */
-    private void loadFuel(String serviceName, Integer tag, Integer petrol) {
+    private static void loadFuel(String serviceName, Integer tag, Integer petrol) {
 
         if (!DeliveryService.checkServiceName(serviceName)) {
             return;
@@ -278,12 +277,12 @@ public class InterfaceLoop {
         // checking if the drone exists in the service
         if (!service.hasDrone(tag)) {
             // If the drone does not exist in the service, display an error message
-            Display.displayMessage("ERROR", "drone_does_not_exist");
+            Main.displayError("drone_does_not_exist");
             return;
         }
 
         if (service.noWorkersExist()) {
-            Display.displayMessage("ERROR", "delivery_service_does_not_have_regular_workers");
+            Main.displayError("delivery_service_does_not_have_regular_workers");
             return;
         }
 
@@ -299,7 +298,7 @@ public class InterfaceLoop {
      * @param barcode the barcode of the ingredient requested for purchase
      * @param quantity the quantity of the ingredient requested for purchase
      */
-    private void purchaseIngredient(String restaurantName, String serviceName, Integer tag,
+    private static void purchaseIngredient(String restaurantName, String serviceName, Integer tag,
                             String barcode, Integer quantity) {
         // checking if the restaurant exists in the system
         Restaurant buyerRestaurant;
@@ -308,7 +307,7 @@ public class InterfaceLoop {
             buyerRestaurant.purchaseIngredient(tag, barcode, quantity, serviceName);
         } else {
             // if the restaurant does not exist in the system, display an error message
-            Display.displayMessage("ERROR", "restaurant_identifier_does_not_exist");
+            Main.displayError("restaurant_identifier_does_not_exist");
         }
     }
 
@@ -316,7 +315,7 @@ public class InterfaceLoop {
      * This method collects all the revenue made by a delivery service
      * @param serviceName The name of the delivery service
      */
-    private void collectRevenue(String serviceName) {
+    private static void collectRevenue(String serviceName) {
         // checking if the service exists in the system
         if (DeliveryService.checkServiceName(serviceName)) {
             DeliveryService employer = DeliveryService.services.get(serviceName);
@@ -327,18 +326,14 @@ public class InterfaceLoop {
     /**
      * Main loop to run the simulation and pass in arguments from the command line.
      */
-    public void commandLoop() {
-        Scanner commandLineInput = new Scanner(System.in);
-        String wholeInputLine;
+    public static void commandLoop(String input) {
         String[] tokens;
         final String DELIMITER = ",";
 
-        while (commandLineInput.hasNextLine()) {
             try {
                 // Determine the next command and echo it to the monitor for testing purposes
-                wholeInputLine = commandLineInput.nextLine();
-                tokens = wholeInputLine.split(DELIMITER);
-                System.out.println("> " + wholeInputLine);
+                tokens = input.split(DELIMITER);
+                System.out.println("> " + input);
 
                 //noinspection StatementWithEmptyBody
                 if (tokens[0].indexOf("//") == 0) {
@@ -402,7 +397,6 @@ public class InterfaceLoop {
                     collectRevenue(tokens[1]);
                 } else if (tokens[0].equals("stop")) {
                     System.out.println("stop acknowledged");
-                    break;
                 } else {
                     System.out.println("command " + tokens[0] + " NOT acknowledged");
                 }
@@ -410,8 +404,5 @@ public class InterfaceLoop {
                 e.printStackTrace();
                 System.out.println();
             }
-        }
-        System.out.println("simulation terminated");
-        commandLineInput.close();
     }
 }
