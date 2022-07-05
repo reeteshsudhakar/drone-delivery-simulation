@@ -130,6 +130,12 @@ public class Main extends Application {
                 alert.setTitle(status);
                 alert.setHeaderText(message);
                 alert.showAndWait();
+            } else if (status.equals("STOP")) {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle(status);
+                alert.setHeaderText(message);
+                alert.showAndWait();
+                System.exit(0);
             }
         });
 
@@ -149,6 +155,11 @@ public class Main extends Application {
 
     public static void displayError(String output) {
         status = "ERROR";
+        message = output;
+    }
+
+    public static void closeWindow(String output) {
+        status = "STOP";
         message = output;
     }
 }

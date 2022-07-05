@@ -226,7 +226,8 @@ public class InterfaceLoop {
      * @param quantity the quantity of the ingredient to be loaded
      * @param unitPrice the price of the ingredient
      */
-    private static void loadIngredient(String serviceName, Integer tag, String barcode, Integer quantity, Integer unitPrice) {
+    private static void loadIngredient(String serviceName, Integer tag, String barcode, Integer quantity,
+                                       Integer unitPrice) {
         // checking if the drone exists in the system
         Drone loadDrone;
         DeliveryService service;
@@ -396,9 +397,11 @@ public class InterfaceLoop {
                 } else if (tokens[0].equals("collect_revenue")) {
                     collectRevenue(tokens[1]);
                 } else if (tokens[0].equals("stop")) {
-                    System.out.println("stop acknowledged");
+                    Main.closeWindow("stop acknowledged");
+                } else if (tokens[0].equals("")) {
+                    Main.displayError("please enter a command");
                 } else {
-                    System.out.println("command " + tokens[0] + " NOT acknowledged");
+                    Main.displayError("command " + tokens[0] + " NOT acknowledged");
                 }
             } catch (Exception e) {
                 e.printStackTrace();
