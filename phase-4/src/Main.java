@@ -14,7 +14,12 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import javafx.stage.Popup;
 import javafx.stage.Stage;
+
+import java.io.File;
+import java.io.IOException;
+
 
 /**
  * Main class to run the interface for the ingredient purchasing system.
@@ -31,7 +36,7 @@ public class Main extends Application {
     }
 
     @Override
-    public void start(Stage stage) {
+    public void start(Stage stage) throws IOException {
         // creating a grid to display the entities
         GridPane grid = new GridPane();
         grid.setAlignment(Pos.CENTER);
@@ -50,7 +55,11 @@ public class Main extends Application {
         initializeWindow(root, grid, stage);
     }
 
-    public void initializeWindow(StackPane root, GridPane grid, Stage stage) {
+    /*
+    TODO: change this and just make a method to initialize the grid and other stuff,
+     passing it all in to add to the stage is dumb here
+     */
+    public void initializeWindow(StackPane root, GridPane grid, Stage stage) throws IOException {
         // background image
         Image image = new Image("resources/background.jpeg");
         ImageView background = new ImageView(image);
@@ -65,7 +74,7 @@ public class Main extends Application {
         title.setUnderline(true);
         title.setTranslateY(20);
 
-        VBox input = addArgumentInput();
+        VBox input = addArgumentInput(stage);
 
         root.getChildren().addAll(background, title, grid, input);
         root.setAlignment(title, Pos.TOP_CENTER);
@@ -90,7 +99,7 @@ public class Main extends Application {
         grid.add(vbox, column, row);
     }
 
-    public VBox addArgumentInput() {
+    public VBox addArgumentInput(Stage stage) throws IOException {
         VBox input = new VBox();
         input.setAlignment(Pos.BOTTOM_CENTER);
         input.setTranslateY(-20);
@@ -120,29 +129,42 @@ public class Main extends Application {
             String argument = textField.getText();
             InterfaceLoop.commandLoop(argument);
             textField.clear();
-            if (status.equals("ERROR")) {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle(status);
-                alert.setHeaderText(message);
-                alert.showAndWait();
-            } else if (status.equals("OK")) {
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle(status);
-                alert.setHeaderText(message);
-                alert.showAndWait();
-            } else if (status.equals("STOP")) {
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle(status);
-                alert.setHeaderText(message);
-                alert.showAndWait();
-                System.exit(0);
+            switch (status) {
+                case "ERROR": {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle(status);
+                    alert.setHeaderText(message);
+                    alert.showAndWait();
+                    break;
+                }
+                case "OK": {
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle(status);
+                    alert.setHeaderText(message);
+                    alert.showAndWait();
+                    break;
+                }
+                case "STOP": {
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle(status);
+                    alert.setHeaderText(message);
+                    alert.showAndWait();
+                    System.exit(0);
+                }
             }
         });
+
+        Popup arguments = makePopup(new File("src/resources/arguments.csv"));
+        Button showArguments = makePopupButton(arguments, stage);
+        showArguments.setFont(Font.font("Helvetica", FontWeight.BOLD, 20));
+        showArguments.setPrefSize(125, 50);
+        showArguments.setAlignment(Pos.CENTER);
+
 
         HBox hbox = new HBox();
         hbox.setAlignment(Pos.CENTER);
         hbox.setSpacing(10);
-        hbox.getChildren().addAll(textField, submit);
+        hbox.getChildren().addAll(textField, submit, showArguments);
 
         input.getChildren().addAll(text, hbox);
         return input;
@@ -161,5 +183,27 @@ public class Main extends Application {
     public static void closeWindow(String output) {
         status = "STOP";
         message = output;
+    }
+
+    public Popup makePopup(File file) throws IOException {
+        CSVTableView table = new CSVTableView(",", file);
+        Popup popup = new Popup();
+        popup.getContent().add(table);
+        return popup;
+    }
+
+    public Button makePopupButton(Popup popup, Stage stage) {
+        Button button = new Button("Show Args");
+        button.setOnAction(e -> {
+            if (button.getText().equals("Show Args")) {
+                popup.show(stage, stage.getWidth()/2 - popup.getWidth()/2,
+                        stage.getHeight()/2 - popup.getHeight()/2);
+                button.setText("Hide Args");
+            } else {
+                popup.hide();
+                button.setText("Show Args");
+            }
+        });
+        return button;
     }
 }
