@@ -1,5 +1,3 @@
-// TODO: look into styling things using CSS (https://docs.oracle.com/javafx/2/css_tutorial/jfxpub-css_tutorial.htm)
-
 /**
  * This class is used to display the messages from the program.
  *

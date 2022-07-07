@@ -20,7 +20,12 @@ import javafx.stage.Stage;
 import java.io.File;
 import java.io.IOException;
 
-// TODO: change the way that the main pane for buttons is made so that they actually work
+/*
+TODO: connect the other buttons to their displays, to get rid of the display class
+ (maybe there's a way to repurpose it to clean up the code, idk)
+TODO: code cleanup to make this actually follow good design principles
+TODO: style the popups better so that they actually are readable when people want to see information
+ */
 
 /**
  * Main class to run the interface for the ingredient purchasing system.
