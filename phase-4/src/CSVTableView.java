@@ -35,9 +35,11 @@ public class CSVTableView extends TableView<String> {
             });
 
             this.setItems(FXCollections.observableArrayList(lines));
-            // Remove header row, as it will be added to the data at this point
-            // this only works if we're sure that our CSV file has a header,
-            // otherwise, we're just deleting data at this point.
+            /*
+            Remove header row, as it will be added to the data at this point
+            this only works if we're sure that our CSV file has a header,
+            otherwise, we're just deleting data at this point.
+            */
             this.getItems().remove(0);
         }
     }
