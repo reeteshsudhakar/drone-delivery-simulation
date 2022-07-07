@@ -20,7 +20,7 @@ public class Display {
             }
         }
 
-        Main.displayMessage("display_completed");
+        Main.displayMessage("OK","display_completed");
     }
 
     /**
@@ -31,7 +31,7 @@ public class Display {
         for (DeliveryService service : DeliveryService.services.values()) {
             System.out.println(service.toString());
         }
-        Main.displayMessage("display_completed");
+        Main.displayMessage("OK","display_completed");
     }
 
     /**
@@ -43,21 +43,10 @@ public class Display {
         if (DeliveryService.services.containsKey(serviceName)) {
             DeliveryService service = DeliveryService.services.get(serviceName);
             service.getDrones().forEach((k, v) -> System.out.print(v.toString()));
-            Main.displayMessage("display_completed");
+            Main.displayMessage("OK","display_completed");
         } else {
-            Main.displayError("service_does_not_exist");
+            Main.displayMessage("ERROR","service_does_not_exist");
         }
-    }
-
-    /**
-     * Method to display the ingredients in the system.
-     */
-    public static void displayIngredients() {
-        // displaying all the ingredients in the system by iterating through the collection
-        for (Ingredient ingredient : Ingredient.ingredients.values()) {
-            System.out.println(ingredient.toString());
-        }
-        Main.displayMessage("display_completed");
     }
 
     /**
@@ -68,7 +57,7 @@ public class Display {
         for (Restaurant restaurant : Restaurant.restaurants.values()) {
             System.out.println(restaurant.toString());
         }
-        Main.displayMessage("display_completed");
+        Main.displayMessage("OK","display_completed");
     }
 
     /**
@@ -79,7 +68,7 @@ public class Display {
         for (Location location : Location.locations.values()) {
             System.out.println(location.toString());
         }
-        Main.displayMessage("display_completed");
+        Main.displayMessage("OK","display_completed");
     }
 
     /**
@@ -90,6 +79,6 @@ public class Display {
         for (Person person : Person.people.values()) {
             System.out.println(person.toString());
         }
-        Main.displayMessage("display_completed");
+        Main.displayMessage("OK","display_completed");
     }
 }

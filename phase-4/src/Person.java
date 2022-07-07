@@ -53,26 +53,26 @@ public class Person implements Comparable<Person> {
     public static void makePerson(String username, String firstName, String lastName,
                                   Integer year, Integer month, Integer date, String address) {
         if (username == null || username.equals("")) {
-            Main.displayError("username_not_valid");
+            Main.displayMessage("ERROR","username_not_valid");
         } else if (people.containsKey(username)) {
-            Main.displayError("person_already_exists");
+            Main.displayMessage("ERROR","person_already_exists");
         } else if (firstName == null || firstName.equals("")) {
-            Main.displayError("first_name_not_valid");
+            Main.displayMessage("ERROR","first_name_not_valid");
         } else if (lastName == null || lastName.equals("")) {
-            Main.displayError("last_name_not_valid");
+            Main.displayMessage("ERROR","last_name_not_valid");
         } else if (year == null || year == 0) {
-            Main.displayError("year_not_valid");
+            Main.displayMessage("ERROR","year_not_valid");
         } else if (month == null || month == 0) {
-            Main.displayError("month_not_valid");
+            Main.displayMessage("ERROR","month_not_valid");
         } else if (date == null || date == 0) {
-            Main.displayError("date_not_valid");
+            Main.displayMessage("ERROR","date_not_valid");
         } else if (address == null || address.equals("")) {
-            Main.displayError("address_not_valid");
+            Main.displayMessage("ERROR","address_not_valid");
         } else {
             Person newPerson = new Person(username, firstName, lastName, year,
                     month, date, address);
             people.put(username, newPerson);
-            Main.displayMessage("person_created");
+            Main.displayMessage("OK","person_created");
         }
     }
 
@@ -85,7 +85,7 @@ public class Person implements Comparable<Person> {
         if (people.containsKey(username)) {
             return true;
         } else {
-            Main.displayError("user_name_does_not_exist");
+            Main.displayMessage("ERROR","user_name_does_not_exist");
             return false;
         }
     }
