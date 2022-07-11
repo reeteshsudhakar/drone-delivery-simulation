@@ -164,8 +164,9 @@ public class DeliveryService implements Comparable <DeliveryService> {
                 Manager newManager = new Manager(tempWorker, this);
                 Person.people.put(newManager.getUsername(), newManager);
                 if (!(this.manager == null)) {
-                    Worker oldManager = this.manager;
-                    Person.people.put(oldManager.getUsername(), oldManager);
+                    Worker newWorker = new Worker(this.manager, this.manager.getEmployers().get(this.name));
+//                    Worker oldManager = this.manager;
+                    Person.people.put(newWorker.getUsername(), newWorker);
                 }
                 this.setManager(newManager);
                 Display.displayMessage("OK", "employee_has_been_appointed_manager");
