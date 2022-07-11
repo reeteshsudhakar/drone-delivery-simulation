@@ -51,13 +51,19 @@ public class Main extends Application {
         grid.setHgap(20);
         grid.setVgap(20);
 
-        Button droneButton = addAsset(grid, 0, 0, "drone.png", "Display Drones");
+        Button droneButton = addAsset(grid, 0, 0, "drone.png", "Display all Drones");
         Button ingredientButton = addAsset(grid, 0, 1, "ingredient.png", "Display Ingredients");
         Button peopleButton = addAsset(grid, 0, 2, "person.png", "Display People");
         Button restaurantButton = addAsset(grid, 0, 3, "restaurant.png", "Display Restaurants");
         Button serviceButton = addAsset(grid, 0, 4, "service.png", "Display Services");
+        Button locationButton = addAsset(grid, 0, 5, "location.png", "Display Locations");
 
+        droneButton.setOnAction(e -> displayAllDrones());
         ingredientButton.setOnAction(e -> displayIngredients());
+        peopleButton.setOnAction(e -> displayPeople());
+        restaurantButton.setOnAction(e -> displayRestaurants());
+        serviceButton.setOnAction(e -> displayServices());
+        locationButton.setOnAction(e -> displayLocations());
 
         // adding background image to the scene and showing the stage
         StackPane root = new StackPane();
@@ -99,7 +105,7 @@ public class Main extends Application {
     }
 
     public Button addAsset(GridPane grid, int row, int column, String fileName, String buttonName) {
-        Image image = new Image("resources/" + fileName, 250, 250, true, true);
+        Image image = new Image("resources/" + fileName, 200, 200, true, true);
         ImageView imageView = new ImageView(image);
         Button button = new Button(buttonName);
 
@@ -164,6 +170,8 @@ public class Main extends Application {
                     alert.showAndWait();
                     System.exit(0);
                 }
+                case "DISPLAY":
+                    break;
             }
         });
 
@@ -191,6 +199,8 @@ public class Main extends Application {
         CSVTableView table = new CSVTableView(",", file);
         Popup popup = new Popup();
         popup.getContent().add(table);
+        popup.setAnchorX(primaryStage.getWidth()/2 - popup.getWidth()/2);
+        popup.setAnchorY(primaryStage.getHeight()/2 - popup.getHeight()/2);
         return popup;
     }
 
@@ -209,6 +219,10 @@ public class Main extends Application {
         return button;
     }
 
+    public static void displayAllDrones() {
+
+    }
+
     public static void displayIngredients() {
         Popup ingredientPopup = new Popup();
         ingredientPopup.setOpacity(1);
@@ -224,10 +238,8 @@ public class Main extends Application {
                 VBox info = new VBox();
                 info.setAlignment(Pos.CENTER_LEFT);
                 info.setSpacing(5);
-                Text name = new Text("Name: " + ingredient.getName());
-                Text barcode = new Text("Barcode: " + ingredient.getBarcode());
-                Text weight = new Text("Weight: " + ingredient.getWeight().toString());
-                info.getChildren().addAll(name, barcode, weight);
+                Text ingredientInfo = new Text(ingredient.toString());
+                info.getChildren().addAll(ingredientInfo);
                 ImageView image = new ImageView(new Image("resources/ingredient.png", 50, 50, true, true));
                 holder.getChildren().addAll(image, info);
                 popupBox.getChildren().add(holder);
@@ -242,7 +254,56 @@ public class Main extends Application {
             return;
         }
 
+        displayMessage("DISPLAY","display_in_progress");
         ingredientPopup.show(primaryStage, primaryStage.getWidth()/2 - ingredientPopup.getWidth()/2,
                 primaryStage.getHeight()/2 - ingredientPopup.getHeight()/2);
+    }
+
+    public static void displayPeople() {
+
+    }
+
+    public static void displayRestaurants() {
+
+    }
+
+    public static void displayServices() {
+
+    }
+
+    public static void displayLocations() {
+        Popup locationPopup = new Popup();
+        locationPopup.setOpacity(1);
+        locationPopup.setAutoHide(true);
+        VBox popupBox = new VBox();
+        popupBox.setSpacing(10);
+        popupBox.setStyle("-fx-background-color: white; -fx-padding: 10px;");
+
+        if (!Location.locations.isEmpty()) {
+            for (Location location : Location.locations.values()) {
+                HBox holder = new HBox();
+                holder.setSpacing(10);
+                VBox info = new VBox();
+                info.setAlignment(Pos.CENTER_LEFT);
+                info.setSpacing(5);
+                Text locationInfo = new Text(location.toString());
+                info.getChildren().addAll(locationInfo);
+                ImageView image = new ImageView(new Image("resources/location.png", 50, 50, true, true));
+                holder.getChildren().addAll(image, info);
+                popupBox.getChildren().add(holder);
+            }
+            locationPopup.getContent().add(popupBox);
+        } else {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("ERROR");
+            alert.setHeaderText("No Locations");
+            alert.setContentText("No locations have been made yet. Use the make_location command to do so!");
+            alert.show();
+            return;
+        }
+
+        displayMessage("DISPLAY","display_in_progress");
+        locationPopup.show(primaryStage, primaryStage.getWidth()/2 - locationPopup.getWidth()/2,
+                primaryStage.getHeight()/2 - locationPopup.getHeight()/2);
     }
 }

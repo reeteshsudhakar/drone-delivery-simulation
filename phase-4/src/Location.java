@@ -135,7 +135,7 @@ public class Location implements Comparable<Location> {
      */
     @Override
     public String toString() {
-        return String.format("name: %s, (x,y): (%d, %d), space: [%d / %d] remaining",
+        return String.format("Name: %s, (x,y): (%d, %d), Space: [%d / %d] Remaining",
                 this.name, this.xCoordinate, this.yCoordinate, this.spacesLeft, this.spaceLimit);
     }
 

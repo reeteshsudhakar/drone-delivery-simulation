@@ -69,7 +69,7 @@ public class Ingredient implements Comparable<Ingredient> {
      */
     @Override
     public String toString() {
-        return "barcode: " + this.barcode + ", name: " + this.name + ", unit_weight: " + this.weight;
+        return "Barcode: " + this.barcode + "\nName: " + this.name + "\nUnit Weight: " + this.weight;
     }
 
     /**

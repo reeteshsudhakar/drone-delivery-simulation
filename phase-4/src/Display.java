@@ -59,17 +59,6 @@ public class Display {
     }
 
     /**
-     * Method to display the locations in the system.
-     */
-    public static void displayLocations() {
-        // displaying all the locations in the system by iterating through the collection
-        for (Location location : Location.locations.values()) {
-            System.out.println(location.toString());
-        }
-        Main.displayMessage("OK","display_completed");
-    }
-
-    /**
      * Method to display the people in our service
      */
     public static void displayPersons() {

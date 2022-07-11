@@ -347,7 +347,7 @@ public class InterfaceLoop {
                     makeLocation(tokens[1], Integer.parseInt(tokens[2]), Integer.parseInt(tokens[3]),
                             Integer.parseInt(tokens[4]));
                 } else if (tokens[0].equals("display_locations")) {
-                    Display.displayLocations();
+                    Main.displayLocations();
                 } else if (tokens[0].equals("check_distance")) {
                     checkDistance(tokens[1], tokens[2]);
                 } else if (tokens[0].equals("make_service")) {
