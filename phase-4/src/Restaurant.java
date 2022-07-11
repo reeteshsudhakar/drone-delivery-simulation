@@ -44,7 +44,7 @@ public class Restaurant implements Comparable<Restaurant> {
     public static void makeRestaurant(String name, String locatedAt) {
         // checking if the restaurant already exists
         if (restaurants.containsKey(name)) {
-            Main.displayMessage("ERROR","restaurant_already_exists");
+            Display.displayMessage("ERROR","restaurant_already_exists");
             return;
         }
 
@@ -53,9 +53,9 @@ public class Restaurant implements Comparable<Restaurant> {
         if (Location.locations.containsKey(locatedAt)) {
             Restaurant restaurant = new Restaurant(name, Location.locations.get(locatedAt));
             restaurants.put(name, restaurant);
-            Main.displayMessage("OK","restaurant_created");
+            Display.displayMessage("OK","restaurant_created");
         } else {
-            Main.displayMessage("ERROR","location_identifier_does_not_exist");
+            Display.displayMessage("ERROR","location_identifier_does_not_exist");
         }
     }
 
@@ -75,7 +75,7 @@ public class Restaurant implements Comparable<Restaurant> {
                 buyerDrone = service.getDrone(tag);
             } else {
                 // if the drone does not exist in the system, display an error message
-                Main.displayMessage("ERROR","drone_does_not_exist");
+                Display.displayMessage("ERROR","drone_does_not_exist");
                 return;
             }
         } else {
@@ -87,13 +87,13 @@ public class Restaurant implements Comparable<Restaurant> {
 
         // if the ingredient does not exist in the system, display an error message
         if (!ingredientExists) {
-            Main.displayMessage("ERROR","ingredient_identifier_does_not_exist");
+            Display.displayMessage("ERROR","ingredient_identifier_does_not_exist");
             return;
         }
 
         // if the drone is not at the restaurant's location, display an error message
         if (!buyerDrone.getCurrentLocation().equals(this.getLocation())) {
-            Main.displayMessage("ERROR","drone_not_located_at_restaurant");
+            Display.displayMessage("ERROR","drone_not_located_at_restaurant");
             return;
         }
 
@@ -108,22 +108,22 @@ public class Restaurant implements Comparable<Restaurant> {
 
         // if the ingredient is not found in the drone's payload, display an error message
         if (buyerIngredient == null) {
-            Main.displayMessage("ERROR","ingredient_not_found_in_payload");
+            Display.displayMessage("ERROR","ingredient_not_found_in_payload");
             return;
         } else if (quantity <= 0) {
-            Main.displayMessage("ERROR","quantity_requested_must_be_greater_than_zero");
+            Display.displayMessage("ERROR","quantity_requested_must_be_greater_than_zero");
             return;
         }
 
         // completing the purchase if the drone has enough of the ingredient requested for purchase
         if (buyerDrone.getIngredientPayload(buyerIngredient, quantity) < 0) {
-            Main.displayMessage("ERROR","drone_does_not_have_enough_of_ingredient_requested");
+            Display.displayMessage("ERROR","drone_does_not_have_enough_of_ingredient_requested");
             return;
         } else {
             this.makePurchase(buyerDrone, buyerIngredient, quantity);
             buyerDrone.completePurchase(buyerIngredient, quantity);
         }
-        Main.displayMessage("OK","change_completed");
+        Display.displayMessage("OK","change_completed");
     }
 
 

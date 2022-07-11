@@ -57,23 +57,23 @@ public class Location implements Comparable<Location> {
                                     Integer spaceLimit) {
         // checking if the location already exists
         if (locations.containsKey(name)) {
-            Main.displayMessage("ERROR","location_already_exists");
+            Display.displayMessage("ERROR","location_already_exists");
             return;
         }
 
         // checking if the space limit is valid (positive) and whether the passed in arguments are valid
         if (spaceLimit < 0) {
-            Main.displayMessage("ERROR","location_space_limit_must_not_be_negative");
+            Display.displayMessage("ERROR","location_space_limit_must_not_be_negative");
             return;
         } else if (name == null || name.equals("")) {
-            Main.displayMessage("ERROR","location_name_must_not_be_empty");
+            Display.displayMessage("ERROR","location_name_must_not_be_empty");
             return;
         }
 
         // creating the location and adding it to the collection
         Location location = new Location(name, xCoordinate, yCoordinate, spaceLimit);
         locations.put(name, location);
-        Main.displayMessage("OK","location_created");
+        Display.displayMessage("OK","location_created");
     }
 
     /**
@@ -89,20 +89,20 @@ public class Location implements Comparable<Location> {
         if (locations.containsKey(departurePoint)) {
             departureLocation = locations.get(departurePoint);
         } else {
-            Main.displayMessage("ERROR","departure_location_does_not_exist");
+            Display.displayMessage("ERROR","departure_location_does_not_exist");
             return;
         }
 
         if (locations.containsKey(arrivalPoint)) {
             arrivalLocation = locations.get(arrivalPoint);
         } else {
-            Main.displayMessage("ERROR","arrival_location_does_not_exist");
+            Display.displayMessage("ERROR","arrival_location_does_not_exist");
             return;
         }
 
         // if the departure and arrival points are valid, calculate and display the distance between them
         Integer distance = Location.calculateDistance(departureLocation, arrivalLocation);
-        Main.displayMessage("OK",String.format("distance = %d", distance));
+        Display.displayMessage("OK",String.format("distance = %d", distance));
     }
 
     /**

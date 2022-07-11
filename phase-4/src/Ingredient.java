@@ -36,21 +36,21 @@ public class Ingredient implements Comparable<Ingredient> {
     public static void makeIngredient(String barcode, String name, Integer weight) {
         // checking if the ingredient already exists
         if (ingredients.containsKey(barcode)) {
-            Main.displayMessage("ERROR","ingredient_already_exists");
+            Display.displayMessage("ERROR","ingredient_already_exists");
             return;
         }
         // checking if the weight is valid (positive) and whether the passed in arguments are valid
         if (weight <= 0) {
-            Main.displayMessage("ERROR","ingredient_weight_must_be_greater_than_zero");
+            Display.displayMessage("ERROR","ingredient_weight_must_be_greater_than_zero");
             return;
         } else if (barcode == null || name == null || barcode.equals("") || name.equals("")) {
-            Main.displayMessage("ERROR","ingredient_barcode_and_name_must_not_be_empty");
+            Display.displayMessage("ERROR","ingredient_barcode_and_name_must_not_be_empty");
             return;
         }
 
         // creating the ingredient and adding it to the collection
         ingredients.put(barcode, new Ingredient(barcode, name, weight));
-        Main.displayMessage("OK","ingredient_created");
+        Display.displayMessage("OK","ingredient_created");
     }
 
     /**

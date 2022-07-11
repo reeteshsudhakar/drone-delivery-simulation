@@ -8,84 +8,6 @@
  */
 public class InterfaceLoop {
 
-    InterfaceLoop() { }
-
-    /**
-     * Method to make ingredients for delivery services to sell.
-     * @param barcode the barcode of the ingredient
-     * @param name the name of the ingredient
-     * @param weight the unit weight of the ingredient
-     */
-    private static void makeIngredient(String barcode, String name, Integer weight) {
-        Ingredient.makeIngredient(barcode, name, weight);
-    }
-
-    /**
-     * Method to make locations for services and restaurants to be located at.
-     * @param name the name of the location
-     * @param xCoordinate the x-coordinate of the location
-     * @param yCoordinate the y-coordinate of the location
-     * @param spaceLimit the capacity of drones at the location
-     */
-    private static void makeLocation(String name, Integer xCoordinate, Integer yCoordinate, Integer spaceLimit) {
-        Location.makeLocation(name, xCoordinate, yCoordinate, spaceLimit);
-    }
-
-    /**
-     * Method to check the distance between two specified locations in the system.
-     * @param departurePoint the name of the departure location
-     * @param arrivalPoint the name of the arrival location
-     */
-    private static void checkDistance(String departurePoint, String arrivalPoint) {
-        Location.checkDistance(departurePoint, arrivalPoint);
-    }
-
-    /**
-     * Method to make a delivery service for the system.
-     * @param name the name of the service
-     * @param revenue the revenue of the service
-     * @param locatedAt the name of the location the service is located at
-     */
-    private static void makeDeliveryService(String name, Integer revenue, String locatedAt) {
-        DeliveryService.makeDeliveryService(name, revenue, locatedAt);
-    }
-
-    /**
-     * Method to make a restaurant for the system.
-     * @param name the name of the restaurant
-     * @param locatedAt the name of the location the restaurant is located at
-     */
-    private static void makeRestaurant(String name, String locatedAt) {
-        Restaurant.makeRestaurant(name, locatedAt);
-    }
-
-    /**
-     * Method to make a drone for the system.
-     * @param serviceName the name of the service the drone is assigned to
-     * @param tag the tag of the drone (unique for drones in one given service)
-     * @param capacity the number of units of ingredients the drone can carry
-     * @param fuel the fuel of the drone
-     */
-    private static void makeDrone(String serviceName, Integer tag, Integer capacity, Integer fuel) {
-        Drone.makeDrone(serviceName, tag, capacity, fuel);
-    }
-
-    /**
-     * Method to make a person for the system.
-     * @param username the username of the person
-     * @param firstName the first name of the person
-     * @param lastName the last name of the person
-     * @param year the year of birth of the person
-     * @param month the month of birth of the person
-     * @param date the date of birth of the person
-     * @param address the address of the person
-     */
-    private static void makePerson(String username, String firstName, String lastName,
-                    Integer year, Integer month, Integer date, String address) {
-        Person.makePerson(username, firstName, lastName,
-                year, month, date, address);
-    }
-
     /**
      * Method to hire a person for a service as a worker
      * @param serviceName the name of the service
@@ -132,7 +54,7 @@ public class InterfaceLoop {
      */
     private static void trainPilot(String serviceName, String username, String license, Integer experience) {
         if (experience == null || license == null || license.equals("")) {
-            Main.displayMessage("ERROR","invalid_arguments_entered");
+            Display.displayMessage("ERROR","invalid_arguments_entered");
             return;
         }
 
@@ -174,7 +96,7 @@ public class InterfaceLoop {
         // checking if the drone exists in the system
         if (!service.hasDrone(tag)) {
             // if the drone does not exist in the system, display an error message
-            Main.displayMessage("ERROR","drone_does_not_exist");
+            Display.displayMessage("ERROR","drone_does_not_exist");
             return;
         }
         Drone movedDrone = service.getDrone(tag);
@@ -195,7 +117,7 @@ public class InterfaceLoop {
         Drone leadDrone = DeliveryService.findDrone(serviceName, leadDroneTag);
         Drone swarmDrone = DeliveryService.findDrone(serviceName, swarmDroneTag);
         if (swarmDrone == null) {
-            Main.displayMessage("ERROR","swarm_drone_does_not_exist");
+            Display.displayMessage("ERROR","swarm_drone_does_not_exist");
             return;
         }
         swarmDrone.joinSwarm(leadDrone);
@@ -212,7 +134,7 @@ public class InterfaceLoop {
         }
         Drone swarmDrone = DeliveryService.findDrone(serviceName, swarmDroneTag);
         if (swarmDrone == null) {
-            Main.displayMessage("ERROR","swarm_drone_does_not_exist");
+            Display.displayMessage("ERROR","swarm_drone_does_not_exist");
             return;
         }
         swarmDrone.leaveSwarm();
@@ -242,20 +164,20 @@ public class InterfaceLoop {
             loadDrone = service.getDrone(tag);
         } else {
             // if the drone does not exist in the service, display an error message
-            Main.displayMessage("ERROR","drone_does_not_exist");
+            Display.displayMessage("ERROR","drone_does_not_exist");
             return;
         }
 
         if (service.noWorkersExist()) {
-            Main.displayMessage("ERROR","delivery_service_does_not_have_regular_workers");
+            Display.displayMessage("ERROR","delivery_service_does_not_have_regular_workers");
             return;
         }
 
         // load the ingredient and track quantity and price using a package if there is space to load it
         if (loadDrone.getRemainingCapacity() == 0) {
-            Main.displayMessage("ERROR","no_capacity_left_to_load_more_packages");
+            Display.displayMessage("ERROR","no_capacity_left_to_load_more_packages");
         } else if (loadDrone.getRemainingCapacity() < quantity) {
-            Main.displayMessage("ERROR","not_enough_capacity_to_hold_new_packages");
+            Display.displayMessage("ERROR","not_enough_capacity_to_hold_new_packages");
         } else {
             loadDrone.addToPayload(barcode, quantity, unitPrice);
         }
@@ -278,12 +200,12 @@ public class InterfaceLoop {
         // checking if the drone exists in the service
         if (!service.hasDrone(tag)) {
             // If the drone does not exist in the service, display an error message
-            Main.displayMessage("ERROR","drone_does_not_exist");
+            Display.displayMessage("ERROR","drone_does_not_exist");
             return;
         }
 
         if (service.noWorkersExist()) {
-            Main.displayMessage("ERROR","delivery_service_does_not_have_regular_workers");
+            Display.displayMessage("ERROR","delivery_service_does_not_have_regular_workers");
             return;
         }
 
@@ -308,7 +230,7 @@ public class InterfaceLoop {
             buyerRestaurant.purchaseIngredient(tag, barcode, quantity, serviceName);
         } else {
             // if the restaurant does not exist in the system, display an error message
-            Main.displayMessage("ERROR","restaurant_identifier_does_not_exist");
+            Display.displayMessage("ERROR","restaurant_identifier_does_not_exist");
         }
     }
 
@@ -340,31 +262,31 @@ public class InterfaceLoop {
                 if (tokens[0].indexOf("//") == 0) {
                     // deliberate empty body to recognize and skip over comments
                 } else if (tokens[0].equals("make_ingredient")) {
-                    makeIngredient(tokens[1], tokens[2], Integer.parseInt(tokens[3]));
+                    Ingredient.makeIngredient(tokens[1], tokens[2], Integer.parseInt(tokens[3]));
                 } else if (tokens[0].equals("display_ingredients")) {
-                    Main.displayIngredients();
+                    Display.displayIngredients();
                 } else if (tokens[0].equals("make_location")) {
-                    makeLocation(tokens[1], Integer.parseInt(tokens[2]), Integer.parseInt(tokens[3]),
+                    Location.makeLocation(tokens[1], Integer.parseInt(tokens[2]), Integer.parseInt(tokens[3]),
                             Integer.parseInt(tokens[4]));
                 } else if (tokens[0].equals("display_locations")) {
-                    Main.displayLocations();
+                    Display.displayLocations();
                 } else if (tokens[0].equals("check_distance")) {
-                    checkDistance(tokens[1], tokens[2]);
+                    Location.checkDistance(tokens[1], tokens[2]);
                 } else if (tokens[0].equals("make_service")) {
-                    makeDeliveryService(tokens[1], Integer.parseInt(tokens[2]), tokens[3]);
+                    DeliveryService.makeDeliveryService(tokens[1], Integer.parseInt(tokens[2]), tokens[3]);
                 } else if (tokens[0].equals("display_services")) {
-                    Main.displayServices();
+                    Display.displayServices();
                 } else if (tokens[0].equals("make_restaurant")) {
-                    makeRestaurant(tokens[1], tokens[2]);
+                    Restaurant.makeRestaurant(tokens[1], tokens[2]);
                 } else if (tokens[0].equals("display_restaurants")) {
-                    Main.displayRestaurants();
+                    Display.displayRestaurants();
                 } else if (tokens[0].equals("make_drone")) {
-                    makeDrone(tokens[1], Integer.parseInt(tokens[2]), Integer.parseInt(tokens[3]),
+                    Drone.makeDrone(tokens[1], Integer.parseInt(tokens[2]), Integer.parseInt(tokens[3]),
                             Integer.parseInt(tokens[4]));
                 } else if (tokens[0].equals("display_drones")) {
-                    Main.displayDrones(tokens[1]);
+                    Display.displayDrones(tokens[1]);
                 } else if (tokens[0].equals("display_all_drones")) {
-                    Main.displayAllDrones();
+                    Display.displayAllDrones();
                 } else if (tokens[0].equals("fly_drone")) {
                     flyDrone(tokens[1], Integer.parseInt(tokens[2]), tokens[3]);
                 } else if (tokens[0].equals("load_ingredient")) {
@@ -376,10 +298,10 @@ public class InterfaceLoop {
                     purchaseIngredient(tokens[1], tokens[2], Integer.parseInt(tokens[3]), tokens[4],
                             Integer.parseInt(tokens[5]));
                 } else if (tokens[0].equals("make_person")) {
-                    makePerson(tokens[1], tokens[2], tokens[3], Integer.parseInt(tokens[4]),
+                    Person.makePerson(tokens[1], tokens[2], tokens[3], Integer.parseInt(tokens[4]),
                             Integer.parseInt(tokens[5]), Integer.parseInt(tokens[6]), tokens[7]);
                 } else if (tokens[0].equals("display_persons")) {
-                    Main.displayPeople();
+                    Display.displayPeople();
                 } else if (tokens[0].equals("hire_worker")) {
                     hireWorker(tokens[1], tokens[2]);
                 } else if (tokens[0].equals("fire_worker")) {
@@ -397,11 +319,11 @@ public class InterfaceLoop {
                 } else if (tokens[0].equals("collect_revenue")) {
                     collectRevenue(tokens[1]);
                 } else if (tokens[0].equals("stop")) {
-                    Main.displayMessage("STOP","stop acknowledged");
+                    Display.displayMessage("STOP","stop acknowledged");
                 } else if (tokens[0].equals("") || tokens[0].isBlank() || tokens[0].isEmpty()) {
-                    Main.displayMessage("ERROR","please enter a command");
+                    Display.displayMessage("ERROR","please enter a command");
                 } else {
-                    Main.displayMessage("ERROR","command " + tokens[0] + " NOT acknowledged");
+                    Display.displayMessage("ERROR","command " + tokens[0] + " NOT acknowledged");
                 }
             } catch (Exception e) {
                 e.printStackTrace();
