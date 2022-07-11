@@ -29,5 +29,4 @@ Project workspace for [Reetesh Sudhakar](mailto::rsudhakar9@gatech.edu), [Sebast
 ## Phase IV
 **Problem Description**: [Phase IV: Problem Description](https://github.gatech.edu/rsudhakar9/CS-2340-Project/blob/main/resources/phase-iv-problem-description.md)
 ### Instructions to Install and Configure JavaFX
-The user interface was built using JavaFX. Running the Main class requires the VM options in IntelliJ IDEA to be set properly. Use the [following instructions]() to configure JavaFX. 
-
+The user interface was built using JavaFX. Running the Main class requires the VM options in IntelliJ IDEA to be set properly, or for specific command line arguments be used when executing the code. Use the [following instructions](https://github.gatech.edu/rsudhakar9/CS-2340-Project/blob/gui-design/resources/javafx-installation-guide.pdf) to configure JavaFX and view the project!
