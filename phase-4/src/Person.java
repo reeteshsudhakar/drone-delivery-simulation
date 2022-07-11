@@ -107,7 +107,7 @@ public class Person implements Comparable<Person> {
      */
     @Override
     public String toString() {
-        return String.format("userID: %s, name: %s, birth date: %d-%d-%d, address: %s", this.username,
+        return String.format("User ID: %s, Name: %s, Birth Date: %d-%d-%d, Address: %s", this.username,
                 this.firstName + " " + this.lastName, this.year, this.month, this.date, this.address);
     }
 

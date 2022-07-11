@@ -199,8 +199,6 @@ public class Main extends Application {
         CSVTableView table = new CSVTableView(",", file);
         Popup popup = new Popup();
         popup.getContent().add(table);
-        popup.setAnchorX(primaryStage.getWidth()/2 - popup.getWidth()/2);
-        popup.setAnchorY(primaryStage.getHeight()/2 - popup.getHeight()/2);
         return popup;
     }
 
@@ -208,8 +206,7 @@ public class Main extends Application {
         Button button = new Button("Show Args");
         button.setOnAction(e -> {
             if (button.getText().equals("Show Args")) {
-                popup.show(primaryStage, primaryStage.getWidth()/2 - popup.getWidth()/2,
-                        primaryStage.getHeight()/2 - popup.getHeight()/2);
+                popup.show(primaryStage);
                 button.setText("Hide Args");
             } else {
                 popup.hide();
@@ -220,7 +217,92 @@ public class Main extends Application {
     }
 
     public static void displayAllDrones() {
+        Popup dronePopup = new Popup();
+        dronePopup.setOpacity(1);
+        dronePopup.setAutoHide(true);
+        VBox popupBox = new VBox();
+        popupBox.setSpacing(10);
+        popupBox.setStyle("-fx-background-color: white; -fx-padding: 10px;");
 
+        for (DeliveryService service : DeliveryService.services.values()) {
+            for (Drone drone : service.getDrones().values()) {
+                HBox holder = new HBox();
+                holder.setSpacing(10);
+                VBox info = new VBox();
+                info.setAlignment(Pos.CENTER_LEFT);
+                info.setSpacing(5);
+
+                Text droneInfo = new Text(drone.toString());
+                info.getChildren().add(droneInfo);
+                ImageView image = new ImageView(new Image("resources/drone.png", 50, 50, true, true));
+                holder.getChildren().addAll(image, info);
+                popupBox.getChildren().add(holder);
+            }
+        }
+
+        if (popupBox.getChildren().size() == 0) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("ERROR");
+            alert.setHeaderText("No Drones");
+            alert.setContentText("No drones have been made yet. Use the make_drone command to do so!");
+            alert.show();
+            return;
+        }
+
+        dronePopup.getContent().add(popupBox);
+
+        displayMessage("DISPLAY","display_in_progress");
+        dronePopup.show(primaryStage, primaryStage.getWidth()/2 - dronePopup.getWidth()/2,
+                primaryStage.getHeight()/2 - dronePopup.getHeight()/2);
+    }
+
+    public static void displayDrones(String serviceName) {
+        DeliveryService service = DeliveryService.services.get(serviceName);
+        if (service == null) {
+            displayMessage("ERROR","service_does_not_exist");
+            return;
+        }
+
+        if (service.getDrones().size() == 0) {
+            displayMessage("ERROR","The service has no drones. Use the make_drone command to create some!");
+            return;
+        }
+
+        Popup dronePopup = new Popup();
+        dronePopup.setOpacity(1);
+        dronePopup.setAutoHide(true);
+        VBox popupBox = new VBox();
+        popupBox.setSpacing(10);
+        popupBox.setStyle("-fx-background-color: white; -fx-padding: 10px;");
+
+        for (Drone drone : service.getDrones().values()) {
+            HBox holder = new HBox();
+            holder.setSpacing(10);
+            VBox info = new VBox();
+            info.setAlignment(Pos.CENTER_LEFT);
+            info.setSpacing(5);
+
+            Text droneInfo = new Text(drone.toString());
+            info.getChildren().add(droneInfo);
+            ImageView image = new ImageView(new Image("resources/drone.png", 50, 50, true, true));
+            holder.getChildren().addAll(image, info);
+            popupBox.getChildren().add(holder);
+        }
+
+        if (popupBox.getChildren().size() == 0) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("ERROR");
+            alert.setHeaderText("No Drones");
+            alert.setContentText("No drones have been made yet. Use the make_drone command to do so!");
+            alert.show();
+            return;
+        }
+
+        dronePopup.getContent().add(popupBox);
+
+        displayMessage("DISPLAY","display_in_progress");
+        dronePopup.show(primaryStage, primaryStage.getWidth()/2 - dronePopup.getWidth()/2,
+                primaryStage.getHeight()/2 - dronePopup.getHeight()/2);
     }
 
     public static void displayIngredients() {
@@ -260,15 +342,122 @@ public class Main extends Application {
     }
 
     public static void displayPeople() {
+        Popup peoplePopup = new Popup();
+        peoplePopup.setOpacity(1);
+        peoplePopup.setAutoHide(true);
+        VBox popupBox = new VBox();
+        popupBox.setSpacing(10);
+        popupBox.setStyle("-fx-background-color: white; -fx-padding: 10px;");
+
+        if (!Person.people.values().isEmpty()) {
+            for (Person person : Person.people.values()) {
+                HBox holder = new HBox();
+                holder.setSpacing(10);
+                VBox info = new VBox();
+                info.setAlignment(Pos.CENTER_LEFT);
+                info.setSpacing(5);
+                Text personInfo = new Text(person.toString());
+                info.getChildren().addAll(personInfo);
+                ImageView image = null;
+                if (person instanceof Pilot) {
+                    image = new ImageView(new Image("resources/pilot.png", 50, 50, true, true));
+                } else if (person instanceof Manager) {
+                    image = new ImageView(new Image("resources/manager.png", 50, 50, true, true));
+                } else if (person instanceof Worker) {
+                    image = new ImageView(new Image("resources/worker.png", 50, 50, true, true));
+                } else {
+                    image = new ImageView(new Image("resources/person.png", 50, 50, true, true));
+                }
+                holder.getChildren().addAll(image, info);
+                popupBox.getChildren().add(holder);
+            }
+            peoplePopup.getContent().add(popupBox);
+        } else {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("ERROR");
+            alert.setHeaderText("No People");
+            alert.setContentText("No people have been made yet. Use the make_person command to do so!");
+            alert.show();
+            return;
+        }
+
+        displayMessage("DISPLAY","display_in_progress");
+        peoplePopup.show(primaryStage, primaryStage.getWidth()/2 - peoplePopup.getWidth()/2,
+                primaryStage.getHeight()/2 - peoplePopup.getHeight()/2);
 
     }
 
     public static void displayRestaurants() {
+        Popup restaurantPopup = new Popup();
+        restaurantPopup.setOpacity(1);
+        restaurantPopup.setAutoHide(true);
+        VBox popupBox = new VBox();
+        popupBox.setSpacing(10);
+        popupBox.setStyle("-fx-background-color: white; -fx-padding: 10px;");
 
+        if (!Restaurant.restaurants.isEmpty()) {
+            for (Restaurant restaurant : Restaurant.restaurants.values()) {
+                HBox holder = new HBox();
+                holder.setSpacing(10);
+                VBox info = new VBox();
+                info.setAlignment(Pos.CENTER_LEFT);
+                info.setSpacing(5);
+                Text locationInfo = new Text(restaurant.toString());
+                info.getChildren().addAll(locationInfo);
+                ImageView image = new ImageView(new Image("resources/restaurant.png", 50, 50, true, true));
+                holder.getChildren().addAll(image, info);
+                popupBox.getChildren().add(holder);
+            }
+            restaurantPopup.getContent().add(popupBox);
+        } else {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("ERROR");
+            alert.setHeaderText("No Restaurants");
+            alert.setContentText("No restaurants have been made yet. Use the make_restaurant command to do so!");
+            alert.show();
+            return;
+        }
+
+        displayMessage("DISPLAY","display_in_progress");
+        restaurantPopup.show(primaryStage, primaryStage.getWidth()/2 - restaurantPopup.getWidth()/2,
+                primaryStage.getHeight()/2 - restaurantPopup.getHeight()/2);
     }
 
-    public static void displayServices() {
 
+    public static void displayServices() {
+        Popup servicePopup = new Popup();
+        servicePopup.setOpacity(1);
+        servicePopup.setAutoHide(true);
+        VBox popupBox = new VBox();
+        popupBox.setSpacing(10);
+        popupBox.setStyle("-fx-background-color: white; -fx-padding: 10px;");
+
+        if (!DeliveryService.services.isEmpty()) {
+            for (DeliveryService service : DeliveryService.services.values()) {
+                HBox holder = new HBox();
+                holder.setSpacing(10);
+                VBox info = new VBox();
+                info.setAlignment(Pos.CENTER_LEFT);
+                info.setSpacing(5);
+                Text locationInfo = new Text(service.toString());
+                info.getChildren().addAll(locationInfo);
+                ImageView image = new ImageView(new Image("resources/service.png", 50, 50, true, true));
+                holder.getChildren().addAll(image, info);
+                popupBox.getChildren().add(holder);
+            }
+            servicePopup.getContent().add(popupBox);
+        } else {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("ERROR");
+            alert.setHeaderText("No Services");
+            alert.setContentText("No services have been made yet. Use the make_service command to do so!");
+            alert.show();
+            return;
+        }
+
+        displayMessage("DISPLAY","display_in_progress");
+        servicePopup.show(primaryStage, primaryStage.getWidth()/2 - servicePopup.getWidth()/2,
+                primaryStage.getHeight()/2 - servicePopup.getHeight()/2);
     }
 
     public static void displayLocations() {

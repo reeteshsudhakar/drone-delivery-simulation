@@ -393,10 +393,10 @@ public class Drone {
         }
 
         StringBuilder swarmString = new StringBuilder();
-        swarmString.append(String.format("&> pilot:%s%n", this.pilot.getUsername()));
+        swarmString.append(String.format("\t&> Pilot: %s%n", this.pilot.getUsername()));
 
         if (this.followers.size() > 0) {
-            swarmString.append("drone is directing this swarm: [ drone tags ");
+            swarmString.append("\tDrone is directing this swarm: [ drone tags ");
             for (Drone drone : this.followers.values()) {
                 if (!drone.tag.equals(this.tag)){
                     swarmString.append(String.format("| %d ", drone.tag));
@@ -429,7 +429,7 @@ public class Drone {
     public String getPayloadInfo() {
         StringBuilder payloadInfo = new StringBuilder();
         this.payload.forEach((key,value) ->
-                payloadInfo.append(String.format("&> barcode: %s, item_name: %s, total_quantity: %d, unit_cost: %d, " +
+                payloadInfo.append(String.format("\tDrone is carrying: \n\t\t&> barcode: %s, item_name: %s, total_quantity: %d, unit_cost: %d, " +
                                 "total_weight: %d%n", key.getBarcode(), key.getName(), value.getQuantity(),
                         value.getUnitPrice(), key.getWeight() * value.getQuantity())));
         return payloadInfo.toString();
@@ -440,8 +440,8 @@ public class Drone {
      * @return String representation of a drone's information
      */
     public String getDroneInfo() {
-        return String.format("tag: %d, capacity: %d, remaining_cap: %d, fuel: %d, sales: $%d, " +
-                        "location: %s%n",
+        return String.format("Tag: %d, Capacity: %d, Remaining Capacity: %d, Fuel: %d, Sales: $%d, " +
+                        "Location: %s%n",
                 this.tag, this.capacity, this.remainingCapacity, this.fuel,
                 this.sales, this.currentLocation.getName());
     }

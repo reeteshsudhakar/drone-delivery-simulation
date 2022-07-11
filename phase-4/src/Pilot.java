@@ -54,15 +54,15 @@ public class Pilot extends Worker {
      */
     public String toString() {
         if (pilotedDrones == null || pilotedDrones.isEmpty()) {
-            return super.toString() + String.format("\nuser has a pilot's license (%s) with %d successful flight(s)",
+            return super.toString() + String.format("\n\tPilot has a license (%s) with %d successful flight(s)",
                     this.license, this.experience);
         } else {
-            StringBuilder droneString  = new StringBuilder("\nemployee is flying these drones: [ drone tags ");
+            StringBuilder droneString  = new StringBuilder("\n\tPilot is flying these drones: [ drone tags ");
             for (Drone drone : pilotedDrones.values()) {
                 droneString.append(String.format("| %d ", drone.getTag()));
             }
             droneString.append("]");
-            return super.toString() + String.format("\nuser has a pilot's license (%s) with %d successful flight(s)",
+            return super.toString() + String.format("\n\tPilot has a license (%s) with %d successful flight(s)",
                     this.license, this.experience) + droneString;
         }
     }

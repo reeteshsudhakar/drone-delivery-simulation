@@ -164,7 +164,7 @@ public class DeliveryService implements Comparable <DeliveryService> {
                 Manager newManager = new Manager(tempWorker, this);
                 Person.people.put(newManager.getUsername(), newManager);
                 if (!(this.manager == null)) {
-                    Worker oldManager = this.manager;
+                    Worker oldManager = new Worker(this.manager, this.manager.getEmployers().get(this.name));
                     Person.people.put(oldManager.getUsername(), oldManager);
                 }
                 this.setManager(newManager);
@@ -275,8 +275,14 @@ public class DeliveryService implements Comparable <DeliveryService> {
      * @return A boolean that is true if there are no workers at home base, and false otherwise
      */
     public boolean noWorkersExist() {
-        return Person.people.values().stream().findAny().filter((item) -> (item instanceof Worker && !(item instanceof Pilot || item instanceof Manager)))
-                .filter((item) -> (((Worker) item).getEmployers().containsKey(this.name))).isEmpty();
+        for (Person person: Person.people.values()) {
+            if (person instanceof Worker && (!(person instanceof Pilot || person instanceof Manager))) {
+                if (((Worker) person).getEmployers().containsKey(this.name)) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     /**
@@ -309,7 +315,7 @@ public class DeliveryService implements Comparable <DeliveryService> {
      */
     @Override
     public String toString() {
-        return String.format("name: %s, revenue: $%d, location: %s", this.name, this.revenue,
+        return String.format("Name: %s, Revenue: $%d, Location: %s", this.name, this.revenue,
                 this.locatedAt.getName());
     }
 

@@ -58,9 +58,9 @@ public class Worker extends Person {
     @Override
     public String toString() {
         if (!(this instanceof Manager)) {
-            StringBuilder worksAt = new StringBuilder("\nemployee is working at: ");
+            StringBuilder worksAt = new StringBuilder("\n\tEmployee is working at: ");
             for (DeliveryService service : employers.values()) {
-                worksAt.append(String.format("\n&> %s", service.getName()));
+                worksAt.append(String.format("\n\t\t&> %s", service.getName()));
             }
             return super.toString() + worksAt;
         } else {

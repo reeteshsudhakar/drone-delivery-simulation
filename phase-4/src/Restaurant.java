@@ -133,7 +133,7 @@ public class Restaurant implements Comparable<Restaurant> {
      */
     @Override
     public String toString() {
-        return String.format("name: %s, money_spent: $%d, location: %s", this.name,
+        return String.format("Name: %s, Money Spent: $%d, Location: %s", this.name,
                 this.spending, this.locatedAt.getName());
     }
 

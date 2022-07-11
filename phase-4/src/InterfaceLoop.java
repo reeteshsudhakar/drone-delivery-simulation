@@ -353,18 +353,18 @@ public class InterfaceLoop {
                 } else if (tokens[0].equals("make_service")) {
                     makeDeliveryService(tokens[1], Integer.parseInt(tokens[2]), tokens[3]);
                 } else if (tokens[0].equals("display_services")) {
-                    Display.displayServices();
+                    Main.displayServices();
                 } else if (tokens[0].equals("make_restaurant")) {
                     makeRestaurant(tokens[1], tokens[2]);
                 } else if (tokens[0].equals("display_restaurants")) {
-                    Display.displayRestaurants();
+                    Main.displayRestaurants();
                 } else if (tokens[0].equals("make_drone")) {
                     makeDrone(tokens[1], Integer.parseInt(tokens[2]), Integer.parseInt(tokens[3]),
                             Integer.parseInt(tokens[4]));
                 } else if (tokens[0].equals("display_drones")) {
-                    Display.displayDrones(tokens[1]);
+                    Main.displayDrones(tokens[1]);
                 } else if (tokens[0].equals("display_all_drones")) {
-                    Display.displayAllDrones();
+                    Main.displayAllDrones();
                 } else if (tokens[0].equals("fly_drone")) {
                     flyDrone(tokens[1], Integer.parseInt(tokens[2]), tokens[3]);
                 } else if (tokens[0].equals("load_ingredient")) {
@@ -379,7 +379,7 @@ public class InterfaceLoop {
                     makePerson(tokens[1], tokens[2], tokens[3], Integer.parseInt(tokens[4]),
                             Integer.parseInt(tokens[5]), Integer.parseInt(tokens[6]), tokens[7]);
                 } else if (tokens[0].equals("display_persons")) {
-                    Display.displayPersons();
+                    Main.displayPeople();
                 } else if (tokens[0].equals("hire_worker")) {
                     hireWorker(tokens[1], tokens[2]);
                 } else if (tokens[0].equals("fire_worker")) {
