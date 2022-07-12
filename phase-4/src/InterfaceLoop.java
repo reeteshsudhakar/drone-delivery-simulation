@@ -1,3 +1,4 @@
+import javax.xml.stream.FactoryConfigurationError;
 import java.util.Scanner;
 
 /**
@@ -83,8 +84,11 @@ public class InterfaceLoop {
      */
     private void makePerson(String username, String firstName, String lastName,
                     Integer year, Integer month, Integer date, String address) {
-        Person.makePerson(username, firstName, lastName,
-                year, month, date, address);
+        if (FactoryPerson.creatingPersonValid(username, firstName, lastName,
+                year, month, date, address)) {
+            FactoryPerson.createPerson(username, firstName, lastName,
+                    year, month, date, address);
+        }
     }
 
     /**

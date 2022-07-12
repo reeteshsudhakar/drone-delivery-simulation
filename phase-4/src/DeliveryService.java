@@ -95,7 +95,7 @@ public class DeliveryService implements Comparable <DeliveryService> {
                 hiredWorker.addEmployer(this);
             } else {
                 // Object retrieved from TreeMap is a person, so a Worker object needs to be deep copied
-                hiredWorker = new Worker(tempPerson, this);
+                hiredWorker = FactoryPerson.createWorker(tempPerson, this);
                 Person.people.put(username, hiredWorker);
             }
             Display.displayMessage("OK", "new_employee_has_been_hired");
@@ -124,9 +124,7 @@ public class DeliveryService implements Comparable <DeliveryService> {
             }
             firedWorker.removeEmployer(this);
             if (firedWorker.getEmployers().isEmpty()) {
-                Person newPerson = new Person(firedPerson.getUsername(), firedPerson.getFirstName(),
-                        firedPerson.getLastName(), firedPerson.getYear(), firedPerson.getMonth(),
-                        firedPerson.getDate(), firedPerson.getAddress());
+                Person newPerson = FactoryPerson.createPerson(firedWorker);
                 Person.people.put(username, newPerson);
             }
             Display.displayMessage("OK", "employee_has_been_fired");
@@ -164,8 +162,7 @@ public class DeliveryService implements Comparable <DeliveryService> {
                 Manager newManager = new Manager(tempWorker, this);
                 Person.people.put(newManager.getUsername(), newManager);
                 if (!(this.manager == null)) {
-                    Worker newWorker = new Worker(this.manager, this.manager.getEmployers().get(this.name));
-//                    Worker oldManager = this.manager;
+                    Worker newWorker = FactoryPerson.createWorker(this.manager, this);
                     Person.people.put(newWorker.getUsername(), newWorker);
                 }
                 this.setManager(newManager);
@@ -204,7 +201,7 @@ public class DeliveryService implements Comparable <DeliveryService> {
         } else if (tempPerson instanceof Worker) {
             Worker tempWorker = (Worker) tempPerson;
             if (tempWorker.getEmployers().containsKey(this.name)) {
-                Pilot newPilot = new Pilot(tempWorker, this, license, experience);
+                Pilot newPilot = (Pilot) FactoryPerson.createPilot(tempWorker, this, license, experience);
                 Person.people.put(newPilot.getUsername(), newPilot);
                 Display.displayMessage("OK", "pilot_has_been_trained");
             } else {

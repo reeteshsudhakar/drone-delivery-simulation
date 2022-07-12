@@ -29,17 +29,6 @@ public class Worker extends Person {
     }
 
     /**
-     * Constructor for the worker class.
-     * @param person person to become a worker
-     * @param employer name of the employer of the worker
-     */
-    public Worker(Person person, DeliveryService employer) {
-        super(person.getUsername(), person.getFirstName(), person.getLastName(), person.getYear(), person.getMonth(),
-                person.getDate(), person.getAddress());
-        addEmployer(employer);
-    }
-
-    /**
      * Adds an employer to the worker.
      * @param employer name of the employer of the worker to be added
      */
