@@ -23,6 +23,10 @@ import java.io.PrintWriter;
 import java.io.FileWriter;
 import java.io.File;
 
+
+// https://stackoverflow.com/questions/31969372/how-do-i-create-a-scrollable-context-menu-in-javafx
+// ^^ helpful link for scrollpane
+
 /*
 TODO: make the popups scrollable
 TODO: code cleanup
