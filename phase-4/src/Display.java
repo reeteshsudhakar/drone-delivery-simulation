@@ -1,5 +1,6 @@
 import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
@@ -82,7 +83,6 @@ public class Display {
                 holder.getChildren().addAll(image, info);
                 popupBox.getChildren().add(holder);
             }
-            ingredientPopup.getContent().add(popupBox);
         } else {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("ERROR");
@@ -91,6 +91,14 @@ public class Display {
             alert.show();
             return;
         }
+
+        ScrollPane scrollPane = new ScrollPane(popupBox);
+        scrollPane.setMinWidth(500);
+        scrollPane.setMaxWidth(500);
+        scrollPane.setMinHeight(300);
+        scrollPane.setMaxHeight(300);
+        scrollPane.setStyle("-fx-background-color: white; -fx-padding: 5px;");
+        ingredientPopup.getContent().add(scrollPane);
 
         displayMessage("DISPLAY","display_in_progress");
         ingredientPopup.show(Main.primaryStage);
@@ -127,7 +135,6 @@ public class Display {
                 holder.getChildren().addAll(image, info);
                 popupBox.getChildren().add(holder);
             }
-            peoplePopup.getContent().add(popupBox);
         } else {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("ERROR");
@@ -136,10 +143,16 @@ public class Display {
             alert.show();
             return;
         }
+        ScrollPane scrollPane = new ScrollPane(popupBox);
+        scrollPane.setMinWidth(500);
+        scrollPane.setMaxWidth(500);
+        scrollPane.setMinHeight(300);
+        scrollPane.setMaxHeight(300);
+        scrollPane.setStyle("-fx-background-color: white; -fx-padding: 5px;");
+        peoplePopup.getContent().add(scrollPane);
 
         displayMessage("DISPLAY","display_in_progress");
         peoplePopup.show(Main.primaryStage);
-
     }
 
     public static void displayRestaurants() {
@@ -164,7 +177,6 @@ public class Display {
                 holder.getChildren().addAll(image, info);
                 popupBox.getChildren().add(holder);
             }
-            restaurantPopup.getContent().add(popupBox);
         } else {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("ERROR");
@@ -174,10 +186,18 @@ public class Display {
             return;
         }
 
+        ScrollPane scrollPane = new ScrollPane(popupBox);
+        scrollPane.setMinWidth(500);
+        scrollPane.setMaxWidth(500);
+        scrollPane.setMinHeight(300);
+        scrollPane.setMaxHeight(300);
+        scrollPane.setStyle("-fx-background-color: white; -fx-padding: 5px;");
+        restaurantPopup.getContent().add(scrollPane);
+
         displayMessage("DISPLAY","display_in_progress");
         restaurantPopup.show(Main.primaryStage);
-    }
 
+    }
 
     public static void displayServices() {
         Popup servicePopup = new Popup();
@@ -201,7 +221,6 @@ public class Display {
                 holder.getChildren().addAll(image, info);
                 popupBox.getChildren().add(holder);
             }
-            servicePopup.getContent().add(popupBox);
         } else {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("ERROR");
@@ -210,6 +229,13 @@ public class Display {
             alert.show();
             return;
         }
+        ScrollPane scrollPane = new ScrollPane(popupBox);
+        scrollPane.setMinWidth(500);
+        scrollPane.setMaxWidth(500);
+        scrollPane.setMinHeight(300);
+        scrollPane.setMaxHeight(300);
+        scrollPane.setStyle("-fx-background-color: white; -fx-padding: 5px;");
+        servicePopup.getContent().add(scrollPane);
 
         displayMessage("DISPLAY","display_in_progress");
         servicePopup.show(Main.primaryStage);
@@ -227,7 +253,7 @@ public class Display {
             for (Location location : Location.locations.values()) {
                 HBox holder = new HBox();
                 holder.setSpacing(10);
-                holder.setAlignment(Pos.CENTER);
+//                holder.setAlignment(Pos.CENTER);
                 VBox info = new VBox();
                 info.setAlignment(Pos.CENTER_LEFT);
                 info.setSpacing(5);
@@ -237,7 +263,6 @@ public class Display {
                 holder.getChildren().addAll(image, info);
                 popupBox.getChildren().add(holder);
             }
-            locationPopup.getContent().add(popupBox);
         } else {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("ERROR");
@@ -246,6 +271,14 @@ public class Display {
             alert.show();
             return;
         }
+
+        ScrollPane scrollPane = new ScrollPane(popupBox);
+        scrollPane.setMinWidth(500);
+        scrollPane.setMaxWidth(500);
+        scrollPane.setMinHeight(300);
+        scrollPane.setMaxHeight(300);
+        scrollPane.setStyle("-fx-background-color: white; -fx-padding: 5px;");
+        locationPopup.getContent().add(scrollPane);
 
         displayMessage("DISPLAY","display_in_progress");
         locationPopup.show(Main.primaryStage);
@@ -261,7 +294,13 @@ public class Display {
             return;
         }
 
-        dronePopup.getContent().add(popupBox);
+        ScrollPane scrollPane = new ScrollPane(popupBox);
+        scrollPane.setMinWidth(500);
+        scrollPane.setMaxWidth(500);
+        scrollPane.setMinHeight(300);
+        scrollPane.setMaxHeight(300);
+        scrollPane.setStyle("-fx-background-color: white; -fx-padding: 5px;");
+        dronePopup.getContent().add(scrollPane);
 
         displayMessage("DISPLAY","display_in_progress");
         dronePopup.show(Main.primaryStage);

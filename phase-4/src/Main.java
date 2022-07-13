@@ -1,4 +1,3 @@
-import com.pixelduke.control.skin.FXSkins;
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -23,12 +22,7 @@ import java.io.PrintWriter;
 import java.io.FileWriter;
 import java.io.File;
 
-
-// https://stackoverflow.com/questions/31969372/how-do-i-create-a-scrollable-context-menu-in-javafx
-// ^^ helpful link for scrollpane
-
 /*
-TODO: make the popups scrollable
 TODO: code cleanup
 TODO: write more test cases to show the full functionality of the system
 TODO: style the popups (add a title, size them up)
@@ -65,6 +59,7 @@ public class Main extends Application {
         Button restaurantButton = addAsset(grid, 0, 3, "restaurant.png", "Display Restaurants");
         Button serviceButton = addAsset(grid, 0, 4, "service.png", "Display Services");
         Button locationButton = addAsset(grid, 0, 5, "location.png", "Display Locations");
+
 
         droneButton.setOnAction(e -> Display.displayAllDrones());
         ingredientButton.setOnAction(e -> Display.displayIngredients());
@@ -104,7 +99,7 @@ public class Main extends Application {
         root.setAlignment(title, Pos.TOP_CENTER);
         root.setAlignment(buttons, Pos.CENTER);
         Scene mainScene = new Scene(root);
-        mainScene.getStylesheets().add(FXSkins.getStylesheetURL());
+//        mainScene.getStylesheets().add(FXSkins.getStylesheetURL());
         primaryStage.setScene(mainScene);
         primaryStage.setTitle("Ingredient Delivery System");
         primaryStage.setMinWidth(background.getFitWidth());
@@ -224,10 +219,10 @@ public class Main extends Application {
         button.setOnAction(e -> {
             if (button.getText().equals("     View\nCommands")) {
                 popup.show(primaryStage);
-                button.setText("    Hide\nCommands");
+                button.setText("     Hide\nCommands");
             } else {
                 popup.hide();
-                button.setText("    View\nCommands");
+                button.setText("     View\nCommands");
             }
         });
         return button;
