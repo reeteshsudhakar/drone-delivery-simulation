@@ -483,14 +483,6 @@ public class Drone {
     }
 
     /**
-     * Getter for Drone pilot
-     * @return the pilot of the drone
-     */
-    public Pilot getPilot() {
-        return pilot;
-    }
-
-    /**
      * Method to assign a pilot to a drone
      * @param pilot the pilot to assign to the drone
      */
@@ -512,27 +504,11 @@ public class Drone {
     }
 
     /**
-     * Getter for Drone capacity.
-     * @return the capacity of the drone
-     */
-    public Integer getCapacity() {
-        return this.capacity;
-    }
-
-    /**
      * Getter for Drone remaining capacity.
      * @return the remaining capacity of the drone
      */
     public Integer getRemainingCapacity() {
         return this.remainingCapacity;
-    }
-
-    /**
-     * Getter for Drone fuel.
-     * @return the fuel of the drone
-     */
-    public Integer getFuel() {
-        return this.fuel;
     }
 
     /**

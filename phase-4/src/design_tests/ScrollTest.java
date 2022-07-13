@@ -1,3 +1,5 @@
+package design_tests;
+
 import javafx.animation.Animation;
 import javafx.animation.TranslateTransition;
 import javafx.application.Application;

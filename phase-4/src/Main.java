@@ -96,8 +96,8 @@ public class Main extends Application {
         buttons.getChildren().addAll(grid, input);
 
         root.getChildren().addAll(background, title, buttons);
-        root.setAlignment(title, Pos.TOP_CENTER);
-        root.setAlignment(buttons, Pos.CENTER);
+        StackPane.setAlignment(title, Pos.TOP_CENTER);
+        StackPane.setAlignment(buttons, Pos.CENTER);
         Scene mainScene = new Scene(root);
 //        mainScene.getStylesheets().add(FXSkins.getStylesheetURL());
         primaryStage.setScene(mainScene);
