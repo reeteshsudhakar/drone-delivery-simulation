@@ -1,3 +1,4 @@
+import com.pixelduke.control.skin.FXSkins;
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -17,16 +18,17 @@ import javafx.scene.text.Text;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.File;
 
 /*
-TODO: write a test case file to test the GUI easily
+TODO: make the popups scrollable
 TODO: code cleanup
-TODO: style the popups better
-TODO: investigate using CSS for styling (https://docs.oracle.com/javafx/2/api/javafx/scene/doc-files/cssref.html)
+TODO: write more test cases to show the full functionality of the system
+TODO: style the popups (add a title, size them up)
+TODO: try using CSS for styling (https://docs.oracle.com/javafx/2/api/javafx/scene/doc-files/cssref.html)
  */
 
 /**
@@ -74,7 +76,7 @@ public class Main extends Application {
 
     public void initializeWindow(StackPane root, GridPane grid) throws IOException {
         // background image
-        Image image = new Image("resources/background.jpeg");
+        Image image = new Image("images/background.jpeg");
         ImageView background = new ImageView(image);
         background.setFitHeight(background.getFitHeight());
         background.setFitWidth(background.getFitWidth());
@@ -98,6 +100,7 @@ public class Main extends Application {
         root.setAlignment(title, Pos.TOP_CENTER);
         root.setAlignment(buttons, Pos.CENTER);
         Scene mainScene = new Scene(root);
+        mainScene.getStylesheets().add(FXSkins.getStylesheetURL());
         primaryStage.setScene(mainScene);
         primaryStage.setTitle("Ingredient Delivery System");
         primaryStage.setMinWidth(background.getFitWidth());
@@ -146,20 +149,20 @@ public class Main extends Application {
         submit.setFont(Font.font("Helvetica", FontWeight.BOLD, 20));
         submit.setPrefSize(100, 50);
 
+        try (PrintWriter pw = new PrintWriter(new FileWriter("src/resources/commands.csv"))) {
+            pw.println("Commands,Arguments");
+            pw.flush();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+
         submit.setOnAction(e -> {
             String argument = textField.getText();
-            File file = new File("src/resources/commands.csv");
-            try {
-                file.createNewFile();
+            try (PrintWriter pw = new PrintWriter(new FileWriter("src/resources/commands.csv", true))) {
+                pw.println(argument);
+                pw.flush();
             } catch (IOException ex) {
-                throw new RuntimeException(ex);
-            }
-            try {
-                PrintWriter writer = new PrintWriter(file);
-                writer.println(argument);
-                writer.close();
-            } catch (FileNotFoundException ex) {
-                throw new RuntimeException(ex);
+                ex.printStackTrace();
             }
             InterfaceLoop.commandLoop(argument);
             textField.clear();
@@ -190,37 +193,37 @@ public class Main extends Application {
             }
         });
 
-        Popup arguments = makeArgumentsPopup(new File("src/resources/arguments.csv"));
-        Button showArguments = makeArgumentsPopupButton(arguments);
-        showArguments.setFont(Font.font("Helvetica", FontWeight.BOLD, 20));
-        showArguments.setPrefSize(125, 50);
-        showArguments.setAlignment(Pos.CENTER);
+        Popup commands = makeTableViewPopup(new File("src/resources/arguments.csv"));
+        Button showCommands = makeCommandsPopupButton(commands);
 
         HBox hbox = new HBox();
         hbox.setAlignment(Pos.CENTER);
         hbox.setSpacing(10);
-        hbox.getChildren().addAll(textField, submit, showArguments);
+        hbox.getChildren().addAll(textField, submit, showCommands);
 
         input.getChildren().addAll(text, hbox);
         return input;
     }
 
-    public Popup makeArgumentsPopup(File file) throws IOException {
+    public Popup makeTableViewPopup(File file) throws IOException {
         CSVTableView table = new CSVTableView(",", file);
         Popup popup = new Popup();
         popup.getContent().add(table);
         return popup;
     }
 
-    public Button makeArgumentsPopupButton(Popup popup) {
-        Button button = new Button("Show Args");
+    public Button makeCommandsPopupButton(Popup popup) {
+        Button button = new Button("     View\nCommands");
+        button.setAlignment(Pos.CENTER);
+        button.setFont(Font.font("Helvetica", FontWeight.BOLD, 15));
+        button.setPrefSize(125, 50);
         button.setOnAction(e -> {
-            if (button.getText().equals("Show Args")) {
+            if (button.getText().equals("     View\nCommands")) {
                 popup.show(primaryStage);
-                button.setText("Hide Args");
+                button.setText("    Hide\nCommands");
             } else {
                 popup.hide();
-                button.setText("Show Args");
+                button.setText("    View\nCommands");
             }
         });
         return button;

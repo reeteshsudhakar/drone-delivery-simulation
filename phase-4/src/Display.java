@@ -78,7 +78,7 @@ public class Display {
                 info.setSpacing(5);
                 Text ingredientInfo = new Text(ingredient.toString());
                 info.getChildren().addAll(ingredientInfo);
-                ImageView image = new ImageView(new Image("resources/ingredient.png", 50, 50, true, true));
+                ImageView image = new ImageView(new Image("images/ingredient.png", 50, 50, true, true));
                 holder.getChildren().addAll(image, info);
                 popupBox.getChildren().add(holder);
             }
@@ -116,13 +116,13 @@ public class Display {
                 info.getChildren().addAll(personInfo);
                 ImageView image;
                 if (person instanceof Pilot) {
-                    image = new ImageView(new Image("resources/pilot.png", 50, 50, true, true));
+                    image = new ImageView(new Image("images/pilot.png", 50, 50, true, true));
                 } else if (person instanceof Manager) {
-                    image = new ImageView(new Image("resources/manager.png", 50, 50, true, true));
+                    image = new ImageView(new Image("images/manager.png", 50, 50, true, true));
                 } else if (person instanceof Worker) {
-                    image = new ImageView(new Image("resources/worker.png", 50, 50, true, true));
+                    image = new ImageView(new Image("images/worker.png", 50, 50, true, true));
                 } else {
-                    image = new ImageView(new Image("resources/person.png", 50, 50, true, true));
+                    image = new ImageView(new Image("images/person.png", 50, 50, true, true));
                 }
                 holder.getChildren().addAll(image, info);
                 popupBox.getChildren().add(holder);
@@ -160,7 +160,7 @@ public class Display {
                 info.setSpacing(5);
                 Text locationInfo = new Text(restaurant.toString());
                 info.getChildren().addAll(locationInfo);
-                ImageView image = new ImageView(new Image("resources/restaurant.png", 50, 50, true, true));
+                ImageView image = new ImageView(new Image("images/restaurant.png", 50, 50, true, true));
                 holder.getChildren().addAll(image, info);
                 popupBox.getChildren().add(holder);
             }
@@ -197,7 +197,7 @@ public class Display {
                 info.setSpacing(5);
                 Text locationInfo = new Text(service.toString());
                 info.getChildren().addAll(locationInfo);
-                ImageView image = new ImageView(new Image("resources/service.png", 50, 50, true, true));
+                ImageView image = new ImageView(new Image("images/service.png", 50, 50, true, true));
                 holder.getChildren().addAll(image, info);
                 popupBox.getChildren().add(holder);
             }
@@ -233,7 +233,7 @@ public class Display {
                 info.setSpacing(5);
                 Text locationInfo = new Text(location.toString());
                 info.getChildren().addAll(locationInfo);
-                ImageView image = new ImageView(new Image("resources/location.png", 50, 50, true, true));
+                ImageView image = new ImageView(new Image("images/location.png", 50, 50, true, true));
                 holder.getChildren().addAll(image, info);
                 popupBox.getChildren().add(holder);
             }
@@ -278,7 +278,7 @@ public class Display {
 
             Text droneInfo = new Text(drone.toString());
             info.getChildren().add(droneInfo);
-            ImageView image = new ImageView(new Image("resources/drone.png", 50, 50, true, true));
+            ImageView image = new ImageView(new Image("images/drone.png", 50, 50, true, true));
             holder.getChildren().addAll(image, info);
             popupBox.getChildren().add(holder);
         }

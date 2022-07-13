@@ -255,7 +255,7 @@ public class InterfaceLoop {
             try {
                 // Determine the next command and echo it to the monitor for testing purposes
                 tokens = input.split(DELIMITER);
-                System.out.println("> " + input);
+//                System.out.println("> " + input);
 
                 //noinspection StatementWithEmptyBody
                 if (tokens[0].indexOf("//") == 0) {
