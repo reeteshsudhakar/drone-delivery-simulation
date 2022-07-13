@@ -183,7 +183,11 @@ public class InterfaceLoop {
             return;
         }
         Drone movedDrone = service.getDrone(tag);
-        movedDrone.flyDrone(destination);
+        if (movedDrone instanceof FollowerDrone) {
+            Display.displayMessage("ERROR", "drone_is_not_a_leader");
+        } else {
+            ((LeaderDrone) movedDrone).flyDrone(destination);
+        }
     }
 
     /**
@@ -203,7 +207,11 @@ public class InterfaceLoop {
             Display.displayMessage("ERROR", "swarm_drone_does_not_exist");
             return;
         }
-        swarmDrone.joinSwarm(leadDrone);
+        if (leadDrone instanceof FollowerDrone) {
+            Display.displayMessage("ERROR", "lead_drone_is_following_another_swarm");
+            return;
+        }
+        swarmDrone.joinSwarm((LeaderDrone) leadDrone);
     }
 
     /**

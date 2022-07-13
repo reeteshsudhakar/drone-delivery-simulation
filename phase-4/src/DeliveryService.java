@@ -14,7 +14,7 @@ public class DeliveryService implements Comparable <DeliveryService> {
     private final String name;
     private Integer revenue;
     private final Location locatedAt;
-    private final TreeMap<Integer, Drone> drones;
+    protected static TreeMap<Integer, Drone> drones;
     private Manager manager = null;
 
     /**
@@ -226,19 +226,19 @@ public class DeliveryService implements Comparable <DeliveryService> {
                 Drone drone = services.get(serviceName).getDrone(droneTag);
                 if (drone == null) {
                     Display.displayMessage("ERROR", "drone_does_not_exist");
-                } else if (drone.hasPilot()) {
-                    if (drone.pilotAlreadyAppointed(appointedPilot)) {
+                } else if (drone instanceof LeaderDrone) {
+                    LeaderDrone leaderDrone = (LeaderDrone) drone;
+                    if (leaderDrone.pilotAlreadyAppointed(appointedPilot)) {
                         Display.displayMessage("ERROR","employee_has_already_been_appointed_" +
                                 "pilot_for_this_drone");
                         return;
                     }
-                    drone.switchPilot(appointedPilot);
-                    Display.displayMessage("OK", "employee_has_been_appointed_pilot");
-                } else if (drone.hasLeader()) {
-                    drone.becomeLeader(appointedPilot);
+                    leaderDrone.switchPilot(appointedPilot);
                     Display.displayMessage("OK", "employee_has_been_appointed_pilot");
                 } else {
-                    drone.assignPilot(appointedPilot);
+                    FollowerDrone followerDrone = (FollowerDrone) drone;
+                    LeaderDrone newLeaderDrone = new LeaderDrone(followerDrone, appointedPilot);
+                    this.drones.put(droneTag, newLeaderDrone);
                     Display.displayMessage("OK", "employee_has_been_appointed_pilot");
                 }
             } else {
@@ -272,7 +272,6 @@ public class DeliveryService implements Comparable <DeliveryService> {
     /**
      */
     public boolean noWorkersExist() {
-
         for (Person person: Person.people.values()) {
             if (person instanceof Worker && (!(person instanceof Pilot || person instanceof Manager))) {
                 if (((Worker) person).getEmployers().containsKey(this.name)) {
