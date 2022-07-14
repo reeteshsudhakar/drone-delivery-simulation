@@ -110,7 +110,7 @@ public class Location implements Comparable<Location> {
      * @param drone drone to check space for
      * @return false if there is NOT enough space, true otherwise
      */
-    public boolean notEnoughSpace(Drone drone) {
+    public boolean notEnoughSpace(LeaderDrone drone) {
         return this.spacesLeft < drone.getFollowers().size() + 1;
     }
 

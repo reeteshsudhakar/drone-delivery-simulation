@@ -95,17 +95,6 @@ public class Drone {
     }
 
     /**
-     * Method to fly the drone to a location.
-     * @param destination the location to which the drone is to be flown to
-     */
-    public void flyToDestination(Location destination) {
-        this.currentLocation.incrementSpacesLeft();
-        destination.decrementSpacesLeft();
-        this.useDroneFuel(Location.calculateDistance(this.currentLocation, destination));
-        this.setCurrentLocation(destination);
-    }
-
-    /**
      * Method to complete a transaction with a drone.
      * @param ingredient the ingredient to be purchased from the drone
      * @param quantity the quantity of the ingredient to be purchased from the drone

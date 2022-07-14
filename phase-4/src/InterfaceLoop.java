@@ -8,6 +8,26 @@
 public class InterfaceLoop {
 
     /**
+     * Method to make a person for the system.
+     * @param username the username of the person
+     * @param firstName the first name of the person
+     * @param lastName the last name of the person
+     * @param year the year of birth of the person
+     * @param month the month of birth of the person
+     * @param date the date of birth of the person
+     * @param address the address of the person
+     */
+    private void makePerson(String username, String firstName, String lastName,
+                    Integer year, Integer month, Integer date, String address) {
+        if (PersonFactory.creatingPersonValid(username, firstName, lastName,
+                year, month, date, address)) {
+            PersonFactory.createPerson(username, firstName, lastName,
+                    year, month, date, address);
+            Display.displayMessage("OK", "person_created");
+        }
+    }
+
+    /**
      * Method to hire a person for a service as a worker
      * @param serviceName the name of the service
      * @param username the username of the person to be hired as a worker
@@ -99,7 +119,11 @@ public class InterfaceLoop {
             return;
         }
         Drone movedDrone = service.getDrone(tag);
-        movedDrone.flyDrone(destination);
+        if (movedDrone instanceof FollowerDrone) {
+            Display.displayMessage("ERROR", "drone_is_not_a_leader");
+        } else {
+            ((LeaderDrone) movedDrone).flyDrone(destination);
+        }
     }
 
     /**
@@ -112,14 +136,20 @@ public class InterfaceLoop {
         if (!DeliveryService.checkServiceName(serviceName)) {
             return;
         }
-
         Drone leadDrone = DeliveryService.findDrone(serviceName, leadDroneTag);
         Drone swarmDrone = DeliveryService.findDrone(serviceName, swarmDroneTag);
         if (swarmDrone == null) {
             Display.displayMessage("ERROR","swarm_drone_does_not_exist");
             return;
+        } else if (leadDrone == null) {
+            Display.displayMessage("ERROR", "lead_drone_does_not_exist");
+            return;
         }
-        swarmDrone.joinSwarm(leadDrone);
+        if (leadDrone instanceof FollowerDrone) {
+            Display.displayMessage("ERROR", "lead_drone_is_following_another_swarm");
+            return;
+        }
+        swarmDrone.joinSwarm((LeaderDrone) leadDrone, serviceName);
     }
 
     /**
@@ -136,7 +166,12 @@ public class InterfaceLoop {
             Display.displayMessage("ERROR","swarm_drone_does_not_exist");
             return;
         }
-        swarmDrone.leaveSwarm();
+
+        if (swarmDrone instanceof LeaderDrone) {
+            Display.displayMessage("ERROR", "drone_cannot_leave_while_leading_a_swarm");
+        } else if (swarmDrone instanceof FollowerDrone) {
+            ((FollowerDrone) swarmDrone).leaveSwarm();
+        }
     }
 
     /**

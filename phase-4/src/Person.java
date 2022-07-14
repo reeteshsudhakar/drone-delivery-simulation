@@ -41,42 +41,6 @@ public class Person implements Comparable<Person> {
     }
 
     /**
-     *
-     * @param username Person's username
-     * @param firstName Person's first name
-     * @param lastName Person's last name
-     * @param year Person's starting year
-     * @param month Person's starting month
-     * @param date Person's starting day
-     * @param address Person's address
-     */
-    public static void makePerson(String username, String firstName, String lastName,
-                                  Integer year, Integer month, Integer date, String address) {
-        if (username == null || username.equals("")) {
-            Display.displayMessage("ERROR","username_not_valid");
-        } else if (people.containsKey(username)) {
-            Display.displayMessage("ERROR","person_already_exists");
-        } else if (firstName == null || firstName.equals("")) {
-            Display.displayMessage("ERROR","first_name_not_valid");
-        } else if (lastName == null || lastName.equals("")) {
-            Display.displayMessage("ERROR","last_name_not_valid");
-        } else if (year == null || year == 0) {
-            Display.displayMessage("ERROR","year_not_valid");
-        } else if (month == null || month == 0) {
-            Display.displayMessage("ERROR","month_not_valid");
-        } else if (date == null || date == 0) {
-            Display.displayMessage("ERROR","date_not_valid");
-        } else if (address == null || address.equals("")) {
-            Display.displayMessage("ERROR","address_not_valid");
-        } else {
-            Person newPerson = new Person(username, firstName, lastName, year,
-                    month, date, address);
-            people.put(username, newPerson);
-            Display.displayMessage("OK","person_created");
-        }
-    }
-
-    /**
      * Method to check if the username exists
      * @param username the username to check
      * @return true if the username exists, false otherwise
