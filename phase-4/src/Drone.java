@@ -6,19 +6,16 @@ import java.util.TreeMap;
  * @author Reetesh Sudhakar, Sebastian Jaskowski, Yash Gupta, Kunal Daga
  * @version 2.0
  */
-public class Drone {
+public abstract class Drone {
     // Object attributes
-    private final Integer tag;
-    private final Integer capacity;
-    private Integer remainingCapacity;
-    private Integer fuel;
-    private final Location homeBase;
-    private Location currentLocation;
-    private Integer sales;
-    private final TreeMap<Ingredient, Package> payload;
-    private Pilot pilot;
-    private Drone leader;
-    private final TreeMap<Integer, Drone> followers;
+    protected final Integer tag;
+    protected final Integer capacity;
+    protected Integer remainingCapacity;
+    protected Integer fuel;
+    protected final Location homeBase;
+    protected Location currentLocation;
+    protected Integer sales;
+    protected TreeMap<Ingredient, Package> payload;
 
     /**
      * Constructor for Drone class.
@@ -38,9 +35,6 @@ public class Drone {
         this.homeBase = homeBase;
         this.sales = 0;
         this.payload = new TreeMap<>();
-        this.pilot = null;
-        this.leader = null;
-        this.followers = new TreeMap<>();
     }
 
     /**
@@ -95,17 +89,6 @@ public class Drone {
     }
 
     /**
-     * Method to fly the drone to a location.
-     * @param destination the location to which the drone is to be flown to
-     */
-    public void flyToDestination(Location destination) {
-        this.currentLocation.incrementSpacesLeft();
-        destination.decrementSpacesLeft();
-        this.useDroneFuel(Location.calculateDistance(this.currentLocation, destination));
-        this.setCurrentLocation(destination);
-    }
-
-    /**
      * Method to complete a transaction with a drone.
      * @param ingredient the ingredient to be purchased from the drone
      * @param quantity the quantity of the ingredient to be purchased from the drone
@@ -133,183 +116,44 @@ public class Drone {
     public static void makeDrone(String serviceName, Integer tag, Integer capacity, Integer fuel) {
         // checking if the service for the drone exists
         DeliveryService newService = null;
-        Location serviceLocation = null;
+        Location serviceLocation;
 
         if (DeliveryService.services.containsKey(serviceName)) {
             newService = DeliveryService.services.get(serviceName);
-            serviceLocation = newService.getLocation();
         }
 
         // if the service does not exist in the system, display an error message
         if (newService == null) {
-            Display.displayMessage("ERROR","service_identifier_does_not_exist");
+            Display.displayMessage("ERROR", "service_identifier_does_not_exist");
             return;
+        } else {
+            serviceLocation = newService.getLocation();
         }
 
         // checking if the drone already exists in the system
         if (newService.getDrones().containsKey(tag)) {
-            Display.displayMessage("ERROR","drone_already_exists");
+            Display.displayMessage("ERROR", "drone_already_exists");
             return;
         }
 
         // checking if the capacity is valid (positive) and whether the fuel is valid (non-negative)
         if (capacity == null || capacity <= 0) {
-            Display.displayMessage("ERROR","drone_capacity_must_be_greater_than_zero");
+            Display.displayMessage("ERROR", "drone_capacity_must_be_greater_than_zero");
             return;
         } else if (fuel == null || fuel < 0) {
-            Display.displayMessage("ERROR","drone_fuel_must_be_greater_than_or_equal_to_zero");
+            Display.displayMessage("ERROR", "drone_fuel_must_be_greater_than_or_equal_to_zero");
             return;
         }
 
         // creating the drone IFF there is space in the service's home base for it
         if (serviceLocation.getSpacesLeft() == 0) {
-            Display.displayMessage("ERROR","not_enough_space_to_create_new_drone");
+            Display.displayMessage("ERROR", "not_enough_space_to_create_new_drone");
         } else {
-            Drone newDrone = new Drone(tag, capacity, fuel, serviceLocation, serviceLocation);
+            Drone newDrone = new LeaderDrone(tag, capacity, capacity, fuel, serviceLocation, serviceLocation, 0, new TreeMap<>());
             newService.getDrones().put(tag, newDrone);
             serviceLocation.decrementSpacesLeft();
-            Display.displayMessage("OK","drone_created");
+            Display.displayMessage("OK", "drone_created");
         }
-    }
-
-    /**
-     * Method to add a drone to a swarm
-     * @param leadDrone the drone that is to be followed (the leader of the swarm)
-     */
-    public void joinSwarm(Drone leadDrone) {
-        //Checks if lead drone and swarm drone are valid, and if they are in the same location
-        if (leadDrone == null) {
-            Display.displayMessage("ERROR","lead_drone_does_not_exist");
-            return;
-        } else if (leadDrone.getCurrentLocation() != this.currentLocation) {
-            Display.displayMessage("ERROR", "lead_and_swarm_drone_must_be_at_same_location");
-            return;
-        }
-
-        if (leadDrone.equals(this)) {
-            Display.displayMessage("ERROR", "drone_cannot_join_its_own_swarm");
-            return;
-        }
-
-        // If swarmDrone is a LeaderDrone, cast it as a FollowerDrone iff leadDrone is a LeaderDrone and has a valid pilot
-        // IF swarmDrone is a FollowerDrone, add it to leadDrone's swarm iff it isn't already in the swarm, and leadDrone is a valid LeaderDrone
-        if (this.hasPilot()) {
-            if (!this.followers.isEmpty()) {
-                Display.displayMessage("ERROR", "swarm_drone_is_leading_a_swarm");
-            } else {
-                if (leadDrone.hasPilot()) {
-                    this.pilot.getPilotedDrones().remove(this.tag);
-                    this.assignLeader(leadDrone);
-                    Display.displayMessage("OK", "change_completed");
-                } else if (leadDrone.hasLeader()) {
-                    Display.displayMessage("ERROR", "lead_drone_is_following_another_swarm");
-                } else { // the passed in lead drone tag is just a normal drone, so it doesn't have a pilot
-                    Display.displayMessage("ERROR", "lead_drone_does_not_have_a_pilot");
-                }
-            }
-        } else if (this.hasLeader()) {
-            if (leadDrone.hasPilot()) {
-                if (this.leader.getTag().equals(leadDrone.getTag())) {
-                    Display.displayMessage("ERROR","swarm_drone_already_following_lead_drone");
-                    return;
-                }
-                // remove the drone from the old lead drone's swarm and add it to the new one
-                this.leader.getFollowers().remove(this.tag);
-                this.assignLeader(leadDrone);
-                Display.displayMessage("OK", "change_completed");
-            } else if (leadDrone.hasLeader()) {
-                Display.displayMessage("ERROR", "lead_drone_is_following_another_swarm");
-            } else { // the passed in lead drone tag is just a normal drone, so it doesn't have a pilot
-                Display.displayMessage("ERROR", "lead_drone_does_not_have_a_pilot");
-            }
-        } else { // the passed in swarm drone tag is just a normal drone, so it doesn't have a pilot or a lead drone
-            if (leadDrone.hasPilot()) {
-                this.assignLeader(leadDrone);
-                Display.displayMessage("OK","change_completed");
-            } else { // the lead drone is also just a normal drone and doesn't have a pilot
-                Display.displayMessage("ERROR", "lead_drone_does_not_have_a_pilot");
-            }
-        }
-    }
-
-    /**
-     * Method to remove a drone from a swarm
-     */
-    public void leaveSwarm() {
-        // Remove swarmDrone from swarm iff it is in a swarm (ensuring it is not a leader)
-        if (this.hasPilot()) {
-            Display.displayMessage("ERROR", "drone_not_in_a_swarm");
-        } else if (this.hasLeader()) {
-            Pilot pilot = this.leader.pilot;
-            this.removeFromSwarm();
-            this.assignPilot(pilot);
-            Display.displayMessage("OK", "change_completed");
-        } else {
-            Display.displayMessage("ERROR", "drone_not_in_a_swarm");
-        }
-    }
-
-    /**
-     * Method to fly a drone to the destination specified
-     * @param destination the destination to fly to
-     */
-    public void flyDrone(String destination) {
-        Location destinationLocation;
-        if (Location.locations.containsKey(destination)) {
-            destinationLocation = Location.locations.get(destination);
-        } else {
-            Display.displayMessage("ERROR","flight_destination_does_not_exist");
-            return;
-        }
-
-        // Drone can be made a LeaderDrone iff it is already a LeaderDrone & pilot is valid
-        if (this.hasLeader()) {
-            Display.displayMessage("ERROR", "drone_is_not_a_leader");
-            return;
-        } else if (!this.hasPilot()) {
-            Display.displayMessage("ERROR", "the_drone_does_not_have_a_pilot");
-            return;
-        }
-
-        if (this.getPilotLicense() == null) {
-            Display.displayMessage("ERROR", "pilot_has_no_license");
-            return;
-        }
-
-        if (destinationLocation.notEnoughSpace(this)) {
-            Display.displayMessage("ERROR", "not_enough_space_to_maneuver_the_" +
-                    "swarm_to_that_location");
-            return;
-        }
-        // Fly iff there is enough fuel to drop ingredients off and return back to home base
-        Integer distance = Location.calculateDistance(this.currentLocation, destinationLocation);
-        Integer returnDistance = Location.calculateDistance(destinationLocation, this.homeBase);
-
-        if (distance > this.fuel) {
-            Display.displayMessage("ERROR", "not_enough_fuel_to_reach_the_destination");
-            return;
-        } else if (distance + returnDistance > this.fuel) {
-            Display.displayMessage("ERROR", "not_enough_fuel_to_return_to_home_base_from_destination");
-            return;
-        }
-
-        for (Drone drone : this.followers.values()) {
-            if (distance > drone.fuel) {
-                Display.displayMessage("ERROR", "not_enough_fuel_to_reach_the_destination");
-                return;
-            } else if (distance + returnDistance > drone.fuel) {
-                Display.displayMessage("ERROR", "not_enough_fuel_to_return_to_home_base_from_destination");
-                return;
-            }
-        }
-
-        this.flyToDestination(destinationLocation);
-        for (Drone drone : this.followers.values()) {
-            drone.flyToDestination(destinationLocation);
-        }
-
-        this.pilot.addSuccessfulTrip();
-        Display.displayMessage("OK", "change_completed");
     }
 
     /**
@@ -348,67 +192,6 @@ public class Drone {
     }
 
     /**
-     * Method to switch the pilots of a drone
-     * @param pilot the new pilot of the drone
-     */
-    public void switchPilot(Pilot pilot) {
-        this.pilot.getPilotedDrones().remove(this.tag);
-        this.assignPilot(pilot);
-        pilot.getPilotedDrones().put(this.tag, this);
-    }
-
-    /**
-     * Method to switch the leader of a drone to a pilot from a drone
-     * @param pilot the new pilot of the drone
-     */
-    public void becomeLeader(Pilot pilot) {
-        this.leader.getFollowers().remove(this.tag);
-        this.assignPilot(pilot);
-        pilot.getPilotedDrones().put(this.tag, this);
-    }
-
-    /**
-     * Checks if a pilot has already been appointed to a drone
-     * @param pilot pilot to check if has been appointed to a drone
-     * @return true if the pilot has already been appointed to a given drone, false otherwise
-     */
-    public boolean pilotAlreadyAppointed(Pilot pilot) {
-        return this.pilot.getUsername().equals(pilot.getUsername());
-    }
-
-    /**
-     * Method to remove a drone from its leader drone's list of followers
-     */
-    public void removeFromSwarm() {
-        this.leader.getFollowers().remove(this.tag);
-    }
-
-    /**
-     * Method to display a drone's details
-     * @return String representation of the drone's information
-     */
-    @Override
-    public String toString() {
-        if (this.hasLeader() || (!this.hasPilot())) {
-            return this.getDroneInfo() + this.getPayloadInfo();
-        }
-
-        StringBuilder swarmString = new StringBuilder();
-        swarmString.append(String.format("&> pilot:%s%n", this.pilot.getUsername()));
-
-        if (this.followers.size() > 0) {
-            swarmString.append("drone is directing this swarm: [ drone tags ");
-            for (Drone drone : this.followers.values()) {
-                if (!drone.tag.equals(this.tag)){
-                    swarmString.append(String.format("| %d ", drone.tag));
-                }
-            }
-            swarmString.append("]\n");
-        }
-        return this.getDroneInfo() + swarmString + this.getPayloadInfo();
-    }
-
-    /**
      * Method to check if two drones are equal
      * @param obj the object to compare to
      * @return true if the two drones are equal, false otherwise
@@ -422,6 +205,8 @@ public class Drone {
             return this.tag.equals(drone.tag);
         }
     }
+
+    public abstract void joinSwarm(LeaderDrone leader, String service_name);
 
     /**
      * Method to get the payload information of a drone
@@ -447,14 +232,6 @@ public class Drone {
                 this.sales, this.currentLocation.getName());
     }
 
-    /**
-     * Method to get a license of a drone's pilot
-     * @return String representation of a drone's pilot's license
-     */
-    public String getPilotLicense() {
-        return this.pilot.getLicense();
-    }
-
     public Integer getIngredientPayload(Ingredient buyerIngredient, Integer quantity) {
         return this.getPayload().get(buyerIngredient).getQuantity().compareTo(quantity);
     }
@@ -467,50 +244,6 @@ public class Drone {
         return this.tag;
     }
 
-    /**
-     * Method to check whether a drone has a pilot
-     * @return true if the drone has a pilot, false otherwise
-     */
-    public boolean hasPilot() {
-        return pilot != null;
-    }
-
-    /**
-     * Method to check whether a drone has a leader
-     * @return true if the drone has a leader, false otherwise
-     */
-    public boolean hasLeader() {
-        return leader != null;
-    }
-
-    /**
-     * Getter for Drone pilot
-     * @return the pilot of the drone
-     */
-    public Pilot getPilot() {
-        return pilot;
-    }
-
-    /**
-     * Method to assign a pilot to a drone
-     * @param pilot the pilot to assign to the drone
-     */
-    public void assignPilot(Pilot pilot) {
-        this.leader = null;
-        this.pilot = pilot;
-        pilot.getPilotedDrones().put(this.tag, this);
-    }
-
-    /**
-     * Method to assign a leader to a drone
-     * @param drone the drone to assign as the leader
-     */
-    public void assignLeader(Drone drone) {
-        this.pilot = null;
-        this.followers.clear();
-        this.leader = drone;
-        drone.followers.put(this.tag, this);
-    }
 
     /**
      * Getter for Drone capacity.
@@ -544,6 +277,10 @@ public class Drone {
         return this.currentLocation;
     }
 
+    public Location getHomeBase() {
+        return homeBase;
+    }
+
     /**
      * Getter for Drone sales.
      * @return the sales of the drone
@@ -551,6 +288,8 @@ public class Drone {
     public Integer getSales() {
         return this.sales;
     }
+
+//    public abstract void joinSwarm()
 
     /**
      * Getter for Drone payload, with information about
@@ -561,13 +300,6 @@ public class Drone {
         return this.payload;
     }
 
-    /**
-     * Getter for Drone followers.
-     * @return the followers of the drone
-     */
-    public TreeMap<Integer, Drone> getFollowers() {
-        return this.followers;
-    }
 
     /**
      * Method to decrease the remaining capacity of a drone.
@@ -609,6 +341,17 @@ public class Drone {
      */
     public void useDroneFuel(Integer fuel) {
         this.fuel -= fuel;
+    }
+
+    /**
+     * Method to fly the drone to a location.
+     * @param destination the location to which the drone is to be flown to
+     */
+    public void flyToDestination(Location destination) {
+        this.currentLocation.incrementSpacesLeft();
+        destination.decrementSpacesLeft();
+        this.useDroneFuel(Location.calculateDistance(this.currentLocation, destination));
+        this.setCurrentLocation(destination);
     }
 
     /**

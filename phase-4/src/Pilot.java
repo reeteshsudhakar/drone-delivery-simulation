@@ -9,7 +9,7 @@ import java.util.TreeMap;
 public class Pilot extends Worker {
     private String license;
     private Integer experience;
-    private TreeMap<Integer, Drone> pilotedDrones;
+    private final TreeMap<Integer, Drone> leaderDrones;
 
     /**
      * Constructor for the Pilot class.
@@ -23,7 +23,7 @@ public class Pilot extends Worker {
                 worker.getDate(), worker.getAddress(), employer);
         this.license = license;
         this.experience = experience;
-        this.pilotedDrones = new TreeMap<>();
+        this.leaderDrones = new TreeMap<>();
     }
 
     /**
@@ -49,16 +49,20 @@ public class Pilot extends Worker {
                 && !this.getPilotedDrones().isEmpty();
     }
 
+    public DeliveryService getSingleEmployer() {
+        return getEmployers().firstEntry().getValue();
+    }
+
     /**
      * @return The display string for this Pilot
      */
     public String toString() {
-        if (pilotedDrones == null || pilotedDrones.isEmpty()) {
+        if (leaderDrones == null || leaderDrones.isEmpty()) {
             return super.toString() + String.format("\nuser has a pilot's license (%s) with %d successful flight(s)",
                     this.license, this.experience);
         } else {
             StringBuilder droneString  = new StringBuilder("\nemployee is flying these drones: [ drone tags ");
-            for (Drone drone : pilotedDrones.values()) {
+            for (Drone drone : leaderDrones.values()) {
                 droneString.append(String.format("| %d ", drone.getTag()));
             }
             droneString.append("]");
@@ -76,7 +80,7 @@ public class Pilot extends Worker {
      * Getter for the drones the pilot is controlling
      * @return the drones the pilot is controlling
      */
-    public TreeMap<Integer, Drone> getPilotedDrones() { return pilotedDrones; }
+    public TreeMap<Integer, Drone> getPilotedDrones() { return leaderDrones; }
 
     /**
      * Getter for the license of a Pilot
