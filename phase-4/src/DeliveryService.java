@@ -275,7 +275,8 @@ public class DeliveryService implements Comparable <DeliveryService> {
         for (Person person: Person.people.values()) {
             if (person instanceof Worker && (!(person instanceof Manager))) {
                 if (person instanceof Pilot) {
-                    if (((Pilot) person).getPilotedDrones().size() == 0) {
+                    Pilot pilot = (Pilot) person;
+                    if (pilot.getPilotedDrones().size() == 0 && pilot.getSingleEmployer().equals(this)) {
                         return false;
                     }
                 } else {
