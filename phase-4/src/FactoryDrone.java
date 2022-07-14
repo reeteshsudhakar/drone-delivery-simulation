@@ -1,16 +1,16 @@
 public class FactoryDrone {
 
-    public LeaderDrone followerToLeader(FollowerDrone drone) {
-        LeaderDrone newDrone = new LeaderDrone(drone.getTag(), drone.getCapacity(), drone.getFuel(),
+    public static LeaderDrone followerToLeader(FollowerDrone drone, DeliveryService service, Pilot pilot) {
+        LeaderDrone newDrone = new LeaderDrone(drone.getTag(), drone.getCapacity(), drone.getRemainingCapacity(), drone.getFuel(),
                 drone.getHomeBase(), drone.getCurrentLocation(), drone.getSales(), drone.getPayload());
-        DeliveryService.drones.put(drone.getTag(), newDrone);
+        newDrone.assignPilot(pilot);
+        service.drones.put(newDrone.getTag(), newDrone);
         return newDrone;
-        kunal is gay
     }
 
-    public FollowerDrone leaderToFollower(LeaderDrone drone) {
-        FollowerDrone newDrone = new FollowerDrone(drone.getTag(), drone.getCapacity(), drone.getFuel(), drone.get);
-        //Integer init_tag, Integer init_capacity, Integer init_fuel, Location homeBase, Location currentLocation, Integer sales, TreeMap<Ingredient, Package> payload
-
+    public static FollowerDrone leaderToFollower(LeaderDrone drone, DeliveryService service, LeaderDrone leader) {
+        FollowerDrone newDrone =  new FollowerDrone(drone.getTag(), drone.getCapacity(), drone.getRemainingCapacity(), drone.getFuel(), drone.getHomeBase(), drone.getCurrentLocation(), drone.getSales(), drone.getPayload(), leader);
+        service.drones.put(newDrone.getTag(), newDrone);
+        return newDrone;
     }
 }

@@ -6,7 +6,7 @@ import java.util.TreeMap;
  * @author Reetesh Sudhakar, Sebastian Jaskowski, Yash Gupta, Kunal Daga
  * @version 2.0
  */
-public class Drone {
+public abstract class Drone {
     // Object attributes
     protected final Integer tag;
     protected final Integer capacity;
@@ -16,7 +16,6 @@ public class Drone {
     protected Location currentLocation;
     protected Integer sales;
     protected TreeMap<Ingredient, Package> payload;
-//    protected Pilot pilot;
 
     /**
      * Constructor for Drone class.
@@ -117,17 +116,18 @@ public class Drone {
     public static void makeDrone(String serviceName, Integer tag, Integer capacity, Integer fuel) {
         // checking if the service for the drone exists
         DeliveryService newService = null;
-        Location serviceLocation = null;
+        Location serviceLocation;
 
         if (DeliveryService.services.containsKey(serviceName)) {
             newService = DeliveryService.services.get(serviceName);
-            serviceLocation = newService.getLocation();
         }
 
         // if the service does not exist in the system, display an error message
         if (newService == null) {
             Display.displayMessage("ERROR", "service_identifier_does_not_exist");
             return;
+        } else {
+            serviceLocation = newService.getLocation();
         }
 
         // checking if the drone already exists in the system
@@ -149,7 +149,7 @@ public class Drone {
         if (serviceLocation.getSpacesLeft() == 0) {
             Display.displayMessage("ERROR", "not_enough_space_to_create_new_drone");
         } else {
-            Drone newDrone = new Drone(tag, capacity, fuel, serviceLocation, serviceLocation);
+            Drone newDrone = new LeaderDrone(tag, capacity, capacity, fuel, serviceLocation, serviceLocation, 0, new TreeMap<>());
             newService.getDrones().put(tag, newDrone);
             serviceLocation.decrementSpacesLeft();
             Display.displayMessage("OK", "drone_created");
@@ -191,32 +191,6 @@ public class Drone {
         return !(this.currentLocation.equals(this.homeBase));
     }
 
-
-//    /**
-//     * Method to display a drone's details
-//     * @return String representation of the drone's information
-//     */
-//    @Override
-//    public String toString() {
-//        if (this.hasLeader() || (!this.hasPilot())) {
-//            return this.getDroneInfo() + this.getPayloadInfo();
-//        }
-//
-////        StringBuilder swarmString = new StringBuilder();
-////        swarmString.append(String.format("&> pilot:%s%n", this.pilot.getUsername()));
-//
-//        if (this.followers.size() > 0) {
-//            swarmString.append("drone is directing this swarm: [ drone tags ");
-//            for (Drone drone : this.followers.values()) {
-//                if (!drone.tag.equals(this.tag)){
-//                    swarmString.append(String.format("| %d ", drone.tag));
-//                }
-//            }
-//            swarmString.append("]\n");
-//        }
-//        return this.getDroneInfo() + swarmString + this.getPayloadInfo();
-//    }
-
     /**
      * Method to check if two drones are equal
      * @param obj the object to compare to
@@ -231,6 +205,8 @@ public class Drone {
             return this.tag.equals(drone.tag);
         }
     }
+
+    public abstract void joinSwarm(LeaderDrone leader, String service_name);
 
     /**
      * Method to get the payload information of a drone

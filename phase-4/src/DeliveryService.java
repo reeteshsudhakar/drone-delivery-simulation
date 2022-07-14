@@ -14,7 +14,7 @@ public class DeliveryService implements Comparable <DeliveryService> {
     private final String name;
     private Integer revenue;
     private final Location locatedAt;
-    protected static TreeMap<Integer, Drone> drones;
+    protected TreeMap<Integer, Drone> drones;
     private Manager manager = null;
 
     /**
@@ -233,11 +233,11 @@ public class DeliveryService implements Comparable <DeliveryService> {
                                 "pilot_for_this_drone");
                         return;
                     }
-                    leaderDrone.switchPilot(appointedPilot);
+                    leaderDrone.assignPilot(appointedPilot);
                     Display.displayMessage("OK", "employee_has_been_appointed_pilot");
                 } else {
                     FollowerDrone followerDrone = (FollowerDrone) drone;
-                    LeaderDrone newLeaderDrone = new LeaderDrone(followerDrone, appointedPilot);
+                    LeaderDrone newLeaderDrone = FactoryDrone.followerToLeader(followerDrone, this, appointedPilot);
                     this.drones.put(droneTag, newLeaderDrone);
                     Display.displayMessage("OK", "employee_has_been_appointed_pilot");
                 }
@@ -273,9 +273,15 @@ public class DeliveryService implements Comparable <DeliveryService> {
      */
     public boolean noWorkersExist() {
         for (Person person: Person.people.values()) {
-            if (person instanceof Worker && (!(person instanceof Pilot || person instanceof Manager))) {
-                if (((Worker) person).getEmployers().containsKey(this.name)) {
-                    return false;
+            if (person instanceof Worker && (!(person instanceof Manager))) {
+                if (person instanceof Pilot) {
+                    if (((Pilot) person).getPilotedDrones().size() == 0) {
+                        return false;
+                    }
+                } else {
+                    if (((Worker) person).getEmployers().containsKey(this.name)) {
+                        return false;
+                    }
                 }
             }
         }

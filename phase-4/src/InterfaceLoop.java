@@ -1,4 +1,3 @@
-import javax.xml.stream.FactoryConfigurationError;
 import java.util.Scanner;
 
 /**
@@ -88,6 +87,7 @@ public class InterfaceLoop {
                 year, month, date, address)) {
             FactoryPerson.createPerson(username, firstName, lastName,
                     year, month, date, address);
+            Display.displayMessage("OK", "person_created");
         }
     }
 
@@ -200,18 +200,20 @@ public class InterfaceLoop {
         if (!DeliveryService.checkServiceName(serviceName)) {
             return;
         }
-
         Drone leadDrone = DeliveryService.findDrone(serviceName, leadDroneTag);
         Drone swarmDrone = DeliveryService.findDrone(serviceName, swarmDroneTag);
         if (swarmDrone == null) {
             Display.displayMessage("ERROR", "swarm_drone_does_not_exist");
+            return;
+        } else if (leadDrone == null) {
+            Display.displayMessage("ERROR", "lead_drone_does_not_exist");
             return;
         }
         if (leadDrone instanceof FollowerDrone) {
             Display.displayMessage("ERROR", "lead_drone_is_following_another_swarm");
             return;
         }
-        swarmDrone.joinSwarm((LeaderDrone) leadDrone);
+        swarmDrone.joinSwarm((LeaderDrone) leadDrone, serviceName);
     }
 
     /**
@@ -228,7 +230,12 @@ public class InterfaceLoop {
             Display.displayMessage("ERROR", "swarm_drone_does_not_exist");
             return;
         }
-        swarmDrone.leaveSwarm();
+
+        if (swarmDrone instanceof LeaderDrone) {
+            Display.displayMessage("ERROR", "dron_can_not_leave_while_leading_a_swarm");
+        } else if (swarmDrone instanceof FollowerDrone) {
+            ((FollowerDrone) swarmDrone).leaveSwarm();
+        }
     }
 
     /**
