@@ -6,6 +6,9 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Popup;
 
@@ -22,12 +25,8 @@ public class Display {
     }
 
     public static void displayAllDrones() {
-        Popup dronePopup = new Popup();
-        dronePopup.setOpacity(1);
-        dronePopup.setAutoHide(true);
-        VBox popupBox = new VBox();
-        popupBox.setSpacing(10);
-        popupBox.setStyle("-fx-background-color: white; -fx-padding: 10px;");
+        Popup dronePopup = createPopup();
+        VBox popupBox = createPopupBox("Drones");
 
         for (DeliveryService service : DeliveryService.services.values()) {
             populateDronePopup(service, popupBox);
@@ -48,12 +47,8 @@ public class Display {
             return;
         }
 
-        Popup dronePopup = new Popup();
-        dronePopup.setOpacity(1);
-        dronePopup.setAutoHide(true);
-        VBox popupBox = new VBox();
-        popupBox.setSpacing(10);
-        popupBox.setStyle("-fx-background-color: white; -fx-padding: 10px;");
+        Popup dronePopup = createPopup();
+        VBox popupBox = createPopupBox(serviceName + " Drones");
 
         populateDronePopup(service, popupBox);
 
@@ -61,17 +56,13 @@ public class Display {
     }
 
     public static void displayIngredients() {
-        Popup ingredientPopup = new Popup();
-        ingredientPopup.setOpacity(1);
-        ingredientPopup.setAutoHide(true);
-        VBox popupBox = new VBox();
-        popupBox.setSpacing(10);
-        popupBox.setStyle("-fx-background-color: white; -fx-padding: 10px;");
+        Popup ingredientPopup = createPopup();
+        VBox popupBox = createPopupBox("Ingredients");
 
         if (!Ingredient.ingredients.isEmpty()) {
             for (Ingredient ingredient : Ingredient.ingredients.values()) {
                 HBox holder = new HBox();
-                holder.setMinWidth(500);
+                holder.setMinWidth(700);
                 holder.setSpacing(10);
                 holder.setAlignment(Pos.CENTER_LEFT);
                 VBox info = new VBox();
@@ -95,16 +86,13 @@ public class Display {
     }
 
     public static void displayPeople() {
-        Popup peoplePopup = new Popup();
-        peoplePopup.setOpacity(1);
-        peoplePopup.setAutoHide(true);
-        VBox popupBox = new VBox();
-        popupBox.setSpacing(10);
-        popupBox.setStyle("-fx-background-color: white; -fx-padding: 10px;");
+        Popup peoplePopup = createPopup();
+        VBox popupBox = createPopupBox("People");
 
         if (!Person.people.values().isEmpty()) {
             for (Person person : Person.people.values()) {
                 HBox holder = new HBox();
+                holder.setMinWidth(700);
                 holder.setSpacing(10);
                 holder.setAlignment(Pos.CENTER_LEFT);
                 VBox info = new VBox();
@@ -137,16 +125,13 @@ public class Display {
     }
 
     public static void displayRestaurants() {
-        Popup restaurantPopup = new Popup();
-        restaurantPopup.setOpacity(1);
-        restaurantPopup.setAutoHide(true);
-        VBox popupBox = new VBox();
-        popupBox.setSpacing(10);
-        popupBox.setStyle("-fx-background-color: white; -fx-padding: 10px;");
+        Popup restaurantPopup = createPopup();
+        VBox popupBox = createPopupBox("Restaurants");
 
         if (!Restaurant.restaurants.isEmpty()) {
             for (Restaurant restaurant : Restaurant.restaurants.values()) {
                 HBox holder = new HBox();
+                holder.setMinWidth(700);
                 holder.setSpacing(10);
                 holder.setAlignment(Pos.CENTER_LEFT);
                 VBox info = new VBox();
@@ -172,16 +157,13 @@ public class Display {
     }
 
     public static void displayServices() {
-        Popup servicePopup = new Popup();
-        servicePopup.setOpacity(1);
-        servicePopup.setAutoHide(true);
-        VBox popupBox = new VBox();
-        popupBox.setSpacing(10);
-        popupBox.setStyle("-fx-background-color: white; -fx-padding: 10px;");
+        Popup servicePopup = createPopup();
+        VBox popupBox = createPopupBox("Services");
 
         if (!DeliveryService.services.isEmpty()) {
             for (DeliveryService service : DeliveryService.services.values()) {
                 HBox holder = new HBox();
+                holder.setMinWidth(700);
                 holder.setSpacing(10);
                 holder.setAlignment(Pos.CENTER_LEFT);
                 VBox info = new VBox();
@@ -205,16 +187,13 @@ public class Display {
     }
 
     public static void displayLocations() {
-        Popup locationPopup = new Popup();
-        locationPopup.setOpacity(1);
-        locationPopup.setAutoHide(true);
-        VBox popupBox = new VBox();
-        popupBox.setSpacing(10);
-        popupBox.setStyle("-fx-background-color: white; -fx-padding: 10px;");
+        Popup locationPopup = createPopup();
+        VBox popupBox = createPopupBox("Locations");
 
         if (!Location.locations.isEmpty()) {
             for (Location location : Location.locations.values()) {
                 HBox holder = new HBox();
+                holder.setMinWidth(700);
                 holder.setSpacing(10);
                 holder.setAlignment(Pos.CENTER_LEFT);
                 VBox info = new VBox();
@@ -239,7 +218,7 @@ public class Display {
     }
 
     private static void validateDronePopup(Popup dronePopup, VBox popupBox) {
-        if (popupBox.getChildren().size() == 0) {
+        if (popupBox.getChildren().size() == 1) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("ERROR");
             alert.setHeaderText("No Drones");
@@ -254,6 +233,7 @@ public class Display {
     private static void populateDronePopup(DeliveryService service, VBox popupBox) {
         for (Drone drone : service.getDrones().values()) {
             HBox holder = new HBox();
+            holder.setMinWidth(700);
             holder.setSpacing(10);
             holder.setAlignment(Pos.CENTER_LEFT);
             VBox info = new VBox();
@@ -270,21 +250,50 @@ public class Display {
 
     private static void createScrollPane(Popup popup, VBox popupBox) {
         StackPane background = new StackPane();
-        background.setMinWidth(500);
-        background.setMinHeight(500);
+        background.setPrefWidth(popup.getWidth());
+        background.setPrefHeight(popup.getHeight());
         background.setStyle("-fx-background-color: white;");
         background.getChildren().add(popupBox);
         ScrollPane scrollPane = new ScrollPane(background);
 
-        scrollPane.setMinWidth(500);
-        scrollPane.setMaxWidth(500);
-        scrollPane.setMinHeight(300);
-        scrollPane.setMaxHeight(300);
+        scrollPane.setMinWidth(700);
+        scrollPane.setMaxWidth(700);
+        scrollPane.setMinHeight(500);
+        scrollPane.setMaxHeight(500);
         scrollPane.setStyle("-fx-background-color: white; -fx-padding: 5px;");
 
         popup.getContent().add(scrollPane);
 
         displayMessage("DISPLAY","display_in_progress");
         popup.show(Main.primaryStage);
+    }
+
+    private static HBox makePopupTitle(String title) {
+        Text text = new Text(title);
+        text.setFont(Font.font("Arial", FontWeight.BOLD, 30));
+        text.setFill(Color.BLACK);
+        HBox titleBox = new HBox();
+        titleBox.setStyle("-fx-background-color: white; -fx-padding: 5px;");
+        titleBox.setAlignment(Pos.CENTER);
+        titleBox.getChildren().add(text);
+        return titleBox;
+    }
+
+    private static Popup createPopup() {
+        Popup popup = new Popup();
+        popup.setOpacity(1);
+        popup.setAutoHide(true);
+        return popup;
+    }
+
+    private static VBox createPopupBox(String title) {
+        VBox popupBox = new VBox();
+        popupBox.setSpacing(10);
+        popupBox.setStyle("-fx-background-color: white; -fx-padding: 10px;");
+
+        HBox titleBox = makePopupTitle(title);
+        popupBox.getChildren().add(titleBox);
+
+        return popupBox;
     }
 }
