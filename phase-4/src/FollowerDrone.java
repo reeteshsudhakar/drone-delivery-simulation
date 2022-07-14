@@ -73,7 +73,7 @@ public class FollowerDrone extends Drone {
         if (this.hasLeader()) {
             LeaderDrone leader = this.leaderDrone;
             leader.getFollowers().remove(this.tag);
-            getEmployer(leader).drones.put(this.tag, FactoryDrone.followerToLeader(this, getEmployer(leader), leader.getPilot()));
+            getEmployer(leader).drones.put(this.tag, DroneFactory.followerToLeader(this, getEmployer(leader), leader.getPilot()));
             Display.displayMessage("OK", "change_completed");
         } else {
             Display.displayMessage("ERROR", "drone_not_in_a_swarm");

@@ -163,7 +163,7 @@ public class LeaderDrone extends Drone {
 
         if (leadDrone.hasPilot()) {
             leadDrone.pilot.getPilotedDrones().remove(this.tag);
-            FollowerDrone newFollower = FactoryDrone.leaderToFollower(this, DeliveryService.services.get(service_name), leadDrone);
+            FollowerDrone newFollower = DroneFactory.leaderToFollower(this, DeliveryService.services.get(service_name), leadDrone);
             leadDrone.getSwarm().put(this.tag, newFollower);
             Display.displayMessage("OK", "change_completed");
         } else {

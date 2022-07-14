@@ -95,7 +95,7 @@ public class DeliveryService implements Comparable <DeliveryService> {
                 hiredWorker.addEmployer(this);
             } else {
                 // Object retrieved from TreeMap is a person, so a Worker object needs to be deep copied
-                hiredWorker = FactoryPerson.createWorker(tempPerson, this);
+                hiredWorker = PersonFactory.createWorker(tempPerson, this);
                 Person.people.put(username, hiredWorker);
             }
             Display.displayMessage("OK", "new_employee_has_been_hired");
@@ -124,7 +124,7 @@ public class DeliveryService implements Comparable <DeliveryService> {
             }
             firedWorker.removeEmployer(this);
             if (firedWorker.getEmployers().isEmpty()) {
-                Person newPerson = FactoryPerson.createPerson(firedWorker);
+                Person newPerson = PersonFactory.createPerson(firedWorker);
                 Person.people.put(username, newPerson);
             }
             Display.displayMessage("OK", "employee_has_been_fired");
@@ -162,7 +162,7 @@ public class DeliveryService implements Comparable <DeliveryService> {
                 Manager newManager = new Manager(tempWorker, this);
                 Person.people.put(newManager.getUsername(), newManager);
                 if (!(this.manager == null)) {
-                    Worker newWorker = FactoryPerson.createWorker(this.manager, this);
+                    Worker newWorker = PersonFactory.createWorker(this.manager, this);
                     Person.people.put(newWorker.getUsername(), newWorker);
                 }
                 this.setManager(newManager);
@@ -201,7 +201,7 @@ public class DeliveryService implements Comparable <DeliveryService> {
         } else if (tempPerson instanceof Worker) {
             Worker tempWorker = (Worker) tempPerson;
             if (tempWorker.getEmployers().containsKey(this.name)) {
-                Pilot newPilot = (Pilot) FactoryPerson.createPilot(tempWorker, this, license, experience);
+                Pilot newPilot = (Pilot) PersonFactory.createPilot(tempWorker, this, license, experience);
                 Person.people.put(newPilot.getUsername(), newPilot);
                 Display.displayMessage("OK", "pilot_has_been_trained");
             } else {
@@ -237,7 +237,7 @@ public class DeliveryService implements Comparable <DeliveryService> {
                     Display.displayMessage("OK", "employee_has_been_appointed_pilot");
                 } else {
                     FollowerDrone followerDrone = (FollowerDrone) drone;
-                    LeaderDrone newLeaderDrone = FactoryDrone.followerToLeader(followerDrone, this, appointedPilot);
+                    LeaderDrone newLeaderDrone = DroneFactory.followerToLeader(followerDrone, this, appointedPilot);
                     this.drones.put(droneTag, newLeaderDrone);
                     Display.displayMessage("OK", "employee_has_been_appointed_pilot");
                 }

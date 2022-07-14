@@ -1,4 +1,4 @@
-public class FactoryDrone {
+public class DroneFactory {
 
     public static LeaderDrone followerToLeader(FollowerDrone drone, DeliveryService service, Pilot pilot) {
         LeaderDrone newDrone = new LeaderDrone(drone.getTag(), drone.getCapacity(), drone.getRemainingCapacity(), drone.getFuel(),

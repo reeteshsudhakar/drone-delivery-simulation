@@ -1,11 +1,11 @@
-public class FactoryPerson {
+public class PersonFactory {
 
     public static Worker createPilot(Worker tempWorker, DeliveryService employer, String license, Integer experience) {
         return new Pilot(tempWorker, employer, license, experience);
     }
 
     public static Person createPerson(Worker worker) {
-        Person newPerson = FactoryPerson.createPerson(worker.getUsername(), worker.getFirstName(),
+        Person newPerson = PersonFactory.createPerson(worker.getUsername(), worker.getFirstName(),
                 worker.getLastName(), worker.getYear(), worker.getMonth(),
                 worker.getDate(), worker.getAddress());
         return newPerson;
