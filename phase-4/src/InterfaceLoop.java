@@ -17,7 +17,7 @@ public class InterfaceLoop {
      * @param date the date of birth of the person
      * @param address the address of the person
      */
-    private void makePerson(String username, String firstName, String lastName,
+    private static void makePerson(String username, String firstName, String lastName,
                     Integer year, Integer month, Integer date, String address) {
         if (PersonFactory.creatingPersonValid(username, firstName, lastName,
                 year, month, date, address)) {
@@ -332,7 +332,7 @@ public class InterfaceLoop {
                     purchaseIngredient(tokens[1], tokens[2], Integer.parseInt(tokens[3]), tokens[4],
                             Integer.parseInt(tokens[5]));
                 } else if (tokens[0].equals("make_person")) {
-                    Person.makePerson(tokens[1], tokens[2], tokens[3], Integer.parseInt(tokens[4]),
+                    makePerson(tokens[1], tokens[2], tokens[3], Integer.parseInt(tokens[4]),
                             Integer.parseInt(tokens[5]), Integer.parseInt(tokens[6]), tokens[7]);
                 } else if (tokens[0].equals("display_persons")) {
                     Display.displayPeople();

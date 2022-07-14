@@ -352,4 +352,12 @@ public abstract class Drone {
     public void clearSales() {
         this.sales = 0;
     }
+
+    public Integer getCapacity() {
+        return capacity;
+    }
+
+    public Integer getFuel() {
+        return fuel;
+    }
 }
