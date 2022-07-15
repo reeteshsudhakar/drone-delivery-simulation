@@ -47,16 +47,13 @@ public class FollowerDrone extends Drone {
                 Display.displayMessage("OK", "change_completed");
             } else { // the passed in lead drone tag is just a normal drone, so it doesn't have a pilot
                 Display.displayMessage("ERROR", "lead_drone_does_not_have_a_pilot");
-                return;
             }
         } else { // the passed in swarm drone tag is just a normal drone, so it doesn't have a pilot or a lead drone
             if (leadDrone.hasPilot()) {
                 this.assignLeader(leadDrone);
                 Display.displayMessage("OK", "change_completed");
             } else { // the lead drone is also just a normal drone and doesn't have a pilot
-                Display.displayMessage("ERROR", "lead_drone_does_not_have_a_pilot");
-                return;
-            }
+                Display.displayMessage("ERROR", "lead_drone_does_not_have_a_pilot");            }
         }
     }
 
@@ -89,9 +86,9 @@ public class FollowerDrone extends Drone {
     }
 
     /**
-//     * Method to display a drone's details
-//     * @return String representation of the drone's information
-//     */
+     * Method to display a drone's details
+     * @return String representation of the drone's information
+     */
     @Override
     public String toString() {
         return this.getDroneInfo() + this.getPayloadInfo();

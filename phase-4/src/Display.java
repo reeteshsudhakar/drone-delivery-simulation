@@ -48,7 +48,7 @@ public class Display {
         }
 
         Popup dronePopup = createPopup();
-        VBox popupBox = createPopupBox(serviceName + " Drones");
+        VBox popupBox = createPopupBox("Drones");
 
         populateDronePopup(service, popupBox);
 
@@ -231,6 +231,10 @@ public class Display {
     }
 
     private static void populateDronePopup(DeliveryService service, VBox popupBox) {
+        Text serviceName = new Text(service.getName());
+        serviceName.setFont(Font.font("Arial", FontWeight.BOLD, 18));
+        popupBox.getChildren().add(serviceName);
+
         for (Drone drone : service.getDrones().values()) {
             HBox holder = new HBox();
             holder.setMinWidth(700);
@@ -242,7 +246,12 @@ public class Display {
 
             Text droneInfo = new Text(drone.toString());
             info.getChildren().add(droneInfo);
-            ImageView image = new ImageView(new Image("images/drone.png", 50, 50, true, true));
+            ImageView image;
+            if (drone instanceof LeaderDrone) {
+                image = new ImageView(new Image("images/leader-drone.png", 50, 50, true, true));
+            } else {
+                image = new ImageView(new Image("images/follower-drone.png", 50, 50, true, true));
+            }
             holder.getChildren().addAll(image, info);
             popupBox.getChildren().add(holder);
         }

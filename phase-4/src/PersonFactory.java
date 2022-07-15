@@ -5,10 +5,9 @@ public class PersonFactory {
     }
 
     public static Person createPerson(Worker worker) {
-        Person newPerson = PersonFactory.createPerson(worker.getUsername(), worker.getFirstName(),
+        return PersonFactory.createPerson(worker.getUsername(), worker.getFirstName(),
                 worker.getLastName(), worker.getYear(), worker.getMonth(),
                 worker.getDate(), worker.getAddress());
-        return newPerson;
     }
 
     /**
@@ -63,11 +62,10 @@ public class PersonFactory {
      * Constructor for the worker class.
      * @param person person to become a worker
      * @param employer name of the employer of the worker
-     * @return
+     * @return worker
      */
     public static Worker createWorker(Person person, DeliveryService employer) {
-        Worker newWorker = new Worker(person.getUsername(), person.getFirstName(), person.getLastName(), person.getYear(), person.getMonth(),
+        return new Worker(person.getUsername(), person.getFirstName(), person.getLastName(), person.getYear(), person.getMonth(),
                 person.getDate(), person.getAddress(), employer);
-        return newWorker;
     }
 }

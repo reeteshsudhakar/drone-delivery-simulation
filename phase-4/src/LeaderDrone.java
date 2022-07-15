@@ -91,10 +91,10 @@ public class LeaderDrone extends Drone {
     public String toString() {
         StringBuilder swarmString = new StringBuilder();
         if (this.hasPilot()) {
-            swarmString.append(String.format("&> pilot:%s%n", this.getPilot().getUsername()));
+            swarmString.append(String.format("\t&> pilot: %s%n", this.getPilot().getUsername()));
         }
         if (this.getSwarm().size() > 0) {
-            swarmString.append("drone is directing this swarm: [ drone tags ");
+            swarmString.append("\tdrone is directing this swarm: [ drone tags ");
             for (Drone drone : this.getSwarm().values()) {
                 swarmString.append(String.format("| %d ", drone.getTag()));
             }
@@ -168,7 +168,6 @@ public class LeaderDrone extends Drone {
             Display.displayMessage("OK", "change_completed");
         } else {
             Display.displayMessage("ERROR", "lead_drone_does_not_have_a_pilot");
-            return;
         }
     }
 }

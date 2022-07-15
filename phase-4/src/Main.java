@@ -208,12 +208,14 @@ public class Main extends Application {
     }
 
     public Button makeArgumentsButton() {
-        Popup popup = makeArgumentsPopup();
         Button button = new Button("Arguments");
         button.setAlignment(Pos.CENTER);
         button.setFont(Font.font("Helvetica", FontWeight.BOLD, 20));
         button.setPrefSize(125, 50);
-        button.setOnAction(e -> popup.show(primaryStage));
+        button.setOnAction(e -> {
+            Popup popup = makeArgumentsPopup();
+            popup.show(primaryStage);
+        });
 
         return button;
     }
@@ -426,7 +428,7 @@ public class Main extends Application {
         makeRestaurantName.setPromptText("Name");
         TextField makeRestaurantLocatedAt = new TextField();
         makeRestaurantLocatedAt.setPromptText("Located At");
-        Button makeRestaurantButton = new Button("Make Service");
+        Button makeRestaurantButton = new Button("Make Restaurant");
 
         makeRestaurantButton.setOnAction(e -> {
             InterfaceLoop.commandLoop("make_restaurant" + "," + makeRestaurantName.getText() + "," + makeRestaurantLocatedAt.getText());
@@ -584,7 +586,7 @@ public class Main extends Application {
         TextField loadIngredientUnitPrice = new TextField();
         flyDroneTag.setPromptText("Unit Price");
         loadIngredientBarcodesBox.setPromptText("Select Location");
-        Button flyDroneButton = new Button("Fly Drone");
+        Button flyDroneButton = new Button("Load Ingredient");
         if (DeliveryService.services.size() > 0 && Ingredient.ingredients.size() > 0) {
             for (DeliveryService service : DeliveryService.services.values()) {
                 loadIngredientServicesBox.getItems().add(service.getName());
@@ -637,7 +639,7 @@ public class Main extends Application {
         loadFuelDroneTag.setPromptText("Tag");
         TextField loadFuelPetrol = new TextField();
         loadFuelPetrol.setPromptText("Petrol");
-        Button flyDroneButton = new Button("Fly Drone");
+        Button flyDroneButton = new Button("Load Fuel");
         if (DeliveryService.services.size() > 0) {
             for (DeliveryService service : DeliveryService.services.values()) {
                 loadFuelServicesBox.getItems().add(service.getName());

@@ -272,8 +272,6 @@ public abstract class Drone {
         return this.sales;
     }
 
-//    public abstract void joinSwarm()
-
     /**
      * Getter for Drone payload, with information about
      * ingredients and their quantity and price

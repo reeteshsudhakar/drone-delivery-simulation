@@ -231,8 +231,9 @@ public class DeliveryService implements Comparable <DeliveryService> {
                     if (leaderDrone.pilotAlreadyAppointed(appointedPilot)) {
                         Display.displayMessage("ERROR","employee_has_already_been_appointed_" +
                                 "pilot_for_this_drone");
-                        return;
                     }
+                    leaderDrone.assignPilot(appointedPilot);
+                    Display.displayMessage("OK", "employee_has_been_appointed_pilot");
                 } else {
                     FollowerDrone followerDrone = (FollowerDrone) drone;
                     LeaderDrone newLeaderDrone = DroneFactory.followerToLeader(followerDrone, this, appointedPilot);
