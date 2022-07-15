@@ -672,10 +672,10 @@ public class Main extends Application {
         purchaseIngredientTitleContainer.getChildren().addAll(purchaseIngredientTitleLabel);
         purchaseIngredientTitleContainer.setAlignment(Pos.CENTER);
 
-        HBox purhcaseIngredientArguments = new HBox();
-        purhcaseIngredientArguments.setStyle("-fx-spacing: 3px");
-        purhcaseIngredientArguments.setMinWidth(800);
-        purhcaseIngredientArguments.setAlignment(Pos.CENTER);
+        HBox purchaseIngredientArguments = new HBox();
+        purchaseIngredientArguments.setStyle("-fx-spacing: 3px");
+        purchaseIngredientArguments.setMinWidth(800);
+        purchaseIngredientArguments.setAlignment(Pos.CENTER);
         ComboBox<String> purchaseIngredientRestaurantBox = new ComboBox<>();
         purchaseIngredientRestaurantBox.setPromptText("Select Restaurant");
         ComboBox<String> purchaseIngredientServicesBox = new ComboBox<>();
@@ -716,8 +716,8 @@ public class Main extends Application {
             showArgumentAlert();
         });
 
-        purhcaseIngredientArguments.getChildren().addAll(purchaseIngredientRestaurantBox, purchaseIngredientServicesBox, purchaseIngredientTag, purchaseIngredientBarcodesBox, purchaseIngredientQuantity, purchaseIngredientButton);
-        purchaseIngredientContainer.getChildren().addAll(purchaseIngredientTitleContainer, purhcaseIngredientArguments);
+        purchaseIngredientArguments.getChildren().addAll(purchaseIngredientRestaurantBox, purchaseIngredientServicesBox, purchaseIngredientTag, purchaseIngredientBarcodesBox, purchaseIngredientQuantity, purchaseIngredientButton);
+        purchaseIngredientContainer.getChildren().addAll(purchaseIngredientTitleContainer, purchaseIngredientArguments);
 
         return purchaseIngredientContainer;
     }
