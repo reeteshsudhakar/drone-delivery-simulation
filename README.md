@@ -28,6 +28,7 @@ Project workspace for [Reetesh Sudhakar](mailto::rsudhakar9@gatech.edu), [Sebast
 
 ## Phase IV
 **Problem Description**: [Phase IV: Problem Description](https://github.gatech.edu/rsudhakar9/CS-2340-Project/blob/main/resources/phase-iv-problem-description.md)
+
 **Deliverables**:
 1. [Summary Report of Design Changes (Design Class Diagrams Included)](https://github.gatech.edu/rsudhakar9/CS-2340-Project/blob/main/phase-4/src/artifact-submissions/report-document-submission.pdf)
 2. [Presentation of Design Changes]()
