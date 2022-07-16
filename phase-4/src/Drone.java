@@ -206,6 +206,11 @@ public abstract class Drone {
         }
     }
 
+    /**
+     * Abstract method to have a drone join a swarm
+     * @param leader the leader of the swarm
+     * @param service_name the service of the drone that is joining the swarm
+     */
     public abstract void joinSwarm(LeaderDrone leader, String service_name);
 
     /**
@@ -232,6 +237,12 @@ public abstract class Drone {
                 this.sales, this.currentLocation.getName());
     }
 
+    /**
+     * Method to get the drone's payload and compare it
+     * @param buyerIngredient the ingredient to compare the drone's payload to
+     * @param quantity the quantity of the ingredient to compare the drone's payload to
+     * @return Integer comparing the amount requested to the drone's payload
+     */
     public Integer getIngredientPayload(Ingredient buyerIngredient, Integer quantity) {
         return this.getPayload().get(buyerIngredient).getQuantity().compareTo(quantity);
     }

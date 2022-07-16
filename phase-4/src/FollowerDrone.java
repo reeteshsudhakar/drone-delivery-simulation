@@ -1,7 +1,13 @@
 import java.util.TreeMap;
 
+/**
+ * FollowerDrone class that extends Drone class to create a drone that follows a leader drone.
+ * @author Reetesh Sudhakar, Sebastian Jaskowski, Yash Gupta, Kunal Daga
+ * @version 1.0
+ */
 public class FollowerDrone extends Drone {
 
+    // Instance variables
     private LeaderDrone leaderDrone;
 
     /**
@@ -57,6 +63,10 @@ public class FollowerDrone extends Drone {
         }
     }
 
+    /**
+     * Method to assign a drone to a leader drone
+     * @param drone the drone that is to be assigned as the leader drone
+     */
     public void assignLeader(LeaderDrone drone) {
         this.leaderDrone = drone;
         drone.getSwarm().put(this.tag, this);
@@ -77,10 +87,19 @@ public class FollowerDrone extends Drone {
         }
     }
 
+    /**
+     * Method to get the leader drone's employer
+     * @param leader the leader drone
+     * @return the employer of the leader drone
+     */
     public DeliveryService getEmployer(LeaderDrone leader) {
         return leader.getPilot().getSingleEmployer();
     }
 
+    /**
+     * Method to get the check if a drone has a leader drone
+     * @return true if the drone has a leader drone, false otherwise
+     */
     public boolean hasLeader() {
         return leaderDrone != null;
     }

@@ -1,0 +1,687 @@
+Welcome to the Restaurant Supply Express System!
+
+> make_location,west,2,2,3
+OK:location_created
+
+> make_location,north,5,14,4
+OK:location_created
+
+> make_location,mid,10,-1,5
+OK:location_created
+
+> make_location,south,14,-7,3
+OK:location_created
+
+> make_location,east,19,6,3
+OK:location_created
+
+> display_locations
+name: east, (x,y): (19, 6), space: [3 / 3] remaining
+name: mid, (x,y): (10, -1), space: [5 / 5] remaining
+name: north, (x,y): (5, 14), space: [4 / 4] remaining
+name: south, (x,y): (14, -7), space: [3 / 3] remaining
+name: west, (x,y): (2, 2), space: [3 / 3] remaining
+OK:display_completed
+
+> make_service,whole_foods,100,west
+OK:delivery_service_created
+
+> make_service,fresh_market,100,east
+OK:delivery_service_created
+
+> make_service,trader_joes,100,south
+OK:delivery_service_created
+
+> display_services
+name: fresh_market, revenue: $100, location: east
+name: trader_joes, revenue: $100, location: south
+name: whole_foods, revenue: $100, location: west
+OK:display_completed
+
+> make_restaurant,charleston,north
+OK:restaurant_created
+
+> make_restaurant,volt,mid
+OK:restaurant_created
+
+> make_restaurant,topolobampo,south
+OK:restaurant_created
+
+> display_restaurants
+name: charleston, money_spent: $0, location: north
+name: topolobampo, money_spent: $0, location: south
+name: volt, money_spent: $0, location: mid
+OK:display_completed
+
+> make_drone,whole_foods,2,2,100
+OK:drone_created
+
+> make_drone,whole_foods,3,2,100
+OK:drone_created
+
+> make_drone,whole_foods,5,2,100
+OK:drone_created
+
+> make_drone,fresh_market,1,2,100
+OK:drone_created
+
+> make_drone,fresh_market,3,2,100
+OK:drone_created
+
+> make_drone,fresh_market,6,2,100
+OK:drone_created
+
+> make_drone,trader_joes,1,2,100
+OK:drone_created
+
+> make_drone,trader_joes,2,2,100
+OK:drone_created
+
+> display_all_drones
+service name [fresh_market] drones:
+tag: 1, capacity: 2, remaining_cap: 2, fuel: 100, sales: $0, location: east
+tag: 3, capacity: 2, remaining_cap: 2, fuel: 100, sales: $0, location: east
+tag: 6, capacity: 2, remaining_cap: 2, fuel: 100, sales: $0, location: east
+service name [trader_joes] drones:
+tag: 1, capacity: 2, remaining_cap: 2, fuel: 100, sales: $0, location: south
+tag: 2, capacity: 2, remaining_cap: 2, fuel: 100, sales: $0, location: south
+service name [whole_foods] drones:
+tag: 2, capacity: 2, remaining_cap: 2, fuel: 100, sales: $0, location: west
+tag: 3, capacity: 2, remaining_cap: 2, fuel: 100, sales: $0, location: west
+tag: 5, capacity: 2, remaining_cap: 2, fuel: 100, sales: $0, location: west
+OK:display_completed
+
+> make_person,adam,Adam,Smith,1960,01,01,11_Fruit_Drive
+OK:person_created
+
+> make_person,blaire,Blaire,Smith,1962,02,02,13_Fruit_Drive
+OK:person_created
+
+> make_person,chuck,Chuck,Smith,1963,03,03,17_Fruit_Drive
+OK:person_created
+
+> make_person,denise,Denise,Smith,1963,04,04,19_Fruit_Drive
+OK:person_created
+
+> make_person,eric,Eric,Smith,1964,05,05,23_Fruit_Drive
+OK:person_created
+
+> make_person,felicity,Felicity,Smith,1965,06,06,29_Fruit_Drive
+OK:person_created
+
+> make_person,geri,Geri,Smith,1966,07,07,31_Fruit_Drive
+OK:person_created
+
+> make_person,hailey,Hailey,Smith,1968,08,08,37_Fruit_Drive
+OK:person_created
+
+> make_person,indy,Indiana,Smith,1969,09,09,37_Fruit_Drive
+OK:person_created
+
+> make_person,juliet,Juliet,Smith,1971,10,10,37_Fruit_Drive
+OK:person_created
+
+> make_person,kari,Kari,Smith,1972,11,11,37_Fruit_Drive
+OK:person_created
+
+> display_persons
+userID: adam, name: Adam Smith, birth date: 1960-1-1, address: 11_Fruit_Drive
+userID: blaire, name: Blaire Smith, birth date: 1962-2-2, address: 13_Fruit_Drive
+userID: chuck, name: Chuck Smith, birth date: 1963-3-3, address: 17_Fruit_Drive
+userID: denise, name: Denise Smith, birth date: 1963-4-4, address: 19_Fruit_Drive
+userID: eric, name: Eric Smith, birth date: 1964-5-5, address: 23_Fruit_Drive
+userID: felicity, name: Felicity Smith, birth date: 1965-6-6, address: 29_Fruit_Drive
+userID: geri, name: Geri Smith, birth date: 1966-7-7, address: 31_Fruit_Drive
+userID: hailey, name: Hailey Smith, birth date: 1968-8-8, address: 37_Fruit_Drive
+userID: indy, name: Indiana Smith, birth date: 1969-9-9, address: 37_Fruit_Drive
+userID: juliet, name: Juliet Smith, birth date: 1971-10-10, address: 37_Fruit_Drive
+userID: kari, name: Kari Smith, birth date: 1972-11-11, address: 37_Fruit_Drive
+OK:display_completed
+
+> hire_worker,whole_foods,adam
+OK:new_employee_has_been_hired
+
+> hire_worker,whole_foods,blaire
+OK:new_employee_has_been_hired
+
+> hire_worker,whole_foods,chuck
+OK:new_employee_has_been_hired
+
+> hire_worker,fresh_market,denise
+OK:new_employee_has_been_hired
+
+> hire_worker,fresh_market,eric
+OK:new_employee_has_been_hired
+
+> hire_worker,fresh_market,felicity
+OK:new_employee_has_been_hired
+
+> hire_worker,trader_joes,geri
+OK:new_employee_has_been_hired
+
+> hire_worker,trader_joes,hailey
+OK:new_employee_has_been_hired
+
+> hire_worker,trader_joes,indy
+OK:new_employee_has_been_hired
+
+> display_persons
+userID: adam, name: Adam Smith, birth date: 1960-1-1, address: 11_Fruit_Drive
+employee is working at: 
+&> whole_foods
+userID: blaire, name: Blaire Smith, birth date: 1962-2-2, address: 13_Fruit_Drive
+employee is working at: 
+&> whole_foods
+userID: chuck, name: Chuck Smith, birth date: 1963-3-3, address: 17_Fruit_Drive
+employee is working at: 
+&> whole_foods
+userID: denise, name: Denise Smith, birth date: 1963-4-4, address: 19_Fruit_Drive
+employee is working at: 
+&> fresh_market
+userID: eric, name: Eric Smith, birth date: 1964-5-5, address: 23_Fruit_Drive
+employee is working at: 
+&> fresh_market
+userID: felicity, name: Felicity Smith, birth date: 1965-6-6, address: 29_Fruit_Drive
+employee is working at: 
+&> fresh_market
+userID: geri, name: Geri Smith, birth date: 1966-7-7, address: 31_Fruit_Drive
+employee is working at: 
+&> trader_joes
+userID: hailey, name: Hailey Smith, birth date: 1968-8-8, address: 37_Fruit_Drive
+employee is working at: 
+&> trader_joes
+userID: indy, name: Indiana Smith, birth date: 1969-9-9, address: 37_Fruit_Drive
+employee is working at: 
+&> trader_joes
+userID: juliet, name: Juliet Smith, birth date: 1971-10-10, address: 37_Fruit_Drive
+userID: kari, name: Kari Smith, birth date: 1972-11-11, address: 37_Fruit_Drive
+OK:display_completed
+
+> appoint_manager,whole_foods,adam
+OK:employee_has_been_appointed_manager
+
+> appoint_manager,fresh_market,denise
+OK:employee_has_been_appointed_manager
+
+> appoint_manager,trader_joes,geri
+OK:employee_has_been_appointed_manager
+
+> display_persons
+userID: adam, name: Adam Smith, birth date: 1960-1-1, address: 11_Fruit_Drive
+employee is managing: whole_foods
+userID: blaire, name: Blaire Smith, birth date: 1962-2-2, address: 13_Fruit_Drive
+employee is working at: 
+&> whole_foods
+userID: chuck, name: Chuck Smith, birth date: 1963-3-3, address: 17_Fruit_Drive
+employee is working at: 
+&> whole_foods
+userID: denise, name: Denise Smith, birth date: 1963-4-4, address: 19_Fruit_Drive
+employee is managing: fresh_market
+userID: eric, name: Eric Smith, birth date: 1964-5-5, address: 23_Fruit_Drive
+employee is working at: 
+&> fresh_market
+userID: felicity, name: Felicity Smith, birth date: 1965-6-6, address: 29_Fruit_Drive
+employee is working at: 
+&> fresh_market
+userID: geri, name: Geri Smith, birth date: 1966-7-7, address: 31_Fruit_Drive
+employee is managing: trader_joes
+userID: hailey, name: Hailey Smith, birth date: 1968-8-8, address: 37_Fruit_Drive
+employee is working at: 
+&> trader_joes
+userID: indy, name: Indiana Smith, birth date: 1969-9-9, address: 37_Fruit_Drive
+employee is working at: 
+&> trader_joes
+userID: juliet, name: Juliet Smith, birth date: 1971-10-10, address: 37_Fruit_Drive
+userID: kari, name: Kari Smith, birth date: 1972-11-11, address: 37_Fruit_Drive
+OK:display_completed
+
+> train_pilot,whole_foods,blaire,pilot_license_1,10
+OK:pilot_has_been_trained
+
+> train_pilot,fresh_market,eric,pilot_license_2,10
+OK:pilot_has_been_trained
+
+> train_pilot,trader_joes,hailey,pilot_license_3,10
+OK:pilot_has_been_trained
+
+> display_persons
+userID: adam, name: Adam Smith, birth date: 1960-1-1, address: 11_Fruit_Drive
+employee is managing: whole_foods
+userID: blaire, name: Blaire Smith, birth date: 1962-2-2, address: 13_Fruit_Drive
+employee is working at: 
+&> whole_foods
+user has a pilot's license (pilot_license_1) with 10 successful flight(s)
+userID: chuck, name: Chuck Smith, birth date: 1963-3-3, address: 17_Fruit_Drive
+employee is working at: 
+&> whole_foods
+userID: denise, name: Denise Smith, birth date: 1963-4-4, address: 19_Fruit_Drive
+employee is managing: fresh_market
+userID: eric, name: Eric Smith, birth date: 1964-5-5, address: 23_Fruit_Drive
+employee is working at: 
+&> fresh_market
+user has a pilot's license (pilot_license_2) with 10 successful flight(s)
+userID: felicity, name: Felicity Smith, birth date: 1965-6-6, address: 29_Fruit_Drive
+employee is working at: 
+&> fresh_market
+userID: geri, name: Geri Smith, birth date: 1966-7-7, address: 31_Fruit_Drive
+employee is managing: trader_joes
+userID: hailey, name: Hailey Smith, birth date: 1968-8-8, address: 37_Fruit_Drive
+employee is working at: 
+&> trader_joes
+user has a pilot's license (pilot_license_3) with 10 successful flight(s)
+userID: indy, name: Indiana Smith, birth date: 1969-9-9, address: 37_Fruit_Drive
+employee is working at: 
+&> trader_joes
+userID: juliet, name: Juliet Smith, birth date: 1971-10-10, address: 37_Fruit_Drive
+userID: kari, name: Kari Smith, birth date: 1972-11-11, address: 37_Fruit_Drive
+OK:display_completed
+
+> appoint_pilot,whole_foods,blaire,2
+OK:employee_has_been_appointed_pilot
+
+> appoint_pilot,fresh_market,eric,1
+OK:employee_has_been_appointed_pilot
+
+> appoint_pilot,trader_joes,hailey,1
+OK:employee_has_been_appointed_pilot
+
+> display_persons
+userID: adam, name: Adam Smith, birth date: 1960-1-1, address: 11_Fruit_Drive
+employee is managing: whole_foods
+userID: blaire, name: Blaire Smith, birth date: 1962-2-2, address: 13_Fruit_Drive
+employee is working at: 
+&> whole_foods
+user has a pilot's license (pilot_license_1) with 10 successful flight(s)
+employee is flying these drones: [ drone tags | 2 ]
+userID: chuck, name: Chuck Smith, birth date: 1963-3-3, address: 17_Fruit_Drive
+employee is working at: 
+&> whole_foods
+userID: denise, name: Denise Smith, birth date: 1963-4-4, address: 19_Fruit_Drive
+employee is managing: fresh_market
+userID: eric, name: Eric Smith, birth date: 1964-5-5, address: 23_Fruit_Drive
+employee is working at: 
+&> fresh_market
+user has a pilot's license (pilot_license_2) with 10 successful flight(s)
+employee is flying these drones: [ drone tags | 1 ]
+userID: felicity, name: Felicity Smith, birth date: 1965-6-6, address: 29_Fruit_Drive
+employee is working at: 
+&> fresh_market
+userID: geri, name: Geri Smith, birth date: 1966-7-7, address: 31_Fruit_Drive
+employee is managing: trader_joes
+userID: hailey, name: Hailey Smith, birth date: 1968-8-8, address: 37_Fruit_Drive
+employee is working at: 
+&> trader_joes
+user has a pilot's license (pilot_license_3) with 10 successful flight(s)
+employee is flying these drones: [ drone tags | 1 ]
+userID: indy, name: Indiana Smith, birth date: 1969-9-9, address: 37_Fruit_Drive
+employee is working at: 
+&> trader_joes
+userID: juliet, name: Juliet Smith, birth date: 1971-10-10, address: 37_Fruit_Drive
+userID: kari, name: Kari Smith, birth date: 1972-11-11, address: 37_Fruit_Drive
+OK:display_completed
+
+> display_all_drones
+service name [fresh_market] drones:
+tag: 1, capacity: 2, remaining_cap: 2, fuel: 100, sales: $0, location: east
+&> pilot:eric
+tag: 3, capacity: 2, remaining_cap: 2, fuel: 100, sales: $0, location: east
+tag: 6, capacity: 2, remaining_cap: 2, fuel: 100, sales: $0, location: east
+service name [trader_joes] drones:
+tag: 1, capacity: 2, remaining_cap: 2, fuel: 100, sales: $0, location: south
+&> pilot:hailey
+tag: 2, capacity: 2, remaining_cap: 2, fuel: 100, sales: $0, location: south
+service name [whole_foods] drones:
+tag: 2, capacity: 2, remaining_cap: 2, fuel: 100, sales: $0, location: west
+&> pilot:blaire
+tag: 3, capacity: 2, remaining_cap: 2, fuel: 100, sales: $0, location: west
+tag: 5, capacity: 2, remaining_cap: 2, fuel: 100, sales: $0, location: west
+OK:display_completed
+
+> join_swarm,whole_foods,2,3
+OK:change_completed
+
+> join_swarm,whole_foods,2,5
+OK:change_completed
+
+> join_swarm,fresh_market,1,3
+OK:change_completed
+
+> join_swarm,fresh_market,1,6
+OK:change_completed
+
+> join_swarm,trader_joes,1,2
+OK:change_completed
+
+> display_persons
+userID: adam, name: Adam Smith, birth date: 1960-1-1, address: 11_Fruit_Drive
+employee is managing: whole_foods
+userID: blaire, name: Blaire Smith, birth date: 1962-2-2, address: 13_Fruit_Drive
+employee is working at: 
+&> whole_foods
+user has a pilot's license (pilot_license_1) with 10 successful flight(s)
+employee is flying these drones: [ drone tags | 2 ]
+userID: chuck, name: Chuck Smith, birth date: 1963-3-3, address: 17_Fruit_Drive
+employee is working at: 
+&> whole_foods
+userID: denise, name: Denise Smith, birth date: 1963-4-4, address: 19_Fruit_Drive
+employee is managing: fresh_market
+userID: eric, name: Eric Smith, birth date: 1964-5-5, address: 23_Fruit_Drive
+employee is working at: 
+&> fresh_market
+user has a pilot's license (pilot_license_2) with 10 successful flight(s)
+employee is flying these drones: [ drone tags | 1 ]
+userID: felicity, name: Felicity Smith, birth date: 1965-6-6, address: 29_Fruit_Drive
+employee is working at: 
+&> fresh_market
+userID: geri, name: Geri Smith, birth date: 1966-7-7, address: 31_Fruit_Drive
+employee is managing: trader_joes
+userID: hailey, name: Hailey Smith, birth date: 1968-8-8, address: 37_Fruit_Drive
+employee is working at: 
+&> trader_joes
+user has a pilot's license (pilot_license_3) with 10 successful flight(s)
+employee is flying these drones: [ drone tags | 1 ]
+userID: indy, name: Indiana Smith, birth date: 1969-9-9, address: 37_Fruit_Drive
+employee is working at: 
+&> trader_joes
+userID: juliet, name: Juliet Smith, birth date: 1971-10-10, address: 37_Fruit_Drive
+userID: kari, name: Kari Smith, birth date: 1972-11-11, address: 37_Fruit_Drive
+OK:display_completed
+
+> display_all_drones
+service name [fresh_market] drones:
+tag: 1, capacity: 2, remaining_cap: 2, fuel: 100, sales: $0, location: east
+&> pilot:eric
+drone is directing this swarm: [ drone tags | 3 | 6 ]
+tag: 3, capacity: 2, remaining_cap: 2, fuel: 100, sales: $0, location: east
+tag: 6, capacity: 2, remaining_cap: 2, fuel: 100, sales: $0, location: east
+service name [trader_joes] drones:
+tag: 1, capacity: 2, remaining_cap: 2, fuel: 100, sales: $0, location: south
+&> pilot:hailey
+drone is directing this swarm: [ drone tags | 2 ]
+tag: 2, capacity: 2, remaining_cap: 2, fuel: 100, sales: $0, location: south
+service name [whole_foods] drones:
+tag: 2, capacity: 2, remaining_cap: 2, fuel: 100, sales: $0, location: west
+&> pilot:blaire
+drone is directing this swarm: [ drone tags | 3 | 5 ]
+tag: 3, capacity: 2, remaining_cap: 2, fuel: 100, sales: $0, location: west
+tag: 5, capacity: 2, remaining_cap: 2, fuel: 100, sales: $0, location: west
+OK:display_completed
+
+> make_ingredient,truffles,mushrooms_truffles,4
+OK:ingredient_created
+
+> make_ingredient,ikura,sushi_salmon_roe,3
+OK:ingredient_created
+
+> make_ingredient,octopus,seafood_octopus,7
+OK:ingredient_created
+
+> make_ingredient,mole,sauce_chocolate_mole,6
+OK:ingredient_created
+
+> display_ingredients
+barcode: ikura, name: sushi_salmon_roe, unit_weight: 3
+barcode: mole, name: sauce_chocolate_mole, unit_weight: 6
+barcode: octopus, name: seafood_octopus, unit_weight: 7
+barcode: truffles, name: mushrooms_truffles, unit_weight: 4
+OK:display_completed
+
+> load_ingredient,whole_foods,2,truffles,2,10
+OK:change_completed
+
+> load_ingredient,whole_foods,3,ikura,2,15
+OK:change_completed
+
+> load_ingredient,whole_foods,5,octopus,2,15
+OK:change_completed
+
+> load_ingredient,fresh_market,1,octopus,2,15
+OK:change_completed
+
+> load_ingredient,fresh_market,3,truffles,2,10
+OK:change_completed
+
+> load_ingredient,fresh_market,6,ikura,2,15
+OK:change_completed
+
+> load_ingredient,trader_joes,1,octopus,2,15
+OK:change_completed
+
+> load_ingredient,trader_joes,2,mole,2,20
+OK:change_completed
+
+> display_all_drones
+service name [fresh_market] drones:
+tag: 1, capacity: 2, remaining_cap: 0, fuel: 100, sales: $0, location: east
+&> pilot:eric
+drone is directing this swarm: [ drone tags | 3 | 6 ]
+&> barcode: octopus,  item_name: seafood_octopus, total_quantity: 2, unit_cost:15, total_weight: 14
+tag: 3, capacity: 2, remaining_cap: 0, fuel: 100, sales: $0, location: east
+&> barcode: truffles,  item_name: mushrooms_truffles, total_quantity: 2, unit_cost:10, total_weight: 8
+tag: 6, capacity: 2, remaining_cap: 0, fuel: 100, sales: $0, location: east
+&> barcode: ikura,  item_name: sushi_salmon_roe, total_quantity: 2, unit_cost:15, total_weight: 6
+service name [trader_joes] drones:
+tag: 1, capacity: 2, remaining_cap: 0, fuel: 100, sales: $0, location: south
+&> pilot:hailey
+drone is directing this swarm: [ drone tags | 2 ]
+&> barcode: octopus,  item_name: seafood_octopus, total_quantity: 2, unit_cost:15, total_weight: 14
+tag: 2, capacity: 2, remaining_cap: 0, fuel: 100, sales: $0, location: south
+&> barcode: mole,  item_name: sauce_chocolate_mole, total_quantity: 2, unit_cost:20, total_weight: 12
+service name [whole_foods] drones:
+tag: 2, capacity: 2, remaining_cap: 0, fuel: 100, sales: $0, location: west
+&> pilot:blaire
+drone is directing this swarm: [ drone tags | 3 | 5 ]
+&> barcode: truffles,  item_name: mushrooms_truffles, total_quantity: 2, unit_cost:10, total_weight: 8
+tag: 3, capacity: 2, remaining_cap: 0, fuel: 100, sales: $0, location: west
+&> barcode: ikura,  item_name: sushi_salmon_roe, total_quantity: 2, unit_cost:15, total_weight: 6
+tag: 5, capacity: 2, remaining_cap: 0, fuel: 100, sales: $0, location: west
+&> barcode: octopus,  item_name: seafood_octopus, total_quantity: 2, unit_cost:15, total_weight: 14
+OK:display_completed
+
+> fly_drone,whole_foods,2,north
+OK:change_completed
+
+> purchase_ingredient,charleston,whole_foods,2,truffles,1
+OK:change_completed
+
+> fly_drone,whole_foods,2,mid
+OK:change_completed
+
+> purchase_ingredient,volt,whole_foods,5,octopus,1
+OK:change_completed
+
+> fly_drone,whole_foods,2,west
+OK:change_completed
+
+> display_all_drones
+service name [fresh_market] drones:
+tag: 1, capacity: 2, remaining_cap: 0, fuel: 100, sales: $0, location: east
+&> pilot:eric
+drone is directing this swarm: [ drone tags | 3 | 6 ]
+&> barcode: octopus,  item_name: seafood_octopus, total_quantity: 2, unit_cost:15, total_weight: 14
+tag: 3, capacity: 2, remaining_cap: 0, fuel: 100, sales: $0, location: east
+&> barcode: truffles,  item_name: mushrooms_truffles, total_quantity: 2, unit_cost:10, total_weight: 8
+tag: 6, capacity: 2, remaining_cap: 0, fuel: 100, sales: $0, location: east
+&> barcode: ikura,  item_name: sushi_salmon_roe, total_quantity: 2, unit_cost:15, total_weight: 6
+service name [trader_joes] drones:
+tag: 1, capacity: 2, remaining_cap: 0, fuel: 100, sales: $0, location: south
+&> pilot:hailey
+drone is directing this swarm: [ drone tags | 2 ]
+&> barcode: octopus,  item_name: seafood_octopus, total_quantity: 2, unit_cost:15, total_weight: 14
+tag: 2, capacity: 2, remaining_cap: 0, fuel: 100, sales: $0, location: south
+&> barcode: mole,  item_name: sauce_chocolate_mole, total_quantity: 2, unit_cost:20, total_weight: 12
+service name [whole_foods] drones:
+tag: 2, capacity: 2, remaining_cap: 1, fuel: 62, sales: $10, location: west
+&> pilot:blaire
+drone is directing this swarm: [ drone tags | 3 | 5 ]
+&> barcode: truffles,  item_name: mushrooms_truffles, total_quantity: 1, unit_cost:10, total_weight: 4
+tag: 3, capacity: 2, remaining_cap: 0, fuel: 62, sales: $0, location: west
+&> barcode: ikura,  item_name: sushi_salmon_roe, total_quantity: 2, unit_cost:15, total_weight: 6
+tag: 5, capacity: 2, remaining_cap: 1, fuel: 62, sales: $15, location: west
+&> barcode: octopus,  item_name: seafood_octopus, total_quantity: 1, unit_cost:15, total_weight: 7
+OK:display_completed
+
+> fly_drone,fresh_market,1,mid
+OK:change_completed
+
+> purchase_ingredient,volt,fresh_market,3,truffles,1
+OK:change_completed
+
+> fly_drone,fresh_market,1,north
+OK:change_completed
+
+> purchase_ingredient,charleston,fresh_market,6,ikura,1
+OK:change_completed
+
+> fly_drone,fresh_market,1,east
+OK:change_completed
+
+> display_all_drones
+service name [fresh_market] drones:
+tag: 1, capacity: 2, remaining_cap: 0, fuel: 55, sales: $0, location: east
+&> pilot:eric
+drone is directing this swarm: [ drone tags | 3 | 6 ]
+&> barcode: octopus,  item_name: seafood_octopus, total_quantity: 2, unit_cost:15, total_weight: 14
+tag: 3, capacity: 2, remaining_cap: 1, fuel: 55, sales: $10, location: east
+&> barcode: truffles,  item_name: mushrooms_truffles, total_quantity: 1, unit_cost:10, total_weight: 4
+tag: 6, capacity: 2, remaining_cap: 1, fuel: 55, sales: $15, location: east
+&> barcode: ikura,  item_name: sushi_salmon_roe, total_quantity: 1, unit_cost:15, total_weight: 3
+service name [trader_joes] drones:
+tag: 1, capacity: 2, remaining_cap: 0, fuel: 100, sales: $0, location: south
+&> pilot:hailey
+drone is directing this swarm: [ drone tags | 2 ]
+&> barcode: octopus,  item_name: seafood_octopus, total_quantity: 2, unit_cost:15, total_weight: 14
+tag: 2, capacity: 2, remaining_cap: 0, fuel: 100, sales: $0, location: south
+&> barcode: mole,  item_name: sauce_chocolate_mole, total_quantity: 2, unit_cost:20, total_weight: 12
+service name [whole_foods] drones:
+tag: 2, capacity: 2, remaining_cap: 1, fuel: 62, sales: $10, location: west
+&> pilot:blaire
+drone is directing this swarm: [ drone tags | 3 | 5 ]
+&> barcode: truffles,  item_name: mushrooms_truffles, total_quantity: 1, unit_cost:10, total_weight: 4
+tag: 3, capacity: 2, remaining_cap: 0, fuel: 62, sales: $0, location: west
+&> barcode: ikura,  item_name: sushi_salmon_roe, total_quantity: 2, unit_cost:15, total_weight: 6
+tag: 5, capacity: 2, remaining_cap: 1, fuel: 62, sales: $15, location: west
+&> barcode: octopus,  item_name: seafood_octopus, total_quantity: 1, unit_cost:15, total_weight: 7
+OK:display_completed
+
+> purchase_ingredient,topolobampo,trader_joes,2,mole,1
+OK:change_completed
+
+> fly_drone,trader_joes,1,mid
+OK:change_completed
+
+> purchase_ingredient,volt,trader_joes,1,octopus,1
+OK:change_completed
+
+> fly_drone,trader_joes,1,south
+OK:change_completed
+
+> display_all_drones
+service name [fresh_market] drones:
+tag: 1, capacity: 2, remaining_cap: 0, fuel: 55, sales: $0, location: east
+&> pilot:eric
+drone is directing this swarm: [ drone tags | 3 | 6 ]
+&> barcode: octopus,  item_name: seafood_octopus, total_quantity: 2, unit_cost:15, total_weight: 14
+tag: 3, capacity: 2, remaining_cap: 1, fuel: 55, sales: $10, location: east
+&> barcode: truffles,  item_name: mushrooms_truffles, total_quantity: 1, unit_cost:10, total_weight: 4
+tag: 6, capacity: 2, remaining_cap: 1, fuel: 55, sales: $15, location: east
+&> barcode: ikura,  item_name: sushi_salmon_roe, total_quantity: 1, unit_cost:15, total_weight: 3
+service name [trader_joes] drones:
+tag: 1, capacity: 2, remaining_cap: 1, fuel: 84, sales: $15, location: south
+&> pilot:hailey
+drone is directing this swarm: [ drone tags | 2 ]
+&> barcode: octopus,  item_name: seafood_octopus, total_quantity: 1, unit_cost:15, total_weight: 7
+tag: 2, capacity: 2, remaining_cap: 1, fuel: 84, sales: $20, location: south
+&> barcode: mole,  item_name: sauce_chocolate_mole, total_quantity: 1, unit_cost:20, total_weight: 6
+service name [whole_foods] drones:
+tag: 2, capacity: 2, remaining_cap: 1, fuel: 62, sales: $10, location: west
+&> pilot:blaire
+drone is directing this swarm: [ drone tags | 3 | 5 ]
+&> barcode: truffles,  item_name: mushrooms_truffles, total_quantity: 1, unit_cost:10, total_weight: 4
+tag: 3, capacity: 2, remaining_cap: 0, fuel: 62, sales: $0, location: west
+&> barcode: ikura,  item_name: sushi_salmon_roe, total_quantity: 2, unit_cost:15, total_weight: 6
+tag: 5, capacity: 2, remaining_cap: 1, fuel: 62, sales: $15, location: west
+&> barcode: octopus,  item_name: seafood_octopus, total_quantity: 1, unit_cost:15, total_weight: 7
+OK:display_completed
+
+> collect_revenue,whole_foods
+OK:change_completed
+
+> collect_revenue,fresh_market
+OK:change_completed
+
+> collect_revenue,trader_joes
+OK:change_completed
+
+> display_all_drones
+service name [fresh_market] drones:
+tag: 1, capacity: 2, remaining_cap: 0, fuel: 55, sales: $0, location: east
+&> pilot:eric
+drone is directing this swarm: [ drone tags | 3 | 6 ]
+&> barcode: octopus,  item_name: seafood_octopus, total_quantity: 2, unit_cost:15, total_weight: 14
+tag: 3, capacity: 2, remaining_cap: 1, fuel: 55, sales: $0, location: east
+&> barcode: truffles,  item_name: mushrooms_truffles, total_quantity: 1, unit_cost:10, total_weight: 4
+tag: 6, capacity: 2, remaining_cap: 1, fuel: 55, sales: $0, location: east
+&> barcode: ikura,  item_name: sushi_salmon_roe, total_quantity: 1, unit_cost:15, total_weight: 3
+service name [trader_joes] drones:
+tag: 1, capacity: 2, remaining_cap: 1, fuel: 84, sales: $0, location: south
+&> pilot:hailey
+drone is directing this swarm: [ drone tags | 2 ]
+&> barcode: octopus,  item_name: seafood_octopus, total_quantity: 1, unit_cost:15, total_weight: 7
+tag: 2, capacity: 2, remaining_cap: 1, fuel: 84, sales: $0, location: south
+&> barcode: mole,  item_name: sauce_chocolate_mole, total_quantity: 1, unit_cost:20, total_weight: 6
+service name [whole_foods] drones:
+tag: 2, capacity: 2, remaining_cap: 1, fuel: 62, sales: $0, location: west
+&> pilot:blaire
+drone is directing this swarm: [ drone tags | 3 | 5 ]
+&> barcode: truffles,  item_name: mushrooms_truffles, total_quantity: 1, unit_cost:10, total_weight: 4
+tag: 3, capacity: 2, remaining_cap: 0, fuel: 62, sales: $0, location: west
+&> barcode: ikura,  item_name: sushi_salmon_roe, total_quantity: 2, unit_cost:15, total_weight: 6
+tag: 5, capacity: 2, remaining_cap: 1, fuel: 62, sales: $0, location: west
+&> barcode: octopus,  item_name: seafood_octopus, total_quantity: 1, unit_cost:15, total_weight: 7
+OK:display_completed
+
+> display_services
+name: fresh_market, revenue: $125, location: east
+name: trader_joes, revenue: $135, location: south
+name: whole_foods, revenue: $125, location: west
+OK:display_completed
+
+> display_persons
+userID: adam, name: Adam Smith, birth date: 1960-1-1, address: 11_Fruit_Drive
+employee is managing: whole_foods
+userID: blaire, name: Blaire Smith, birth date: 1962-2-2, address: 13_Fruit_Drive
+employee is working at: 
+&> whole_foods
+user has a pilot's license (pilot_license_1) with 13 successful flight(s)
+employee is flying these drones: [ drone tags | 2 ]
+userID: chuck, name: Chuck Smith, birth date: 1963-3-3, address: 17_Fruit_Drive
+employee is working at: 
+&> whole_foods
+userID: denise, name: Denise Smith, birth date: 1963-4-4, address: 19_Fruit_Drive
+employee is managing: fresh_market
+userID: eric, name: Eric Smith, birth date: 1964-5-5, address: 23_Fruit_Drive
+employee is working at: 
+&> fresh_market
+user has a pilot's license (pilot_license_2) with 13 successful flight(s)
+employee is flying these drones: [ drone tags | 1 ]
+userID: felicity, name: Felicity Smith, birth date: 1965-6-6, address: 29_Fruit_Drive
+employee is working at: 
+&> fresh_market
+userID: geri, name: Geri Smith, birth date: 1966-7-7, address: 31_Fruit_Drive
+employee is managing: trader_joes
+userID: hailey, name: Hailey Smith, birth date: 1968-8-8, address: 37_Fruit_Drive
+employee is working at: 
+&> trader_joes
+user has a pilot's license (pilot_license_3) with 12 successful flight(s)
+employee is flying these drones: [ drone tags | 1 ]
+userID: indy, name: Indiana Smith, birth date: 1969-9-9, address: 37_Fruit_Drive
+employee is working at: 
+&> trader_joes
+userID: juliet, name: Juliet Smith, birth date: 1971-10-10, address: 37_Fruit_Drive
+userID: kari, name: Kari Smith, birth date: 1972-11-11, address: 37_Fruit_Drive
+OK:display_completed
+
+> stop
+stop acknowledged
+simulation terminated

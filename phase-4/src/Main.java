@@ -6,6 +6,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert;
+import javafx.scene.effect.GaussianBlur;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
@@ -24,28 +25,32 @@ import java.io.PrintWriter;
 import java.io.FileWriter;
 import java.io.File;
 
-/*
-TODO: code cleanup
-TODO: write more test cases to show the full system functionality
-TODO: size up the popups
-TODO: try using CSS for styling (https://docs.oracle.com/javafx/2/api/javafx/scene/doc-files/cssref.html)
- */
-
 /**
- * Main class to run the interface for the ingredient purchasing system.
+ * Main class to run the GUI for the ingredient purchasing system.
  *
  * @author Reetesh Sudhakar, Sebastian Jaskowski, Yash Gupta, Kunal Daga
  * @version 2.0
  */
 public class Main extends Application {
+    // variables to be used for the GUI
     static String status;
     static String message;
     static Stage primaryStage;
+    static StackPane root;
 
+    /**
+     * Main method to launch the JavaFX application
+     * @param args command line arguments
+     */
     public static void main(String[] args) {
         launch(args);
     }
 
+    /**
+     * Method to start the JavaFX application
+     * @param stage the primary stage
+     * @throws IOException if a file cannot be found
+     */
     @Override
     public void start(Stage stage) throws IOException {
         // creating a grid to display the entities
@@ -55,6 +60,7 @@ public class Main extends Application {
         grid.setHgap(20);
         grid.setVgap(20);
 
+        // creating the display buttons
         Button droneButton = addAsset(grid, 0, 0, "drone.png", "Display all Drones");
         Button ingredientButton = addAsset(grid, 0, 1, "ingredient.png", "Display Ingredients");
         Button peopleButton = addAsset(grid, 0, 2, "person.png", "Display People");
@@ -62,7 +68,7 @@ public class Main extends Application {
         Button serviceButton = addAsset(grid, 0, 4, "service.png", "Display Services");
         Button locationButton = addAsset(grid, 0, 5, "location.png", "Display Locations");
 
-
+        // connecting the buttons to their popup displays
         droneButton.setOnAction(e -> Display.displayAllDrones());
         ingredientButton.setOnAction(e -> Display.displayIngredients());
         peopleButton.setOnAction(e -> Display.displayPeople());
@@ -71,10 +77,16 @@ public class Main extends Application {
         locationButton.setOnAction(e -> Display.displayLocations());
 
         // adding background image to the scene and showing the stage
-        StackPane root = new StackPane();
+        root = new StackPane();
         initializeWindow(root, grid);
     }
 
+    /**
+     * Method to initialize the window with the grid and background image
+     * @param root the root of the scene
+     * @param grid the grid to be displayed
+     * @throws IOException if the file cannot be found
+     */
     public void initializeWindow(StackPane root, GridPane grid) throws IOException {
         // background image
         Image image = new Image("images/background.jpeg");
@@ -90,6 +102,7 @@ public class Main extends Application {
         title.setUnderline(true);
         title.setTranslateY(20);
 
+        // adding the argument input fields
         VBox input = addArgumentInput();
         VBox buttons = new VBox();
         buttons.setSpacing(150);
@@ -97,11 +110,13 @@ public class Main extends Application {
         buttons.setTranslateY(100);
         buttons.getChildren().addAll(grid, input);
 
+        // adding the background image and the title to the root
         root.getChildren().addAll(background, title, buttons);
         StackPane.setAlignment(title, Pos.TOP_CENTER);
         StackPane.setAlignment(buttons, Pos.CENTER);
         Scene mainScene = new Scene(root);
 
+        // creating the primary stage and showing it in the window
         primaryStage.setScene(mainScene);
         primaryStage.setTitle("Ingredient Delivery System");
         primaryStage.setMinWidth(background.getFitWidth());
@@ -110,6 +125,15 @@ public class Main extends Application {
         primaryStage.show();
     }
 
+    /**
+     * Method to add the argument input fields to the VBox
+     * @param grid the grid to be displayed
+     * @param row the row of the grid
+     * @param column the column of the grid
+     * @param fileName the name of the file to be displayed as an image
+     * @param buttonName the name of the button to be displayed
+     * @return the button that was created
+     */
     public Button addAsset(GridPane grid, int row, int column, String fileName, String buttonName) {
         Image image = new Image("images/" + fileName, 200, 200, true, true);
         ImageView imageView = new ImageView(image);
@@ -124,17 +148,24 @@ public class Main extends Application {
         return button;
     }
 
+    /**
+     * Method to add the argument input fields to the VBox
+     * @return the VBox containing the argument input fields
+     * @throws IOException if the commands file can't be found
+     */
     public VBox addArgumentInput() throws IOException {
         VBox input = new VBox();
         input.setAlignment(Pos.BOTTOM_CENTER);
         input.setTranslateY(-20);
         input.setSpacing(5);
 
+        // text description of the field
         Text text = new Text("Enter Arguments Manually Here:");
         text.setFont(Font.font("Helvetica", FontWeight.BOLD, 20));
         text.setFill(Color.BLACK);
         text.setStroke(Color.BLACK);
 
+        // textfield to enter arguments
         TextField textField = new TextField();
         textField.setPromptText("argument");
         textField.setMaxWidth(1000);
@@ -145,11 +176,13 @@ public class Main extends Application {
         textField.setFont(Font.font("Helvetica", FontWeight.BOLD, 20));
         textField.setAlignment(Pos.CENTER_LEFT);
 
+        // submit button for the arguments
         Button submit = new Button();
         submit.setText("Submit");
         submit.setFont(Font.font("Helvetica", FontWeight.BOLD, 20));
         submit.setPrefSize(100, 50);
 
+        // writing the arguments
         try (PrintWriter pw = new PrintWriter(new FileWriter("src/resources/commands.csv"))) {
             pw.println("Commands,Arguments");
             pw.flush();
@@ -157,6 +190,7 @@ public class Main extends Application {
             ex.printStackTrace();
         }
 
+        // setting the action for the submit button
         submit.setOnAction(e -> {
             String argument = textField.getText();
             try (PrintWriter pw = new PrintWriter(new FileWriter("src/resources/commands.csv", true))) {
@@ -170,6 +204,7 @@ public class Main extends Application {
             showArgumentAlert();
         });
 
+        // adding the text, textfield, and submit button to the VBox, as well as the arguments list
         Popup commands = makeTableViewPopup(new File("src/resources/arguments.csv"));
         Button showCommands = makeTableViewPopupButton(commands);
         Button showArguments = makeArgumentsButton();
@@ -183,6 +218,12 @@ public class Main extends Application {
         return input;
     }
 
+    /**
+     * Method to make the popup to show the arguments list
+     * @param file the file to be displayed
+     * @return the popup to show the arguments list
+     * @throws IOException if the file cannot be found
+     */
     public Popup makeTableViewPopup(File file) throws IOException {
         CSVTableView table = new CSVTableView(",", file);
         Popup popup = new Popup();
@@ -190,6 +231,11 @@ public class Main extends Application {
         return popup;
     }
 
+    /**
+     * Method to make the button to show the arguments list
+     * @param popup the popup to be displayed
+     * @return the button to show the arguments list
+     */
     public Button makeTableViewPopupButton(Popup popup) {
         Button button = new Button("     View\nCommands");
         button.setAlignment(Pos.CENTER);
@@ -207,20 +253,28 @@ public class Main extends Application {
         return button;
     }
 
+    /**
+     * Method to make the button to show the arguments list
+     * @return the button to show the arguments list
+     */
     public Button makeArgumentsButton() {
         Button button = new Button("Arguments");
         button.setAlignment(Pos.CENTER);
         button.setFont(Font.font("Helvetica", FontWeight.BOLD, 20));
         button.setPrefSize(125, 50);
         button.setOnAction(e -> {
+            // instantiates a new popup to ensure that the information is up to date
             Popup popup = makeArgumentsPopup();
             popup.show(primaryStage);
+            root.setEffect(new GaussianBlur());
         });
 
         return button;
     }
 
+    // makes the popup to show the arguments list with assisted inputs
     public Popup makeArgumentsPopup() {
+        // making the popup
         Popup popup = new Popup();
 
         StackPane popupRoot = new StackPane();
@@ -228,6 +282,7 @@ public class Main extends Application {
         popupRoot.setPrefWidth(popup.getWidth());
         popupRoot.setPrefHeight(popup.getHeight());
 
+        // creating a ScrollPane to handle sizing issues
         ScrollPane scrollPane = new ScrollPane();
         scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
         scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
@@ -244,10 +299,14 @@ public class Main extends Application {
         HBox closeContainer = new HBox();
         closeContainer.setAlignment(Pos.CENTER_LEFT);
         Button closePopup = new Button("Close");
-        closePopup.setOnAction(e -> popup.hide());
+        closePopup.setOnAction(e -> {
+            popup.hide();
+            root.setEffect(null);
+        });
         closeContainer.getChildren().add(closePopup);
         popupBox.getChildren().addAll(closeContainer);
 
+        // creating the containers for all the argument inputs
         VBox makeIngredientContainer = makeIngredientForm();
         VBox makeLocationContainer = makeLocationForm();
         VBox checkDistanceContainer = checkDistanceForm();
@@ -276,6 +335,10 @@ public class Main extends Application {
         return popup;
     }
 
+    /**
+     * Method to make the form to make an ingredient
+     * @return the form to make an ingredient
+     */
     public static VBox makeIngredientForm() {
         VBox makeIngredientContainer = new VBox();
         makeIngredientContainer.setAlignment(Pos.CENTER_RIGHT);
@@ -310,6 +373,10 @@ public class Main extends Application {
         return makeIngredientContainer;
     }
 
+    /**
+     * Method to make the form to make a location
+     * @return the form to make a location
+     */
     public static VBox makeLocationForm() {
         VBox makeLocationContainer = new VBox();
         makeLocationContainer.setAlignment(Pos.CENTER_RIGHT);
@@ -347,6 +414,10 @@ public class Main extends Application {
         return makeLocationContainer;
     }
 
+    /**
+     * Method to make the form to check the distance between two locations
+     * @return the form to check the distance between two locations
+     */
     public static VBox checkDistanceForm() {
         VBox checkDistanceContainer = new VBox();
         checkDistanceContainer.setAlignment(Pos.CENTER_RIGHT);
@@ -378,6 +449,10 @@ public class Main extends Application {
         return checkDistanceContainer;
     }
 
+    /**
+     * Method to make the form to make a service
+     * @return the form to make a service
+     */
     public static VBox makeServiceForm() {
         VBox makeServiceContainer = new VBox();
         makeServiceContainer.setAlignment(Pos.CENTER_RIGHT);
@@ -412,6 +487,10 @@ public class Main extends Application {
         return makeServiceContainer;
     }
 
+    /**
+     * Method to make the form to make a restaurant
+     * @return the form to make a restaurant
+     */
     public static VBox makeRestaurantForm() {
         VBox makeRestaurantContainer = new VBox();
         makeRestaurantContainer.setAlignment(Pos.CENTER_RIGHT);
@@ -443,6 +522,10 @@ public class Main extends Application {
         return makeRestaurantContainer;
     }
 
+    /**
+     * Method to make the form to make a drone
+     * @return the form to make a drone
+     */
     public static VBox makeDroneForm() {
         VBox makeDroneContainer = new VBox();
         makeDroneContainer.setAlignment(Pos.CENTER_RIGHT);
@@ -480,6 +563,10 @@ public class Main extends Application {
         return makeDroneContainer;
     }
 
+    /**
+     * Method to make the form to display drones of a given service
+     * @return the form to display drones of a given service
+     */
     public static VBox DisplayDronesForm() {
         VBox displayDronesContainer = new VBox();
         displayDronesContainer.setAlignment(Pos.CENTER_RIGHT);
@@ -516,6 +603,10 @@ public class Main extends Application {
         return displayDronesContainer;
     }
 
+    /**
+     * Method to make the form to fly a drone
+     * @return the form to fly a drone
+     */
     public static VBox flyDroneForm() {
         VBox flyDroneContainer = new VBox();
         flyDroneContainer.setAlignment(Pos.CENTER_RIGHT);
@@ -564,6 +655,10 @@ public class Main extends Application {
         return flyDroneContainer;
     }
 
+    /**
+     * Method to make the form to load a drone with an ingredient
+     * @return the form to load a drone with an ingredient
+     */
     public static VBox loadIngredientForm() {
         VBox loadIngredientContainer = new VBox();
         loadIngredientContainer.setAlignment(Pos.CENTER_RIGHT);
@@ -621,6 +716,10 @@ public class Main extends Application {
 
     }
 
+    /**
+     * Method to make the form to load a drone with fuel
+     * @return the form to load a drone with fuel
+     */
     public static VBox loadFuelForm() {
         VBox loadFuelContainer = new VBox();
         loadFuelContainer.setAlignment(Pos.CENTER_RIGHT);
@@ -664,6 +763,10 @@ public class Main extends Application {
         return loadFuelContainer;
     }
 
+    /**
+     * Method to make the form to purchase an ingredient
+     * @return the form to purchase an ingredient
+     */
     public static VBox purchaseIngredientForm() {
         VBox purchaseIngredientContainer = new VBox();
         purchaseIngredientContainer.setAlignment(Pos.CENTER_RIGHT);
@@ -722,6 +825,10 @@ public class Main extends Application {
         return purchaseIngredientContainer;
     }
 
+    /**
+     * Method to make the form to make a person
+     * @return the form to make a person
+     */
     public static VBox makePersonForm() {
         VBox makePersonContainer = new VBox();
         makePersonContainer.setAlignment(Pos.CENTER_RIGHT);
@@ -768,6 +875,10 @@ public class Main extends Application {
         return makePersonContainer;
     }
 
+    /**
+     * Method to make the form to hire a worker
+     * @return the form to hire a worker
+     */
     public static VBox hireWorkerForm() {
         VBox hireWorkerContainer = new VBox();
         hireWorkerContainer.setAlignment(Pos.CENTER_RIGHT);
@@ -811,6 +922,10 @@ public class Main extends Application {
         return hireWorkerContainer;
     }
 
+    /**
+     * Method to make the form to fire a worker
+     * @return the form to fire a worker
+     */
     public static VBox fireWorkerForm() {
         VBox fireWorkerContainer = new VBox();
         fireWorkerContainer.setAlignment(Pos.CENTER_RIGHT);
@@ -854,6 +969,10 @@ public class Main extends Application {
         return fireWorkerContainer;
     }
 
+    /**
+     * Method to make the form to appoint a manager
+     * @return the form to appoint a manager
+     */
     public static VBox appointManagerForm() {
         VBox appointManagerContainer = new VBox();
         appointManagerContainer.setAlignment(Pos.CENTER_RIGHT);
@@ -897,6 +1016,10 @@ public class Main extends Application {
         return appointManagerContainer;
     }
 
+    /**
+     * Method to make the form to train a pilot
+     * @return the form to train a pilot
+     */
     public static VBox trainPilotForm() {
         VBox trainPilotContainer = new VBox();
         trainPilotContainer.setAlignment(Pos.CENTER_RIGHT);
@@ -948,6 +1071,10 @@ public class Main extends Application {
         return trainPilotContainer;
     }
 
+    /**
+     * Method to make the form to appoint a pilot
+     * @return the form to appoint a pilot
+     */
     public static VBox appointPilotForm() {
         VBox appointPilotContainer = new VBox();
         appointPilotContainer.setAlignment(Pos.CENTER_RIGHT);
@@ -995,6 +1122,10 @@ public class Main extends Application {
         return appointPilotContainer;
     }
 
+    /**
+     * Method to make the form to join a swarm
+     * @return the form to join a swarm
+     */
     public static VBox joinSwarmForm() {
         VBox joinSwarmContainer = new VBox();
         joinSwarmContainer.setAlignment(Pos.CENTER_RIGHT);
@@ -1039,6 +1170,10 @@ public class Main extends Application {
         return joinSwarmContainer;
     }
 
+    /**
+     * Method to make the form to leave a swarm
+     * @return the form to leave a swarm
+     */
     public static VBox leaveSwarmForm() {
         VBox leaveSwarmContainer = new VBox();
         leaveSwarmContainer.setAlignment(Pos.CENTER_RIGHT);
@@ -1079,6 +1214,10 @@ public class Main extends Application {
         return leaveSwarmContainer;
     }
 
+    /**
+     * Method to make the form to collect revenue for a given service
+     * @return the form to collect revenue for a given service
+     */
     public static VBox collectRevenueForm() {
         VBox collectRevenueContainer = new VBox();
         collectRevenueContainer.setAlignment(Pos.CENTER_RIGHT);
@@ -1115,6 +1254,9 @@ public class Main extends Application {
         return collectRevenueContainer;
     }
 
+    /**
+     * Method to make the alert to show the current status of the command executed
+     */
     public static void showArgumentAlert() {
         switch (status) {
             case "ERROR": {

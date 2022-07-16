@@ -269,6 +269,9 @@ public class DeliveryService implements Comparable <DeliveryService> {
     }
 
     /**
+     * Method to check whether a given delivery service has valid workers.
+     * A worker is valid if they're a Worker for the service,
+     * or if they are a Pilot with no drones assigned to them.
      */
     public boolean noWorkersExist() {
         for (Person person: Person.people.values()) {

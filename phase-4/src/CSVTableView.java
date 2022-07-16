@@ -9,7 +9,18 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
 
+/**
+ * CSVTableView class to generate a table view from a CSV file.
+ * @author Reetesh Sudhakar, Sebastian Jaskowski, Yash Gupta, Kunal Daga
+ * @version 1.0
+ */
 public class CSVTableView extends TableView<String> {
+    /**
+     * Constructor to initialize the table view from a CSV file.
+     * @param delimiter The delimiter used in the CSV file.
+     * @param file The CSV file as a File object.
+     * @throws IOException If the file is not found.
+     */
     public CSVTableView(String delimiter, File file) throws IOException {
 
         // Get CSV file lines as List
@@ -36,9 +47,8 @@ public class CSVTableView extends TableView<String> {
 
             this.setItems(FXCollections.observableArrayList(lines));
             /*
-            Remove header row, as it will be added to the data at this point
-            this only works if we're sure that our CSV file has a header,
-            otherwise, we're just deleting data at this point.
+            Remove header row, since it'll be added to the data at this point
+            this only works if we're sure that our CSV file has a header.
             */
             this.getItems().remove(0);
         }

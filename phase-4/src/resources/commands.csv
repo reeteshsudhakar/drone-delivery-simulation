@@ -1,7 +1,1 @@
 Commands,Arguments
-make_location,airport,3,4,6
-make_location,plaza,10,5,4
-display_locations
-make_service,speedy_spices,100,plaza
-make_service,fast_flavors,300,airport
-display_services

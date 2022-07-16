@@ -287,81 +287,80 @@ public class InterfaceLoop {
         String[] tokens;
         final String DELIMITER = ",";
 
-            try {
-                // Determine the next command and echo it to the monitor for testing purposes
-                tokens = input.split(DELIMITER);
-//                System.out.println("> " + input);
+        try {
+            // Determine the next command and echo it to the monitor for testing purposes
+            tokens = input.split(DELIMITER);
 
-                //noinspection StatementWithEmptyBody
-                if (tokens[0].indexOf("//") == 0) {
-                    // deliberate empty body to recognize and skip over comments
-                } else if (tokens[0].equals("make_ingredient")) {
-                    Ingredient.makeIngredient(tokens[1], tokens[2], Integer.parseInt(tokens[3]));
-                } else if (tokens[0].equals("display_ingredients")) {
-                    Display.displayIngredients();
-                } else if (tokens[0].equals("make_location")) {
-                    Location.makeLocation(tokens[1], Integer.parseInt(tokens[2]), Integer.parseInt(tokens[3]),
-                            Integer.parseInt(tokens[4]));
-                } else if (tokens[0].equals("display_locations")) {
-                    Display.displayLocations();
-                } else if (tokens[0].equals("check_distance")) {
-                    Location.checkDistance(tokens[1], tokens[2]);
-                } else if (tokens[0].equals("make_service")) {
-                    DeliveryService.makeDeliveryService(tokens[1], Integer.parseInt(tokens[2]), tokens[3]);
-                } else if (tokens[0].equals("display_services")) {
-                    Display.displayServices();
-                } else if (tokens[0].equals("make_restaurant")) {
-                    Restaurant.makeRestaurant(tokens[1], tokens[2]);
-                } else if (tokens[0].equals("display_restaurants")) {
-                    Display.displayRestaurants();
-                } else if (tokens[0].equals("make_drone")) {
-                    Drone.makeDrone(tokens[1], Integer.parseInt(tokens[2]), Integer.parseInt(tokens[3]),
-                            Integer.parseInt(tokens[4]));
-                } else if (tokens[0].equals("display_drones")) {
-                    Display.displayDrones(tokens[1]);
-                } else if (tokens[0].equals("display_all_drones")) {
-                    Display.displayAllDrones();
-                } else if (tokens[0].equals("fly_drone")) {
-                    flyDrone(tokens[1], Integer.parseInt(tokens[2]), tokens[3]);
-                } else if (tokens[0].equals("load_ingredient")) {
-                    loadIngredient(tokens[1], Integer.parseInt(tokens[2]), tokens[3], Integer.parseInt(tokens[4]),
-                            Integer.parseInt(tokens[5]));
-                } else if (tokens[0].equals("load_fuel")) {
-                    loadFuel(tokens[1], Integer.parseInt(tokens[2]), Integer.parseInt(tokens[3]));
-                } else if (tokens[0].equals("purchase_ingredient")) {
-                    purchaseIngredient(tokens[1], tokens[2], Integer.parseInt(tokens[3]), tokens[4],
-                            Integer.parseInt(tokens[5]));
-                } else if (tokens[0].equals("make_person")) {
-                    makePerson(tokens[1], tokens[2], tokens[3], Integer.parseInt(tokens[4]),
-                            Integer.parseInt(tokens[5]), Integer.parseInt(tokens[6]), tokens[7]);
-                } else if (tokens[0].equals("display_persons")) {
-                    Display.displayPeople();
-                } else if (tokens[0].equals("hire_worker")) {
-                    hireWorker(tokens[1], tokens[2]);
-                } else if (tokens[0].equals("fire_worker")) {
-                    fireWorker(tokens[1], tokens[2]);
-                } else if (tokens[0].equals("appoint_manager")) {
-                    appointManager(tokens[1], tokens[2]);
-                } else if (tokens[0].equals("train_pilot")) {
-                    trainPilot(tokens[1], tokens[2], tokens[3], Integer.parseInt(tokens[4]));
-                } else if (tokens[0].equals("appoint_pilot")) {
-                    appointPilot(tokens[1], tokens[2], Integer.parseInt(tokens[3]));
-                } else if (tokens[0].equals("join_swarm")) {
-                    joinSwarm(tokens[1], Integer.parseInt(tokens[2]), Integer.parseInt(tokens[3]));
-                } else if (tokens[0].equals("leave_swarm")) {
-                    leaveSwarm(tokens[1], Integer.parseInt(tokens[2]));
-                } else if (tokens[0].equals("collect_revenue")) {
-                    collectRevenue(tokens[1]);
-                } else if (tokens[0].equals("stop")) {
-                    Display.displayMessage("STOP","stop acknowledged");
-                } else if (tokens[0].equals("") || tokens[0].isBlank() || tokens[0].isEmpty()) {
-                    Display.displayMessage("ERROR","please enter a command");
-                } else {
-                    Display.displayMessage("ERROR","command " + tokens[0] + " NOT acknowledged");
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-                System.out.println();
+            //noinspection StatementWithEmptyBody
+            if (tokens[0].indexOf("//") == 0) {
+                // deliberate empty body to recognize and skip over comments
+            } else if (tokens[0].equals("make_ingredient")) {
+                Ingredient.makeIngredient(tokens[1], tokens[2], Integer.parseInt(tokens[3]));
+            } else if (tokens[0].equals("display_ingredients")) {
+                Display.displayIngredients();
+            } else if (tokens[0].equals("make_location")) {
+                Location.makeLocation(tokens[1], Integer.parseInt(tokens[2]), Integer.parseInt(tokens[3]),
+                        Integer.parseInt(tokens[4]));
+            } else if (tokens[0].equals("display_locations")) {
+                Display.displayLocations();
+            } else if (tokens[0].equals("check_distance")) {
+                Location.checkDistance(tokens[1], tokens[2]);
+            } else if (tokens[0].equals("make_service")) {
+                DeliveryService.makeDeliveryService(tokens[1], Integer.parseInt(tokens[2]), tokens[3]);
+            } else if (tokens[0].equals("display_services")) {
+                Display.displayServices();
+            } else if (tokens[0].equals("make_restaurant")) {
+                Restaurant.makeRestaurant(tokens[1], tokens[2]);
+            } else if (tokens[0].equals("display_restaurants")) {
+                Display.displayRestaurants();
+            } else if (tokens[0].equals("make_drone")) {
+                Drone.makeDrone(tokens[1], Integer.parseInt(tokens[2]), Integer.parseInt(tokens[3]),
+                        Integer.parseInt(tokens[4]));
+            } else if (tokens[0].equals("display_drones")) {
+                Display.displayDrones(tokens[1]);
+            } else if (tokens[0].equals("display_all_drones")) {
+                Display.displayAllDrones();
+            } else if (tokens[0].equals("fly_drone")) {
+                flyDrone(tokens[1], Integer.parseInt(tokens[2]), tokens[3]);
+            } else if (tokens[0].equals("load_ingredient")) {
+                loadIngredient(tokens[1], Integer.parseInt(tokens[2]), tokens[3], Integer.parseInt(tokens[4]),
+                        Integer.parseInt(tokens[5]));
+            } else if (tokens[0].equals("load_fuel")) {
+                loadFuel(tokens[1], Integer.parseInt(tokens[2]), Integer.parseInt(tokens[3]));
+            } else if (tokens[0].equals("purchase_ingredient")) {
+                purchaseIngredient(tokens[1], tokens[2], Integer.parseInt(tokens[3]), tokens[4],
+                        Integer.parseInt(tokens[5]));
+            } else if (tokens[0].equals("make_person")) {
+                makePerson(tokens[1], tokens[2], tokens[3], Integer.parseInt(tokens[4]),
+                        Integer.parseInt(tokens[5]), Integer.parseInt(tokens[6]), tokens[7]);
+            } else if (tokens[0].equals("display_persons")) {
+                Display.displayPeople();
+            } else if (tokens[0].equals("hire_worker")) {
+                hireWorker(tokens[1], tokens[2]);
+            } else if (tokens[0].equals("fire_worker")) {
+                fireWorker(tokens[1], tokens[2]);
+            } else if (tokens[0].equals("appoint_manager")) {
+                appointManager(tokens[1], tokens[2]);
+            } else if (tokens[0].equals("train_pilot")) {
+                trainPilot(tokens[1], tokens[2], tokens[3], Integer.parseInt(tokens[4]));
+            } else if (tokens[0].equals("appoint_pilot")) {
+                appointPilot(tokens[1], tokens[2], Integer.parseInt(tokens[3]));
+            } else if (tokens[0].equals("join_swarm")) {
+                joinSwarm(tokens[1], Integer.parseInt(tokens[2]), Integer.parseInt(tokens[3]));
+            } else if (tokens[0].equals("leave_swarm")) {
+                leaveSwarm(tokens[1], Integer.parseInt(tokens[2]));
+            } else if (tokens[0].equals("collect_revenue")) {
+                collectRevenue(tokens[1]);
+            } else if (tokens[0].equals("stop")) {
+                Display.displayMessage("STOP","stop acknowledged");
+            } else if (tokens[0].equals("") || tokens[0].isBlank() || tokens[0].isEmpty()) {
+                Display.displayMessage("ERROR","please enter a command");
+            } else {
+                Display.displayMessage("ERROR","command " + tokens[0] + " NOT acknowledged");
             }
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println();
+        }
     }
 }

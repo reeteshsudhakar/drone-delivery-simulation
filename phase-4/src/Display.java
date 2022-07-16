@@ -19,11 +19,19 @@ import javafx.stage.Popup;
  * @version 2.0
  */
 public class Display {
+    /**
+     * This method is used to send information to create alerts for the display.
+     * @param info the information status to be displayed
+     * @param output the specific message containing the information
+     */
     public static void displayMessage(String info, String output) {
         Main.status = info;
         Main.message = output;
     }
 
+    /**
+     * This method is used to create and display a popup containing all services' drones.
+     */
     public static void displayAllDrones() {
         Popup dronePopup = createPopup();
         VBox popupBox = createPopupBox("Drones");
@@ -35,6 +43,10 @@ public class Display {
         validateDronePopup(dronePopup, popupBox);
     }
 
+    /**
+     * This method is used to create and display a popup containing a given services' drones.
+     * @param serviceName the name of the service to be displayed
+     */
     public static void displayDrones(String serviceName) {
         DeliveryService service = DeliveryService.services.get(serviceName);
         if (service == null) {
@@ -55,6 +67,9 @@ public class Display {
         createScrollPane(dronePopup, popupBox);
     }
 
+    /**
+     * Method to display the ingredients created in the system
+     */
     public static void displayIngredients() {
         Popup ingredientPopup = createPopup();
         VBox popupBox = createPopupBox("Ingredients");
@@ -85,6 +100,9 @@ public class Display {
         createScrollPane(ingredientPopup, popupBox);
     }
 
+    /**
+     * Method to display the people created in the system
+     */
     public static void displayPeople() {
         Popup peoplePopup = createPopup();
         VBox popupBox = createPopupBox("People");
@@ -124,6 +142,9 @@ public class Display {
         createScrollPane(peoplePopup, popupBox);
     }
 
+    /**
+     * Method to display the restaurants created in the system
+     */
     public static void displayRestaurants() {
         Popup restaurantPopup = createPopup();
         VBox popupBox = createPopupBox("Restaurants");
@@ -156,6 +177,9 @@ public class Display {
 
     }
 
+    /**
+     * Method to display the services created in the system
+     */
     public static void displayServices() {
         Popup servicePopup = createPopup();
         VBox popupBox = createPopupBox("Services");
@@ -186,6 +210,9 @@ public class Display {
         createScrollPane(servicePopup, popupBox);
     }
 
+    /**
+     * Method to display the locations created in the system
+     */
     public static void displayLocations() {
         Popup locationPopup = createPopup();
         VBox popupBox = createPopupBox("Locations");
@@ -217,6 +244,11 @@ public class Display {
         createScrollPane(locationPopup, popupBox);
     }
 
+    /**
+     * Method to check whether there are drones instantiated in the system
+     * @param dronePopup the popup to display the drones in
+     * @param popupBox the VBox containing the information about the drones
+     */
     private static void validateDronePopup(Popup dronePopup, VBox popupBox) {
         if (popupBox.getChildren().size() == 1) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -230,6 +262,11 @@ public class Display {
         createScrollPane(dronePopup, popupBox);
     }
 
+    /**
+     * Method to populate a VBox with drones in the system
+     * @param service DeliveryService whose drones to display in the VBox
+     * @param popupBox the VBox to populate with the drones
+     */
     private static void populateDronePopup(DeliveryService service, VBox popupBox) {
         Text serviceName = new Text(service.getName());
         serviceName.setFont(Font.font("Arial", FontWeight.BOLD, 18));
@@ -257,6 +294,11 @@ public class Display {
         }
     }
 
+    /**
+     * Method to create and style a ScrollPane to house the popup
+     * @param popup the popup to style
+     * @param popupBox the VBox to house the popup
+     */
     private static void createScrollPane(Popup popup, VBox popupBox) {
         StackPane background = new StackPane();
         background.setPrefWidth(popup.getWidth());
@@ -277,6 +319,11 @@ public class Display {
         popup.show(Main.primaryStage);
     }
 
+    /**
+     * Method to create an HBox to house the title of the popup
+     * @param title the title of the popup
+     * @return the HBox containing the title of the popup
+     */
     private static HBox makePopupTitle(String title) {
         Text text = new Text(title);
         text.setFont(Font.font("Arial", FontWeight.BOLD, 30));
@@ -288,6 +335,10 @@ public class Display {
         return titleBox;
     }
 
+    /**
+     * Method to create and style a Popup
+     * @return the Popup created
+     */
     private static Popup createPopup() {
         Popup popup = new Popup();
         popup.setOpacity(1);
@@ -295,6 +346,11 @@ public class Display {
         return popup;
     }
 
+    /**
+     * Method to create and style a VBox to house the popup info
+     * @param title the title of the popup
+     * @return the VBox containing the popup info
+     */
     private static VBox createPopupBox(String title) {
         VBox popupBox = new VBox();
         popupBox.setSpacing(10);

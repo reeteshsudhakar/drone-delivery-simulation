@@ -49,13 +49,19 @@ public class Pilot extends Worker {
                 && !this.getPilotedDrones().isEmpty();
     }
 
+    /**
+     * Method to get the employer of a pilot
+     * @return the employer of the pilot
+     */
     public DeliveryService getSingleEmployer() {
         return getEmployers().firstEntry().getValue();
     }
 
     /**
+     * Method to display a pilot's information in a String representation
      * @return The display string for this Pilot
      */
+    @Override
     public String toString() {
         if (leaderDrones == null || leaderDrones.isEmpty()) {
             return super.toString() + String.format("\n\tuser has a pilot's license (%s) with %d successful flight(s)",

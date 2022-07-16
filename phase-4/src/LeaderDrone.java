@@ -1,7 +1,13 @@
 import java.util.TreeMap;
 
+/**
+ * LeaderDrone is a class that represents a leader drone that is flown by a pilot.
+ * @author Reetesh Sudhakar, Sebastian Jaskowski, Yash Gupta, Kunal Daga
+ * @version 1.0
+ */
 public class LeaderDrone extends Drone {
 
+    // Instance variables
     private Pilot pilot;
     private final TreeMap<Integer, Drone> swarm;
 
@@ -75,18 +81,34 @@ public class LeaderDrone extends Drone {
         Display.displayMessage("OK", "change_completed");
     }
 
+    /**
+     * Method to get a leader drone's swarm
+     * @return the leader drone's swarm
+     */
     public TreeMap<Integer, Drone> getSwarm() {
         return this.swarm;
     }
 
+    /**
+     * Method to get a drone's pilot
+     * @return the drone's pilot
+     */
     public Pilot getPilot() {
         return this.pilot;
     }
 
+    /**
+     * Method to get a drone's followers
+     * @return TreeMap of the drone's followers
+     */
     public TreeMap<Integer, Drone> getFollowers() {
         return this.swarm;
     }
 
+    /**
+     * Method to represent a drone as a String
+     * @return the drone as a String
+     */
     @Override
     public String toString() {
         StringBuilder swarmString = new StringBuilder();
@@ -115,6 +137,10 @@ public class LeaderDrone extends Drone {
         pilot.getPilotedDrones().put(this.tag, this);
     }
 
+    /**
+     * Method to check if a drone has a pilot
+     * @return true if the drone has a pilot, false otherwise
+     */
     public boolean hasPilot() {
         return this.pilot != null;
     }
@@ -144,6 +170,11 @@ public class LeaderDrone extends Drone {
         }
     }
 
+    /**
+     * Method to add a drone to the swarm of a leader drone
+     * @param leadDrone the leader of the swarm
+     * @param service_name the service of the drone that is joining the swarm
+     */
     public void joinSwarm(LeaderDrone leadDrone, String service_name) {
         //Checks if lead drone and swarm drone are valid, and if they are in the same location
         if (leadDrone.getCurrentLocation() != this.currentLocation) {
